@@ -325,6 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1870453836}
   - component: {fileID: 1870453835}
+  - component: {fileID: 1870453837}
   m_Layer: 5
   m_Name: DeckDoc
   m_TagString: Untagged
@@ -363,3 +364,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1870453837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870453834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 687a9c0cf99f13e7ea0944efe7e5ab55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playableCards:
+  - {fileID: 11400000, guid: 07dee4442f0c1a54f92c97ee53a98b19, type: 2}
+  - {fileID: 11400000, guid: da00a155eb4a27241bb3dfa261459837, type: 2}
+  - {fileID: 11400000, guid: c0ec168208c7cab47b79402284f18692, type: 2}
+  - {fileID: 11400000, guid: e34fb7d227abe5cd2acd24f434968a18, type: 2}
+  - {fileID: 11400000, guid: 2c6a6d6b0edb698c59e967f6a7506d4c, type: 2}
+  - {fileID: 11400000, guid: fca99e2b1994312438ff869aea11107d, type: 2}
