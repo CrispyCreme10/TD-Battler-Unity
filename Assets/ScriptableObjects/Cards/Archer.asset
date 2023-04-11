@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 880b544b5160b6d42876903fb12bc95f, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
-  name: New Card
-  description: This is the description of a new card.
+  name: Archer
+  description: High attack speed damage dealer.
   level: 1
   xp: 0
-  damage: 0
+  damage: 50
   target: 0
-  attackSpeed: 1
+  attackSpeed: 0.5
