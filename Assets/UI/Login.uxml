@@ -1,15 +1,17 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/global.uss?fileID=7433441132597879392&amp;guid=f93e3bdb9e60b744d8dfa205a5448b73&amp;type=3#global" />
     <ui:VisualElement name="Root" style="height: 100%; align-items: center; justify-content: center; background-color: rgba(0, 211, 255, 0.2);">
-        <ui:VisualElement name="MainContainer" style="width: 500px; height: 500px; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.2);">
+        <ui:VisualElement name="MainContainer" style="width: 500px; height: 500px; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.2); border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; padding-left: 15px; padding-right: 15px; padding-top: 15px; padding-bottom: 15px;">
             <ui:VisualElement name="Inputs" style="height: 80%; align-items: stretch; justify-content: center;">
                 <ui:TextField picking-mode="Ignore" label="Username/Email" name="Username" focusable="true" class="input" />
                 <ui:TextField picking-mode="Ignore" label="Password" name="Password" class="input" />
                 <ui:TextField picking-mode="Ignore" label="Repeat Password" name="MatchPassword" class="input" style="display: none; visibility: visible;" />
             </ui:VisualElement>
-            <ui:VisualElement name="Buttons" style="flex-direction: row; align-items: center; justify-content: space-around; height: 20%; border-top-width: 2px; border-top-color: rgba(255, 255, 255, 255);">
-                <ui:Button text="Login" display-tooltip-when-elided="true" name="Login" class="btn" />
-                <ui:Button text="Signup" display-tooltip-when-elided="true" name="Signup" class="btn" />
+            <ui:VisualElement name="Buttons" style="flex-direction: row; align-items: center; justify-content: space-around; height: 20%; border-top-width: 2px; border-top-color: rgb(255, 255, 255);">
+                <ui:Button text="Login" display-tooltip-when-elided="true" name="Login" class="btn" style="display: flex;" />
+                <ui:Button text="Signup" display-tooltip-when-elided="true" name="Signup" class="btn" style="display: flex;" />
+                <ui:Button text="Complete" display-tooltip-when-elided="true" name="Complete" class="btn" style="display: none;" />
+                <ui:Button text="Cancel" display-tooltip-when-elided="true" name="Cancel" class="btn" style="display: none;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

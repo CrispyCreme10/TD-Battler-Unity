@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/global.uss?fileID=7433441132597879392&amp;guid=f93e3bdb9e60b744d8dfa205a5448b73&amp;type=3#global" />
+    <Style src="project://database/Assets/UI/deck.uss?fileID=7433441132597879392&amp;guid=5f721bcf8731e214db86a3bb6ea59ff5&amp;type=3#deck" />
+    <ui:VisualElement name="Root" style="height: 100%; flex-direction: row; background-color: rgb(63, 63, 63);">
+        <ui:VisualElement name="LeftPanel" style="width: 50%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px;">
+            <ui:ListView focusable="true" name="AvailableCards" style="width: auto; border-left-color: rgb(0, 255, 39); border-right-color: rgb(0, 255, 39); border-top-color: rgb(0, 255, 39); border-bottom-color: rgb(0, 255, 39); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; height: 75%;" />
+            <ui:ListView focusable="true" name="AvailableSpells" style="height: 25%; border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; border-left-color: rgb(250, 255, 0); border-right-color: rgb(250, 255, 0); border-top-color: rgb(250, 255, 0); border-bottom-color: rgb(250, 255, 0); padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="SelectionArea" style="width: 50%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px;">
+            <ui:VisualElement name="Deck" style="align-items: stretch; justify-content: center; height: 100%;">
+                <ui:VisualElement name="SelectedCards" style="height: 200px; border-left-color: rgb(255, 0, 0); border-right-color: rgb(255, 0, 0); border-top-color: rgb(255, 0, 0); border-bottom-color: rgb(255, 0, 0); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; flex-direction: row; justify-content: space-around; align-items: center;">
+                    <ui:VisualElement name="Slot1" class="slot" />
+                    <ui:VisualElement name="Slot2" class="slot" />
+                    <ui:VisualElement name="Slot3" class="slot" />
+                    <ui:VisualElement name="Slot4" class="slot" />
+                    <ui:VisualElement name="Slot5" class="slot" />
+                </ui:VisualElement>
+                <ui:VisualElement name="SelectedSpell" style="height: 200px; border-left-color: rgb(0, 37, 255); border-right-color: rgb(0, 37, 255); border-top-color: rgb(0, 37, 255); border-bottom-color: rgb(0, 37, 255); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center;">
+                    <ui:VisualElement name="SpellSlot" class="slot" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
