@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DocManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject loginDocumentObj;
-    [SerializeField] private UIDocument deckDocument;
-    [SerializeField] private UIDocument battleHudDocument;
+    [SerializeField] private GameObject deckDocument;
+    [SerializeField] private GameObject battleHudDocument;
 
     private void Start()
     {
-        loginDocumentObj.SetActive(true);
+        deckDocument.SetActive(true);
     }
 }
