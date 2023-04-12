@@ -1,0 +1,14 @@
+.slot {
+    height: 150px;
+    width: 150px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgb(0, 248, 255);
+    border-right-color: rgb(0, 248, 255);
+    border-top-color: rgb(0, 248, 255);
+    border-bottom-color: rgb(0, 248, 255);
+    align-items: center;
+    justify-content: center;
+}

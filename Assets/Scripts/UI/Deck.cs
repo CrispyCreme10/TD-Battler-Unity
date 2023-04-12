@@ -10,6 +10,7 @@ using Utility;
 
 public class Deck : MonoBehaviour
 {
+    [SerializeField] private VisualTreeAsset cardSlotAsset;
     [SerializeField] private List<CardData> playableCards;
 
     private VisualElement _root;
@@ -32,41 +33,13 @@ public class Deck : MonoBehaviour
         SetupSelectedCards();
         
     }
-
-    private VisualElement CreateCardVisualElement(CardData card)
-    {
-        StyleFloat borderWidth = new StyleFloat(2);
-        StyleColor borderColor = new StyleColor(Color.blue);
-        
-        var cardElement = new VisualElement
-        {
-            style =
-            {
-                width = new StyleLength(200),
-                height = new StyleLength(200),
-                borderTopWidth = borderWidth,
-                borderRightWidth = borderWidth,
-                borderBottomWidth = borderWidth,
-                borderLeftWidth = borderWidth,
-                borderTopColor = borderColor,
-                borderRightColor = borderColor,
-                borderBottomColor = borderColor,
-                borderLeftColor = borderColor
-            }
-        };
-        
-        Label cardLabel = new Label(card.name);
-        cardElement.Add(cardLabel);
-
-        return cardElement;
-    }
     
     private void SetupAvailableCardList()
     {
         List<CardData> playerSelectedCards = Singleton.Instance.PlayerManager.GetSelectedCards();
         foreach (CardData card in playableCards)
         {
-            VisualElement cardElement = CreateCardVisualElement(card);
+            VisualElement cardElement = CreateCardSlot(card);
             if (!playerSelectedCards.Contains(card))
             {
                 cardElement.RegisterCallback<ClickEvent, CardData>(OnAddSelectedCard, card);
@@ -80,19 +53,32 @@ public class Deck : MonoBehaviour
     {
         foreach (var (card, index) in Singleton.Instance.PlayerManager.GetSelectedCards().WithIndex())
         {
-            VisualElement cardElement = CreateCardVisualElement(card);
+            VisualElement cardElement = CreateCardSlot(card);
             _selectedCards[index].Add(cardElement);
             _selectedCards[index].RegisterCallback<ClickEvent, CardData>(OnRemoveSelectedCard, card);
         }
     }
-
+    
     private void OnAddSelectedCard(ClickEvent evt, CardData card)
     {
+        // add card to player's selected card list
+        // grey out/disable card visual element in the scroll view on deck screen
+        // enable visual element in selected card slot corresponding to the position of the player's selected card
+        
         Singleton.Instance.PlayerManager.AddSelectedCard(card);
     }
     
     private void OnRemoveSelectedCard(ClickEvent evt, CardData card)
     {
         Singleton.Instance.PlayerManager.RemoveSelectedCard(card);
+    }
+
+    private VisualElement CreateCardSlot(CardData card)
+    {
+        VisualElement cardElement = cardSlotAsset.Instantiate();
+        
+        
+
+        return cardElement;
     }
 }
