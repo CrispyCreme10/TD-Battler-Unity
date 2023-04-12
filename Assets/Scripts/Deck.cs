@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -85,12 +86,12 @@ public class Deck : MonoBehaviour
         }
     }
 
-    private static void OnAddSelectedCard(ClickEvent evt, CardData card)
+    private void OnAddSelectedCard(ClickEvent evt, CardData card)
     {
         Singleton.Instance.PlayerManager.AddSelectedCard(card);
     }
     
-    private static void OnRemoveSelectedCard(ClickEvent evt, CardData card)
+    private void OnRemoveSelectedCard(ClickEvent evt, CardData card)
     {
         Singleton.Instance.PlayerManager.RemoveSelectedCard(card);
     }
