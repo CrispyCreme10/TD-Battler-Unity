@@ -11,32 +11,74 @@ using Utility;
 public class Deck : MonoBehaviour
 {
     [SerializeField] private VisualTreeAsset cardSlotAsset;
+    [SerializeField] private VisualTreeAsset spellSlotAsset;
     [SerializeField] private List<CardData> playableCards;
+    [SerializeField] private List<SpellData> playableSpells;
 
     private VisualElement _root;
-    
     private ScrollView _availableCards;
     private ScrollView _availableSpells;
-
-    private List<VisualElement> _selectedCards;
+    private List<VisualElement> _selectedCardSlots;
+    private VisualElement _selectedSpellSlot;
+    private Button _playButton;
 
     private void Start()
     {
         _root = GetComponent<UIDocument>().rootVisualElement;
-
         _availableCards = _root.Q<ScrollView>("AvailableCards");
-        SetupAvailableCardList();
-        
         _availableSpells = _root.Q<ScrollView>("AvailableSpells");
+        _selectedCardSlots = _root.Q<VisualElement>("SelectedCards").Children().ToList();
+        _selectedSpellSlot = _root.Q<VisualElement>("SpellSlot");
+        _playButton = _root.Q<Button>("PlayBtn");
+        _playButton.SetEnabled(false);
 
-        _selectedCards = _root.Q<VisualElement>("SelectedCards").Children().ToList();
-        SetupSelectedCards();
+        List<CardData> playerSelectedCards = Singleton.Instance.PlayerManager.PlayerData.SelectedCards;
+        SpellData playerSelectedSpell = Singleton.Instance.PlayerManager.PlayerData.SelectedSpell;
         
+        // add all Available Cards to the Available Card List
+        // set Visual Element data
+        // grey out or disable all Available Cards that the player has Selected
+        foreach (CardData card in playableCards)
+        {
+            VisualElement cardSlotElement = CreateCardSlot(card, playerSelectedCards.Contains(card));
+            _availableCards.Add(cardSlotElement);
+        }
+        
+        // add all Available Spells to the Available Spell List
+        // set Visual Element data
+        // grey out or disable the Spell the player has Selected
+        foreach (SpellData spell in playableSpells)
+        {
+            VisualElement spellSlotElement = CreateSpellSlot(spell, spell == playerSelectedSpell);
+            _availableSpells.Add(spellSlotElement);
+        }
+        
+        // add all Selected Cards to Card Slots
+        // set Visual Element data and make visible
+        foreach (var (playerCard, index) in playerSelectedCards.WithIndex())
+        {
+            VisualElement currentCardSlot = _selectedCardSlots[index];
+            currentCardSlot.Q<Label>("Name").text = playerCard.name;
+            currentCardSlot.Q<VisualElement>("CardSlot").visible = true;
+        }
+        
+        // add Selected Spell to Spell Slot
+        // set Visual Element data and make visible
+        if (playerSelectedSpell != null)
+        {
+            _selectedSpellSlot.Q<Label>("Name").text = playerSelectedSpell.name;
+            _selectedSpellSlot.visible = true;
+        }
+
+        if (playerSelectedCards.Count > 0 && playerSelectedSpell != null)
+        {
+            
+        }
     }
     
     private void SetupAvailableCardList()
     {
-        List<CardData> playerSelectedCards = Singleton.Instance.PlayerManager.GetSelectedCards();
+        List<CardData> playerSelectedCards = Singleton.Instance.PlayerManager.PlayerData.SelectedCards;
         foreach (CardData card in playableCards)
         {
             VisualElement cardElement = CreateCardSlot(card);
@@ -51,11 +93,11 @@ public class Deck : MonoBehaviour
 
     private void SetupSelectedCards()
     {
-        foreach (var (card, index) in Singleton.Instance.PlayerManager.GetSelectedCards().WithIndex())
+        foreach (var (card, index) in Singleton.Instance.PlayerManager.PlayerData.SelectedCards.WithIndex())
         {
             VisualElement cardElement = CreateCardSlot(card);
-            _selectedCards[index].Add(cardElement);
-            _selectedCards[index].RegisterCallback<ClickEvent, CardData>(OnRemoveSelectedCard, card);
+            _selectedCardSlots[index].Add(cardElement);
+            _selectedCardSlots[index].RegisterCallback<ClickEvent, CardData>(OnRemoveSelectedCard, card);
         }
     }
     
@@ -65,20 +107,32 @@ public class Deck : MonoBehaviour
         // grey out/disable card visual element in the scroll view on deck screen
         // enable visual element in selected card slot corresponding to the position of the player's selected card
         
-        Singleton.Instance.PlayerManager.AddSelectedCard(card);
+        Singleton.Instance.PlayerManager.PlayerData.AddSelectedCard(card);
     }
     
     private void OnRemoveSelectedCard(ClickEvent evt, CardData card)
     {
-        Singleton.Instance.PlayerManager.RemoveSelectedCard(card);
+        Singleton.Instance.PlayerManager.PlayerData.RemoveSelectedCard(card);
     }
 
-    private VisualElement CreateCardSlot(CardData card)
+    private VisualElement CreateCardSlot(CardData card, bool setDisabled = false)
     {
-        VisualElement cardElement = cardSlotAsset.Instantiate();
-        
-        
+        TemplateContainer templateContainer = cardSlotAsset.Instantiate();
+        VisualElement cardSlotElement = cardSlotAsset.Instantiate();
 
-        return cardElement;
+        cardSlotElement.Q<Label>("Name").text = card.name;
+        cardSlotElement.visible = true;
+
+        return cardSlotElement;
+    }
+
+    private VisualElement CreateSpellSlot(SpellData spell, bool setDisabled = false)
+    {
+        VisualElement spellSlotElement = spellSlotAsset.Instantiate();
+        
+        spellSlotElement.Q<Label>("Name").text = spell.name;
+        spellSlotElement.visible = true;
+
+        return spellSlotElement;
     }
 }

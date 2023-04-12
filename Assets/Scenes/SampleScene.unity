@@ -511,7 +511,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 687a9c0cf99f13e7ea0944efe7e5ab55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardSlotAsset: {fileID: 0}
+  cardSlotAsset: {fileID: 9197481963319205126, guid: 5746fce16ca09ad479730768935c39a3, type: 3}
+  spellSlotAsset: {fileID: 9197481963319205126, guid: 7668c7f70870ed24dae7f8eb46db45cd, type: 3}
   playableCards:
   - {fileID: 11400000, guid: 07dee4442f0c1a54f92c97ee53a98b19, type: 2}
   - {fileID: 11400000, guid: da00a155eb4a27241bb3dfa261459837, type: 2}
@@ -519,6 +520,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e34fb7d227abe5cd2acd24f434968a18, type: 2}
   - {fileID: 11400000, guid: 2c6a6d6b0edb698c59e967f6a7506d4c, type: 2}
   - {fileID: 11400000, guid: fca99e2b1994312438ff869aea11107d, type: 2}
+  playableSpells:
+  - {fileID: 11400000, guid: e726c403fc99b874e92a261dd757af1d, type: 2}
+  - {fileID: 11400000, guid: 92cfa0e1cb1740440a4daa2156a5c11c, type: 2}
+  - {fileID: 11400000, guid: db30918cd60f11f46815cb22d39122ec, type: 2}
 --- !u!1 &1975928153
 GameObject:
   m_ObjectHideFlags: 0

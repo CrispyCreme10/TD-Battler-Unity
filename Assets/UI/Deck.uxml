@@ -1,5 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Template name="CardSlot" src="project://database/Assets/UI/CardSlot.uxml?fileID=9197481963319205126&amp;guid=5746fce16ca09ad479730768935c39a3&amp;type=3#CardSlot" />
+    <ui:Template name="SpellSlot" src="project://database/Assets/UI/SpellSlot.uxml?fileID=9197481963319205126&amp;guid=7668c7f70870ed24dae7f8eb46db45cd&amp;type=3#SpellSlot" />
     <Style src="project://database/Assets/UI/Styles/global.uss?fileID=7433441132597879392&amp;guid=f93e3bdb9e60b744d8dfa205a5448b73&amp;type=3#global" />
     <Style src="project://database/Assets/UI/Styles/deck.uss?fileID=7433441132597879392&amp;guid=5f721bcf8731e214db86a3bb6ea59ff5&amp;type=3#deck" />
     <ui:VisualElement name="Root" style="height: 100%; flex-direction: row; background-color: rgb(63, 63, 63);">
@@ -10,25 +11,16 @@
         <ui:VisualElement name="SelectionArea" style="width: 50%; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px;">
             <ui:VisualElement name="Deck" style="align-items: stretch; justify-content: center; height: 100%;">
                 <ui:VisualElement name="SelectedCards" style="height: 200px; border-left-color: rgb(255, 0, 0); border-right-color: rgb(255, 0, 0); border-top-color: rgb(255, 0, 0); border-bottom-color: rgb(255, 0, 0); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; flex-direction: row; justify-content: space-around; align-items: center;">
-                    <ui:VisualElement name="Slot1" class="slot">
-                        <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement name="Slot2" class="slot">
-                        <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement name="Slot3" class="slot">
-                        <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement name="Slot4" class="slot">
-                        <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
-                    </ui:VisualElement>
-                    <ui:VisualElement name="Slot5" class="slot">
-                        <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
-                    </ui:VisualElement>
+                    <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
+                    <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
+                    <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
+                    <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
+                    <ui:Instance template="CardSlot" name="CardSlot" style="visibility: hidden;" />
                 </ui:VisualElement>
-                <ui:VisualElement name="SelectedSpell" style="height: 200px; border-left-color: rgb(0, 37, 255); border-right-color: rgb(0, 37, 255); border-top-color: rgb(0, 37, 255); border-bottom-color: rgb(0, 37, 255); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; justify-content: center; align-items: center;">
-                    <ui:VisualElement name="SpellSlot" class="slot" />
+                <ui:VisualElement name="SelectedSpell" style="height: 200px; border-left-color: rgb(0, 37, 255); border-right-color: rgb(0, 37, 255); border-top-color: rgb(0, 37, 255); border-bottom-color: rgb(0, 37, 255); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px; padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; justify-content: space-around; align-items: center;">
+                    <ui:Instance template="SpellSlot" name="SpellSlot" style="visibility: hidden;" />
                 </ui:VisualElement>
+                <ui:Button text="Play" display-tooltip-when-elided="true" name="PlayBtn" style="font-size: 80px; width: 200px; visibility: visible;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

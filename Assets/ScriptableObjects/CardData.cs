@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class CardData : ScriptableObject
 {
-    public string name = "New Card";
+    public new string name = "New Card";
     public string description = "This is the description of a new card.";
     public int level = 1;
     public int xp = 0;
