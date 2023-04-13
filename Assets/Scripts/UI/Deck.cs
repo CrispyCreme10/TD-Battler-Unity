@@ -72,32 +72,7 @@ public class Deck : MonoBehaviour
 
         if (playerSelectedCards.Count > 0 && playerSelectedSpell != null)
         {
-            
-        }
-    }
-    
-    private void SetupAvailableCardList()
-    {
-        List<CardData> playerSelectedCards = Singleton.Instance.PlayerManager.PlayerData.SelectedCards;
-        foreach (CardData card in playableCards)
-        {
-            VisualElement cardElement = CreateCardSlot(card);
-            if (!playerSelectedCards.Contains(card))
-            {
-                cardElement.RegisterCallback<ClickEvent, CardData>(OnAddSelectedCard, card);
-            }
-            
-            _availableCards.Add(cardElement);
-        }
-    }
-
-    private void SetupSelectedCards()
-    {
-        foreach (var (card, index) in Singleton.Instance.PlayerManager.PlayerData.SelectedCards.WithIndex())
-        {
-            VisualElement cardElement = CreateCardSlot(card);
-            _selectedCardSlots[index].Add(cardElement);
-            _selectedCardSlots[index].RegisterCallback<ClickEvent, CardData>(OnRemoveSelectedCard, card);
+            _playButton.SetEnabled(true);
         }
     }
     
@@ -120,7 +95,9 @@ public class Deck : MonoBehaviour
         TemplateContainer templateContainer = cardSlotAsset.Instantiate();
         VisualElement cardSlotElement = cardSlotAsset.Instantiate();
 
-        cardSlotElement.Q<Label>("Name").text = card.name;
+        Label nameLabel = cardSlotElement.Q<Label>("Name");
+        nameLabel.text = card.name;
+        nameLabel.style.color = Color.white;
         cardSlotElement.visible = true;
 
         return cardSlotElement;
@@ -130,7 +107,9 @@ public class Deck : MonoBehaviour
     {
         VisualElement spellSlotElement = spellSlotAsset.Instantiate();
         
-        spellSlotElement.Q<Label>("Name").text = spell.name;
+        Label nameLabel = spellSlotElement.Q<Label>("Name");
+        nameLabel.text = spell.name;
+        nameLabel.style.color = Color.white;
         spellSlotElement.visible = true;
 
         return spellSlotElement;
