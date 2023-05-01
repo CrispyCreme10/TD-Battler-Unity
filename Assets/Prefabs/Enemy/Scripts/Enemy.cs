@@ -75,9 +75,19 @@ public class Enemy : MonoBehaviour
         ResetEnemy();
     }
 
+    public void Death()
+    {
+        ResetEnemy();
+    }
+    
     private void ResetEnemy()
     {
         _enemyHealth.ResetHealth();
         ObjectPooler.ReturnToPool(gameObject);
+    }
+
+    public void SetWaypoint(Waypoint wp)
+    {
+        waypoint = wp;
     }
 }
