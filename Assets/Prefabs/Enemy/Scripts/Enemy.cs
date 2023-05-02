@@ -9,11 +9,10 @@ public class Enemy : MonoBehaviour
     
     [SerializeField] private float moveSpeed;
     [SerializeField] private int deathCoinReward;
-    [SerializeField] private Waypoint waypoint;
 
     private float MoveSpeed => moveSpeed;
-    private Waypoint Waypoint => waypoint;
-    private Vector3 CurrentPointPosition => waypoint.GetWaypointPosition(_currentWaypointIndex);
+    private Waypoint _waypoint;
+    private Vector3 _currentPointPosition;
     private SpriteRenderer _spriteRenderer;
     private Vector3 _lastPointPosition;
     private int _currentWaypointIndex;
@@ -21,6 +20,8 @@ public class Enemy : MonoBehaviour
     
     private void Start()
     {
+        _waypoint = GameObject.Find("Spawner").GetComponent<Waypoint>();
+        _currentPointPosition = _waypoint.GetWaypointPosition(0);
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _lastPointPosition = transform.position;
         _currentWaypointIndex = 0;
@@ -40,17 +41,17 @@ public class Enemy : MonoBehaviour
 
     private void Move()
     {
-        transform.position = Vector3.MoveTowards(transform.position, CurrentPointPosition, MoveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _currentPointPosition, MoveSpeed * Time.deltaTime);
     }
 
     private void Rotate()
     {
-        _spriteRenderer.flipX = CurrentPointPosition.x <= _lastPointPosition.x;
+        _spriteRenderer.flipX = _currentPointPosition.x <= _lastPointPosition.x;
     }
 
     private bool CurrentPointPositionReached()
     {
-        var distanceToNextPointPosition = (transform.position - CurrentPointPosition).magnitude;
+        var distanceToNextPointPosition = (transform.position - _currentPointPosition).magnitude;
         if (!(distanceToNextPointPosition < 0.1f)) return false;
         _lastPointPosition = transform.position;
         return true;
@@ -58,10 +59,11 @@ public class Enemy : MonoBehaviour
 
     private void UpdateCurrentPointIndex()
     {
-        int lastWaypointIndex = Waypoint.Points.Length - 1;
+        int lastWaypointIndex = _waypoint.Points.Length - 1;
         if (_currentWaypointIndex < lastWaypointIndex)
         {
             _currentWaypointIndex++;
+            _currentPointPosition = _waypoint.GetWaypointPosition(_currentWaypointIndex);
         }
         else
         {
@@ -84,10 +86,5 @@ public class Enemy : MonoBehaviour
     {
         _enemyHealth.ResetHealth();
         ObjectPooler.ReturnToPool(gameObject);
-    }
-
-    public void SetWaypoint(Waypoint wp)
-    {
-        waypoint = wp;
     }
 }

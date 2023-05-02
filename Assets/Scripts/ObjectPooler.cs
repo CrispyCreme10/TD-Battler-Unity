@@ -28,6 +28,7 @@ public class ObjectPooler : MonoBehaviour
     private GameObject CreateInstance()
     {
         GameObject newInstance = Instantiate(prefab, _poolContainer.transform);
+        newInstance.transform.position = new Vector3(-8, 3);
         newInstance.SetActive(false);
         return newInstance;
     }

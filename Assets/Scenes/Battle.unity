@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01fda14652eb9248aa970911fa8aefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 5
+  enemyCount: 10
   testGO: {fileID: 6891377522185687168, guid: 53734d57775bdc14fa5a1278cc8d3cce, type: 3}
   delayBtwSpawns: 2
 --- !u!4 &1848261896
@@ -330,7 +330,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points:
-  - {x: -4.614746, y: 1.9246117, z: 0}
-  - {x: -0.35684347, y: 3.636398, z: 0}
-  - {x: -2.0369685, y: -2.0151727, z: 0}
-  - {x: 2.8559434, y: -3.204167, z: 0}
+  - {x: -4.2459736, y: 4.1581225, z: 0}
+  - {x: 3.0161045, y: 3.1039512, z: 0}
+  - {x: -6.1786237, y: -1.9326502, z: 0}
+  - {x: 5.300147, y: 0.058563948, z: 0}
+  - {x: 1.7569549, y: -4.158126, z: 0}
