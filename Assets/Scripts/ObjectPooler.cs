@@ -7,13 +7,27 @@ public class ObjectPooler : MonoBehaviour
 {
     [SerializeField] private GameObject prefab;
     [SerializeField] private int poolSize = 10;
+    
+    public static ObjectPooler Instance { get; private set; }
     private List<GameObject> _pool;
     private GameObject _poolContainer;
+    private Vector3 _startingPosition;
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         _pool = new List<GameObject>();
         _poolContainer = new GameObject($"Pool - {prefab.name}");
+        Waypoint waypoint = GameObject.Find("Spawner").GetComponent<Waypoint>();
+        _startingPosition = waypoint.GetWaypointPosition(0);
         CreatePooler();
     }
 
@@ -28,7 +42,7 @@ public class ObjectPooler : MonoBehaviour
     private GameObject CreateInstance()
     {
         GameObject newInstance = Instantiate(prefab, _poolContainer.transform);
-        newInstance.transform.position = new Vector3(-8, 3);
+        newInstance.transform.position = _startingPosition;
         newInstance.SetActive(false);
         return newInstance;
     }
@@ -46,9 +60,10 @@ public class ObjectPooler : MonoBehaviour
         return CreateInstance();
     }
 
-    public static void ReturnToPool(GameObject instance)
+    public void ReturnToPool(GameObject instance)
     {
         instance.SetActive(false);
+        instance.transform.position = _startingPosition;
     }
 
     public static IEnumerator ReturnToPoolWithDelay(GameObject instance, float delay)

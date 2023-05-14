@@ -15,13 +15,6 @@ public class Spawner : MonoBehaviour
     private float _spawnTimer;
     private int _enemiesSpawned;
 
-    private ObjectPooler _pooler;
-
-    private void Start()
-    {
-        _pooler = GetComponent<ObjectPooler>();
-    }
-
     private void Update()
     {
         _spawnTimer -= Time.deltaTime;
@@ -38,7 +31,7 @@ public class Spawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        GameObject newInstance = _pooler.GetInstanceFromPool();
+        GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool();
         newInstance.SetActive(true);
     }
 }

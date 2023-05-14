@@ -6,10 +6,19 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private Transform rotationPoint;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform firingPoint;
+
+    [Header("Attributes")]
     [SerializeField] private float attackRange;
+    [SerializeField] private float rotationSpeed;
+    [SerializeField] private float pbs = 1f; // projectiles per second
 
     private Enemy _currentEnemyTarget;
     private List<Enemy> _enemiesInRange;
+    private float timeUntilFire;
 
     private void Start()
     {
@@ -20,6 +29,24 @@ public class Tower : MonoBehaviour
     {
         GetCurrentEnemyTarget();
         RotateTowardsTarget();
+
+        if (_currentEnemyTarget != null) 
+        {
+            timeUntilFire += Time.deltaTime;
+
+            if (timeUntilFire >= 1f / pbs)
+            {
+                Shoot();
+                timeUntilFire = 0f;
+            }
+        }
+    }
+
+    private void Shoot()
+    {
+        GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, Quaternion.identity);
+        Projectile projectileScript = projectileObj.GetComponent<Projectile>();
+        projectileScript.SetTarget(_currentEnemyTarget.transform);
     }
 
     private void GetCurrentEnemyTarget()
@@ -35,14 +62,14 @@ public class Tower : MonoBehaviour
 
     private void RotateTowardsTarget()
     {
-        if (_currentEnemyTarget.Equals(null))
+        if (_currentEnemyTarget == null)
         {
             return;
         }
 
-        Vector3 targetPos = _currentEnemyTarget.transform.position - transform.position;
-        float angle = Vector3.SignedAngle(transform.up, targetPos, transform.forward);
-        transform.Rotate(0f, 0f, angle);
+        float angle = Mathf.Atan2(_currentEnemyTarget.transform.position.y - transform.position.y, _currentEnemyTarget.transform.position.x - transform.position.x) * Mathf.Rad2Deg - 90f;
+        Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+        rotationPoint.rotation = targetRotation;
     }
     
     private void OnTriggerEnter2D(Collider2D other)

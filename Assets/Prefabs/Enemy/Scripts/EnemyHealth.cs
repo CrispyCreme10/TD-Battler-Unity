@@ -66,5 +66,6 @@ public class EnemyHealth : MonoBehaviour
     public void ResetHealth()
     {
         currentHealth = initialHealth;
+        UpdateHealthText();
     }
 }

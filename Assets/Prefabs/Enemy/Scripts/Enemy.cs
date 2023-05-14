@@ -6,11 +6,13 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public static Action<Enemy> OnEndReached;
+    public static Action<Enemy> OnDeath;
     
     [SerializeField] private float moveSpeed;
     [SerializeField] private int deathCoinReward;
 
     private float MoveSpeed => moveSpeed;
+    public EnemyHealth EnemyHealth => _enemyHealth;
     private Waypoint _waypoint;
     private Vector3 _currentPointPosition;
     private SpriteRenderer _spriteRenderer;
@@ -21,11 +23,9 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _waypoint = GameObject.Find("Spawner").GetComponent<Waypoint>();
-        _currentPointPosition = _waypoint.GetWaypointPosition(0);
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _lastPointPosition = transform.position;
-        _currentWaypointIndex = 0;
         _enemyHealth = GetComponent<EnemyHealth>();
+        Init();
     }
     
     private void Update()
@@ -37,6 +37,13 @@ public class Enemy : MonoBehaviour
         {
             UpdateCurrentPointIndex();
         }
+    }
+
+    private void Init()
+    {
+        _currentWaypointIndex = 0;
+        _currentPointPosition = _waypoint.GetWaypointPosition(_currentWaypointIndex);
+        _lastPointPosition = transform.position;
     }
 
     private void Move()
@@ -79,12 +86,14 @@ public class Enemy : MonoBehaviour
 
     public void Death()
     {
+        OnDeath?.Invoke(this);
         ResetEnemy();
     }
     
     private void ResetEnemy()
     {
         _enemyHealth.ResetHealth();
-        ObjectPooler.ReturnToPool(gameObject);
+        Init();
+        ObjectPooler.Instance.ReturnToPool(gameObject);
     }
 }
