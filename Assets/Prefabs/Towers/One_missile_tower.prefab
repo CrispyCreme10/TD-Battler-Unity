@@ -197,9 +197,8 @@ MonoBehaviour:
   rotationPoint: {fileID: 9138542683645119276}
   projectilePrefab: {fileID: 306722353264318623, guid: 781598a6aefb664418610207f92c5d51, type: 3}
   firingPoint: {fileID: 9138542683803835227}
-  attackRange: 4
-  rotationSpeed: 0
-  pbs: 2
+  projectileDamage: 1
+  projectilesPerSecond: 10
 --- !u!61 &825867939
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -213,7 +212,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 6.6578646, y: -2.6979585}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -224,5 +223,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 20.117708, y: 12.080184}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0

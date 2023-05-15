@@ -10,25 +10,48 @@ public class Projectile : MonoBehaviour
 
     [Header("Attributes")]
     [SerializeField] private float speed = 5f;
-    [SerializeField] private int damage = 1;
 
-    private Transform target;
+    private Enemy enemy;
+    private int damage;
 
-    public void SetTarget(Transform _target)
+    private void OnEnable()
     {
-        target = _target;
+        Enemy.OnDeath += SetTarget;
+        Enemy.OnEndReached += SetTarget;
+    }
+
+    private void OnDisable()
+    {
+        Enemy.OnDeath -= SetTarget;
+        Enemy.OnEndReached += SetTarget;
+    }
+
+    public void SetTarget(Enemy _enemy)
+    {
+        if (enemy == _enemy) 
+        {
+            enemy = null;
+            return;
+        }
+
+        enemy = _enemy;
+    }
+
+    public void SetDamage(int _damage)
+    {
+        damage = _damage;
     }
 
     private void FixedUpdate()
     {
-        if (!target) 
+        if (!enemy)
         {
             Destroy(gameObject);
             return;
         }
-        Vector2 direction = (target.position - transform.position).normalized;
+        Vector2 direction = (enemy.transform.position - transform.position).normalized;
 
-        float angle = Mathf.Atan2(target.position.y - transform.position.y, target.position.x - transform.position.x) * Mathf.Rad2Deg - 90f;
+        float angle = Mathf.Atan2(enemy.transform.position.y - transform.position.y, enemy.transform.position.x - transform.position.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
         transform.rotation = targetRotation;
 

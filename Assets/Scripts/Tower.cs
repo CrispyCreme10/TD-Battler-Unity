@@ -12,9 +12,8 @@ public class Tower : MonoBehaviour
     [SerializeField] private Transform firingPoint;
 
     [Header("Attributes")]
-    [SerializeField] private float attackRange;
-    [SerializeField] private float rotationSpeed;
-    [SerializeField] private float pbs = 1f; // projectiles per second
+    [SerializeField] private int projectileDamage = 1;
+    [SerializeField] private float projectilesPerSecond = 1f; // projectiles per second
 
     private Enemy _currentEnemyTarget;
     private List<Enemy> _enemiesInRange;
@@ -23,30 +22,42 @@ public class Tower : MonoBehaviour
     private void Start()
     {
         _enemiesInRange = new List<Enemy>();
+        InitBoxCollider();
     }
 
     private void Update()
     {
         GetCurrentEnemyTarget();
-        RotateTowardsTarget();
+        Quaternion? enemyDirection = RotateTowardsTarget();
 
         if (_currentEnemyTarget != null) 
         {
             timeUntilFire += Time.deltaTime;
 
-            if (timeUntilFire >= 1f / pbs)
+            if (timeUntilFire >= 1f / projectilesPerSecond)
             {
-                Shoot();
+                Shoot(enemyDirection);
                 timeUntilFire = 0f;
             }
         }
     }
 
-    private void Shoot()
+    private void InitBoxCollider()
     {
-        GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, Quaternion.identity);
+        Waypoint waypoint = GameObject.Find("Spawner").GetComponent<Waypoint>();
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        var ((width, height), center) = waypoint.GetWaypointsBounds();
+        Vector3 offset = center - transform.position;
+        boxCollider.offset = new Vector2(offset.x / transform.localScale.x, offset.y / transform.localScale.y);
+        boxCollider.size = new Vector2(width / transform.localScale.x, height / transform.localScale.y);
+    }
+
+    private void Shoot(Quaternion? enemyDir)
+    {
+        GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity);
         Projectile projectileScript = projectileObj.GetComponent<Projectile>();
-        projectileScript.SetTarget(_currentEnemyTarget.transform);
+        projectileScript.SetTarget(_currentEnemyTarget);
+        projectileScript.SetDamage(projectileDamage);
     }
 
     private void GetCurrentEnemyTarget()
@@ -60,16 +71,17 @@ public class Tower : MonoBehaviour
         _currentEnemyTarget = _enemiesInRange[0];
     }
 
-    private void RotateTowardsTarget()
+    private Quaternion? RotateTowardsTarget()
     {
         if (_currentEnemyTarget == null)
         {
-            return;
+            return null;
         }
 
         float angle = Mathf.Atan2(_currentEnemyTarget.transform.position.y - transform.position.y, _currentEnemyTarget.transform.position.x - transform.position.x) * Mathf.Rad2Deg - 90f;
         Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
         rotationPoint.rotation = targetRotation;
+        return targetRotation;
     }
     
     private void OnTriggerEnter2D(Collider2D other)

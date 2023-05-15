@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Root" style="height: 100%; flex-direction: column-reverse;">
+        <ui:VisualElement name="BottomHUD" style="height: 80px; background-color: rgb(91, 91, 91); align-items: center; justify-content: center;">
+            <ui:Button text="0" display-tooltip-when-elided="true" name="SpawnBtn" style="font-size: 40px; height: auto; width: 200px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
