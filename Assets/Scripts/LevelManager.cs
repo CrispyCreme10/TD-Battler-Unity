@@ -7,8 +7,8 @@ public class LevelManager : MonoBehaviour
 {
     private static LevelManager _instance;
     
-    [SerializeField] private int lives = 10;
-    [SerializeField] private int totalLives = 10;
+    [SerializeField] private int lives = 3;
+    [SerializeField] private int totalLives = 3;
     [SerializeField] private int currentWave = 1;
 
     public static LevelManager Instance => _instance;

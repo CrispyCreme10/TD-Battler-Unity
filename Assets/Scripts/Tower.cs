@@ -14,7 +14,7 @@ public class Tower : MonoBehaviour
 
     [Header("Attributes")]
     [SerializeField] private int projectileDamage = 1;
-    [SerializeField] private float projectilesPerSecond = 1f; // projectiles per second
+    [SerializeField] private float attackInterval = 1f; // projectiles per second
 
     private Enemy _currentEnemyTarget;
     private List<Enemy> _enemiesInRange;
@@ -45,7 +45,7 @@ public class Tower : MonoBehaviour
         {
             timeUntilFire += Time.deltaTime;
 
-            if (timeUntilFire >= 1f / projectilesPerSecond)
+            if (timeUntilFire >= attackInterval)
             {
                 Shoot(enemyDirection);
                 timeUntilFire = 0f;
@@ -97,7 +97,6 @@ public class Tower : MonoBehaviour
 
     public void UpdateEnemies(IEnumerable<Enemy> enemies)
     {
-        Debug.Log(enemies.Count());
         // just get the enemies that are relevant
         _enemiesInRange = enemies.ToList();
     }

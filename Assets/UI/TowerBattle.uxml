@@ -1,6 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="Root" style="height: 100%; flex-direction: column-reverse;">
-        <ui:VisualElement name="BottomHUD" style="height: 80px; background-color: rgb(91, 91, 91); align-items: center; justify-content: center; flex-direction: row;">
+    <ui:VisualElement name="Root" style="height: 100%; flex-direction: column; justify-content: space-between;">
+        <ui:VisualElement name="TopHUD" style="background-color: rgb(91, 91, 91); height: 100px; flex-direction: row; align-items: center; justify-content: center;">
+            <ui:Label text="00:00" display-tooltip-when-elided="true" name="RoundTimer" style="font-size: 40px; margin-right: 50px;" />
+            <ui:IMGUIContainer name="BossIcon" style="width: 45px; height: 45px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="BottomHUD" style="height: 100px; background-color: rgb(91, 91, 91); align-items: center; justify-content: center; flex-direction: row;">
             <ui:Label text="0" display-tooltip-when-elided="true" name="ManaLabel" style="font-size: 40px; margin-right: 50px;" />
             <ui:Button text="0" display-tooltip-when-elided="true" name="SpawnBtn" style="font-size: 40px; height: auto; width: 200px;" />
         </ui:VisualElement>

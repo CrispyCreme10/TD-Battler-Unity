@@ -7,13 +7,14 @@ public class Enemy : MonoBehaviour
 {
     public static Action<Enemy> OnEndReached;
     public static Action<Enemy> OnDeath;
-    
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private int deathCoinReward;
+
+    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private int deathCoinReward = 10;
+    [SerializeField] private float upgradeHealthTime = 30f; // in seconds
 
     public EnemyHealth EnemyHealth => _enemyHealth;
     public int DeathCoinReward => deathCoinReward;
-    
+
     private float MoveSpeed => moveSpeed;
     private Waypoint _waypoint;
     private Vector3 _currentPointPosition;
@@ -21,7 +22,17 @@ public class Enemy : MonoBehaviour
     private Vector3 _lastPointPosition;
     private int _currentWaypointIndex;
     private EnemyHealth _enemyHealth;
-    
+
+    private void OnEnable()
+    {
+        Spawner.OnTimerChanged += OnTimerChanged;
+    }
+
+    private void OnDisable()
+    {
+        Spawner.OnTimerChanged -= OnTimerChanged;
+    }
+
     private void Start()
     {
         _waypoint = GameObject.Find("Spawner").GetComponent<Waypoint>();
@@ -29,7 +40,7 @@ public class Enemy : MonoBehaviour
         _enemyHealth = GetComponent<EnemyHealth>();
         Init();
     }
-    
+
     private void Update()
     {
         Move();
@@ -91,10 +102,32 @@ public class Enemy : MonoBehaviour
         OnDeath?.Invoke(this);
         ResetEnemy();
     }
-    
+
     private void ResetEnemy()
     {
-        _enemyHealth.ResetHealth();
+        _enemyHealth.Init();
         Init();
+    }
+
+    private void OnTimerChanged(float startingTime, float timeInSeconds)
+    {
+        if (startingTime - timeInSeconds >= upgradeHealthTime)
+        {
+            try
+            {
+                if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
+                _enemyHealth.UpdateInitialHealth(500);
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(name);
+                throw e;
+            }
+        }
+    }
+
+    private void OnTimerEnd()
+    {
+
     }
 }

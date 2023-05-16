@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 9138542685181519766}
   - component: {fileID: 825867939}
   m_Layer: 0
-  m_Name: One_missile_tower
+  m_Name: Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,8 +197,8 @@ MonoBehaviour:
   rotationPoint: {fileID: 9138542683645119276}
   projectilePrefab: {fileID: 306722353264318623, guid: 781598a6aefb664418610207f92c5d51, type: 3}
   firingPoint: {fileID: 9138542683803835227}
-  projectileDamage: 1
-  projectilesPerSecond: 10
+  projectileDamage: 38
+  attackInterval: 0.45
 --- !u!61 &825867939
 BoxCollider2D:
   m_ObjectHideFlags: 0

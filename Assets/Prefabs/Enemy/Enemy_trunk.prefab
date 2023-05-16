@@ -135,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   deathCoinReward: 10
+  upgradeHealthTime: 10
 --- !u!114 &2026056366648726029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,8 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarPrefab: {fileID: 1120872262769045871, guid: eb22a81a80031c942a5629f2d76b5218, type: 3}
   barPosition: {fileID: 5096516902079799889}
-  initialHealth: 50
-  maxHealth: 50
+  initialHealth: 250
+  maxHealth: 10000
   currentHealth: 0
 --- !u!95 &1945942172
 Animator:

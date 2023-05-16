@@ -2707,7 +2707,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01fda14652eb9248aa970911fa8aefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 25
+  enemyCount: 50
+  timerMode: 1
+  timerInSeconds: 120
   testGO: {fileID: 6891377522185687168, guid: 53734d57775bdc14fa5a1278cc8d3cce, type: 3}
   initSpawnDelay: 1.5
   delayBtwSpawns: 1
@@ -2741,10 +2743,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points:
-  - {x: -7, y: -5, z: 0}
-  - {x: -7, y: 2, z: 0}
-  - {x: 5, y: 2, z: 0}
-  - {x: 5, y: -5, z: 0}
+  - {x: -6.5, y: -5, z: 0}
+  - {x: -6.5, y: 1.5, z: 0}
+  - {x: 4.5, y: 1.5, z: 0}
+  - {x: 4.5, y: -5, z: 0}
 --- !u!114 &1848261898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,7 +2848,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16

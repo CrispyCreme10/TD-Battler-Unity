@@ -7,9 +7,14 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public static Action<IEnumerable<Enemy>> OnEnemiesChanged;
+    public static Action<float> OnTimerStart;
+    public static Action<float, float> OnTimerChanged;
+    public static Action OnTimerEnd;
 
     [Header("Settings")]
     [SerializeField] private int enemyCount = 10;
+    [SerializeField] private bool timerMode = true;
+    [SerializeField] private int timerInSeconds = 120;
     [SerializeField] private GameObject testGO;
 
     [Header("Fixed Delay")]
@@ -21,6 +26,8 @@ public class Spawner : MonoBehaviour
     private float _spawnTimer;
     private int _enemiesSpawned;
     private List<GameObject> _enemyRefs;
+    private bool _isInMinionMode;
+    private float _minionTimeRemaining;
 
     private void OnEnable()
     {
@@ -38,6 +45,9 @@ public class Spawner : MonoBehaviour
     {
         _spawnTimer = initSpawnDelay;
         _enemyRefs = new List<GameObject>();
+        _isInMinionMode = true;
+        _minionTimeRemaining = timerInSeconds;
+        OnTimerStart?.Invoke(_minionTimeRemaining);
     }
 
     private void Update()
@@ -46,12 +56,35 @@ public class Spawner : MonoBehaviour
         if (_spawnTimer < 0)
         {
             _spawnTimer = delayBtwSpawns;
-            if (_enemiesSpawned < enemyCount)
+            if (CanSpawnEnemy())
             {
                 _enemiesSpawned++;
                 SpawnEnemy();
             }
         }
+
+        if (_minionTimeRemaining > 0)
+        {
+            _minionTimeRemaining -= Time.deltaTime;
+            OnTimerChanged?.Invoke(timerInSeconds, _minionTimeRemaining);
+        }
+        else
+        {
+            OnTimerEnd?.Invoke();
+            _minionTimeRemaining = 0;
+            // spawn boss
+            // hide & reset timer
+        }
+    }
+
+    private bool CanSpawnEnemy()
+    {
+        if (timerMode)
+        {
+            return _minionTimeRemaining != 0;
+        }
+
+        return _enemiesSpawned < enemyCount;
     }
 
     private void SpawnEnemy()
