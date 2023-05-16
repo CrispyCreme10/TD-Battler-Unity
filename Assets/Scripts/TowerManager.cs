@@ -16,9 +16,20 @@ public class TowerManager : MonoBehaviour
     [SerializeField] private int costIncrease = 10;
 
     public int Mana => mana;
+    public int TowerCost => towerCost;
 
     private int _currentMana;
     private TowerSpawner _towerSpawner;
+
+    private void OnEnable()
+    {
+        Enemy.OnDeath += OnEnemyDeath;
+    }
+
+    private void OnDisable()
+    {
+        Enemy.OnDeath -= OnEnemyDeath;
+    }
 
     private void Start()
     {
@@ -35,6 +46,11 @@ public class TowerManager : MonoBehaviour
             _towerSpawner.SpawnTower();
             ManaChange();
         }
+    }
+
+    private void OnEnemyDeath(Enemy enemy)
+    {
+        IncreaseMana(enemy.DeathCoinReward);
     }
 
     private void IncreaseMana(int incrMana)

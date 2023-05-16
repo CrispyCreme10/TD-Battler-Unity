@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5096516902079799889}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: HealthPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8cce2960b3f9f44bbcf952568b3e5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 1
   deathCoinReward: 10
 --- !u!114 &2026056366648726029
 MonoBehaviour:

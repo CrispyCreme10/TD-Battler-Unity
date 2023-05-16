@@ -35,13 +35,17 @@ public class ObjectPooler : MonoBehaviour
     {
         for (int i = 0; i < poolSize; i++)
         {
-            _pool.Add(CreateInstance());
+            _pool.Add(CreateInstance(i));
         }
     }
 
-    private GameObject CreateInstance()
+    private GameObject CreateInstance(int i)
     {
         GameObject newInstance = Instantiate(prefab, _poolContainer.transform);
+        if (i >= 0)
+        {
+            newInstance.name += $" {i}";
+        }
         newInstance.transform.position = _startingPosition;
         newInstance.SetActive(false);
         return newInstance;
@@ -57,7 +61,7 @@ public class ObjectPooler : MonoBehaviour
             }
         }
 
-        return CreateInstance();
+        return CreateInstance(-1);
     }
 
     public void ReturnToPool(GameObject instance)

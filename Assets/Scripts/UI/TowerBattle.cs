@@ -7,6 +7,7 @@ public class TowerBattle : MonoBehaviour
 {
 
     private VisualElement _root;
+    private Label _manaLabel;
     private Button _spawnBtn;
     private TowerManager _towerManager;
 
@@ -14,9 +15,11 @@ public class TowerBattle : MonoBehaviour
     {
         _root = GetComponent<UIDocument>().rootVisualElement;
         _towerManager = GameObject.Find("TowerManager").GetComponent<TowerManager>();
+        _manaLabel = _root.Q<Label>("ManaLabel");
         _spawnBtn = _root.Q<Button>("SpawnBtn");
 
-        SetSpawnBtnText(_towerManager.Mana);
+        SetManaLabel(_towerManager.Mana);
+        SetSpawnBtnText(_towerManager.TowerCost);
 
         _spawnBtn.clicked += OnSpawn;
         TowerManager.OnManaChange += OnManaChange;
@@ -29,12 +32,18 @@ public class TowerBattle : MonoBehaviour
 
     private void OnManaChange(int mana, int towerCost)
     {
-        SetSpawnBtnText(mana);
+        SetManaLabel(mana);
+        SetSpawnBtnText(towerCost);
         _spawnBtn.SetEnabled(mana >= towerCost);
     }
 
-    private void SetSpawnBtnText(int mana)
+    private void SetManaLabel(int mana)
     {
-        _spawnBtn.text = mana.ToString();
+        _manaLabel.text = mana.ToString();
+    }
+
+    private void SetSpawnBtnText(int towerCost)
+    {
+        _spawnBtn.text = towerCost.ToString();
     }
 }

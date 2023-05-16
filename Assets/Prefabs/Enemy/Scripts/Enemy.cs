@@ -11,8 +11,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private int deathCoinReward;
 
-    private float MoveSpeed => moveSpeed;
     public EnemyHealth EnemyHealth => _enemyHealth;
+    public int DeathCoinReward => deathCoinReward;
+    
+    private float MoveSpeed => moveSpeed;
     private Waypoint _waypoint;
     private Vector3 _currentPointPosition;
     private SpriteRenderer _spriteRenderer;
@@ -94,6 +96,5 @@ public class Enemy : MonoBehaviour
     {
         _enemyHealth.ResetHealth();
         Init();
-        ObjectPooler.Instance.ReturnToPool(gameObject);
     }
 }

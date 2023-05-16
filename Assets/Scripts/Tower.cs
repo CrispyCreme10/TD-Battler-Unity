@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,6 +20,16 @@ public class Tower : MonoBehaviour
     private List<Enemy> _enemiesInRange;
     private float timeUntilFire;
 
+    private void OnEnable()
+    {
+        Spawner.OnEnemiesChanged += UpdateEnemies;
+    }
+
+    private void OnDisable()
+    {
+        Spawner.OnEnemiesChanged -= UpdateEnemies;
+    }
+
     private void Start()
     {
         _enemiesInRange = new List<Enemy>();
@@ -30,7 +41,7 @@ public class Tower : MonoBehaviour
         GetCurrentEnemyTarget();
         Quaternion? enemyDirection = RotateTowardsTarget();
 
-        if (_currentEnemyTarget != null) 
+        if (_currentEnemyTarget != null)
         {
             timeUntilFire += Time.deltaTime;
 
@@ -83,25 +94,19 @@ public class Tower : MonoBehaviour
         rotationPoint.rotation = targetRotation;
         return targetRotation;
     }
-    
-    private void OnTriggerEnter2D(Collider2D other)
+
+    public void UpdateEnemies(IEnumerable<Enemy> enemies)
     {
-        if (other.CompareTag("Enemy"))
-        {
-            Enemy newEnemy = other.GetComponent<Enemy>();
-            _enemiesInRange.Add(newEnemy);
-        }
+        Debug.Log(enemies.Count());
+        // just get the enemies that are relevant
+        _enemiesInRange = enemies.ToList();
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void RemoveEnemyFromRange(Enemy enemy)
     {
-        if (other.CompareTag("Enemy"))
+        if (_enemiesInRange.Contains(enemy))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (_enemiesInRange.Contains(enemy))
-            {
-                _enemiesInRange.Remove(enemy);
-            }
+            _enemiesInRange.Remove(enemy);
         }
     }
 }

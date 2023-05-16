@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class TowerSpawner : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private Spawner spawner;
     [SerializeField] private Tower[] towerPrefabs;
 
     private Transform _towersContainer;
     private Towerpoint _towerpoint;
 
-    private List<int> _availableTowerPoints;
+    private List<int> _availableTowerPointIndices;
+    private List<int> _occupiedTowerPointIndices;
 
     private void Start()
     {
         _towerpoint = GameObject.Find("Spawner").GetComponent<Towerpoint>();
         _towersContainer = GameObject.Find("Towers").transform;
-        _availableTowerPoints = Enumerable.Range(0, _towerpoint.Points.Length).ToList();
+        _availableTowerPointIndices = Enumerable.Range(0, _towerpoint.Points.Length - 1).ToList();
+        _occupiedTowerPointIndices = new List<int>();
     }
 
     public void SpawnTower()
     {
         int towerIndex = (int)Mathf.Round(Random.value) * (towerPrefabs.Length - 1);
-        // int towerPointIndex = Random.Range(0, _availableTowerPoints.Count());
-        // _availableTowerPoints.Remove
-        // Instantiate(towerPrefabs[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
+        int availableIndex = Random.Range(0, _availableTowerPointIndices.Count());
+        int towerPointIndex = _availableTowerPointIndices[availableIndex];
+        _occupiedTowerPointIndices.Add(towerPointIndex);
+        _availableTowerPointIndices.Remove(towerPointIndex);
+        Tower instance = Instantiate(towerPrefabs[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
+        instance.name += $" {_occupiedTowerPointIndices.Count() - 1}";
+        instance.UpdateEnemies(spawner.Enemies);
+    }
 
-        // need to get random spawn location and only select valid locations afterwards
+    private void AddAvailablePoint()
+    {
+
     }
 }
