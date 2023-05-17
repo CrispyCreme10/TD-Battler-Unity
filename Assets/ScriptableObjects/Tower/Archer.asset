@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46634c617f0d9cf408cd4c0dd7f1b188, type: 3}
+  m_Name: Archer
+  m_EditorClassIdentifier: 
+  name: Archer
+  description: Has high attack speed
+  permanentLevel: 1
+  towerFaction: 0
+  unitType: 0
+  target: 0
+  baseLevel:
+    heroEnergy: 1.6
+    damage: 38
+    attackInterval: 0.45
+    attackSpeedIncrease: 0.16
+  mergeLevels:
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: -0.23
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: -0.3
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: -0.34
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: -0.36
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: -0.38
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: -0.39
+    attackSpeedIncrease: 0
+  energyLevels:
+  - heroEnergy: 0
+    damage: 23
+    attackInterval: 0
+    attackSpeedIncrease: 0.1
+  - heroEnergy: 0
+    damage: 46
+    attackInterval: 0
+    attackSpeedIncrease: 0.2
+  - heroEnergy: 0
+    damage: 69
+    attackInterval: 0
+    attackSpeedIncrease: 0.3
+  - heroEnergy: 0
+    damage: 92
+    attackInterval: 0
+    attackSpeedIncrease: 0.4
+  permanentLevels:
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
+  - heroEnergy: 0
+    damage: 0
+    attackInterval: 0
+    attackSpeedIncrease: 0
