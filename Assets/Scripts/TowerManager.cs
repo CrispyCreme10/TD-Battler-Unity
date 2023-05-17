@@ -88,9 +88,15 @@ public class TowerManager : MonoBehaviour
             Transform tower = results.SingleOrDefault(c => c.name == "Merge")?.transform?.parent?.parent;
             if (tower != null && _selectedTower.name.Split('(')[0] == tower.name.Split('(')[0])
             {
-                // perform merge
+                // --perform merge
                 // destroy both merged towers
+                // release the tower point that the selected tower was on
                 // create a random tower of merge level + 1 at the merge location
+                int mergeLevel = _selectedTower.GetComponent<Tower>().MergeLevel;
+                _towerSpawner.DespawnTower(_selectedTower.gameObject);
+                var towerPointIndex = _towerSpawner.DespawnTower(tower.gameObject);
+                _towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, mergeLevel + 1);
+                
             }
             else
             {
@@ -109,7 +115,7 @@ public class TowerManager : MonoBehaviour
         {
             mana -= towerCost;
             towerCost += costIncrease;
-            _towerSpawner.SpawnTower();
+            _towerSpawner.SpawnRandomFirstTower();
             ManaChange();
         }
     }

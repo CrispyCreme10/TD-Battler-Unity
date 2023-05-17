@@ -16,9 +16,16 @@ public class Tower : MonoBehaviour
     [SerializeField] private int projectileDamage = 1;
     [SerializeField] private float attackInterval = 1f; // projectiles per second
 
+    public int MergeLevel => _mergeLevel;
+    public int EnergyLevel => _energyLevel;
+
     private Enemy _currentEnemyTarget;
     private List<Enemy> _enemiesInRange;
     private float timeUntilFire;
+
+    // battle props
+    private int _mergeLevel;
+    private int _energyLevel;
 
     private void OnEnable()
     {
@@ -34,6 +41,8 @@ public class Tower : MonoBehaviour
     {
         _enemiesInRange = new List<Enemy>();
         InitBoxCollider();
+        SetMergeLevel(1);
+        SetEnergyLevel(1);
     }
 
     private void Update()
@@ -107,5 +116,33 @@ public class Tower : MonoBehaviour
         {
             _enemiesInRange.Remove(enemy);
         }
+    }
+
+    public void SetMergeLevel(int level)
+    {
+        _mergeLevel = level;
+
+        // update other relevant values
+    }
+
+    public void IncrementMergeLevel()
+    {
+        _mergeLevel++;
+
+        // update other relevant values
+    }
+
+    public void SetEnergyLevel(int level)
+    {
+        _energyLevel = level;
+
+        // update other relevant values
+    }
+
+    public void IncrementEnergyLevel()
+    {
+        _energyLevel++;
+
+        // update other relevant values
     }
 }
