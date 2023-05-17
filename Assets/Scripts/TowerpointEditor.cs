@@ -7,6 +7,8 @@ using UnityEditor;
 public class TowerpointEditor : Editor
 {
     private Towerpoint Towerpoint => target as Towerpoint;
+    private float _towerpointHandleSize = 0.7f;
+    private float _towerpointTextSize = 0.35f;
 
     private void OnSceneGUI()
     {
@@ -20,7 +22,7 @@ public class TowerpointEditor : Editor
                 // Create Handles
                 Vector3 currentWaypointPoint = Towerpoint.CurrentPosition + Towerpoint.Points[i];
                 Vector3 newWaypointPoint = Handles.FreeMoveHandle(currentWaypointPoint,
-                    Quaternion.identity, 0.7f,
+                    Quaternion.identity, _towerpointHandleSize * Towerpoint.Scale.x,
                     new Vector3(0.3f, 0.3f, 0.3f), Handles.SphereHandleCap);
 
                 // Create text
@@ -28,7 +30,7 @@ public class TowerpointEditor : Editor
                 textStyle.fontStyle = FontStyle.Bold;
                 textStyle.fontSize = 16;
                 textStyle.normal.textColor = Color.white;
-                Vector3 textAlignment = Vector3.down * 0.35f + Vector3.right * 0.35f;
+                Vector3 textAlignment = Vector3.down * _towerpointTextSize * Towerpoint.Scale.y + Vector3.right * _towerpointTextSize * Towerpoint.Scale.x;
                 Handles.Label(Towerpoint.CurrentPosition + Towerpoint.Points[i] + textAlignment,
                     $"{i + 1}", textStyle);
                 EditorGUI.EndChangeCheck();

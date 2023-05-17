@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Towerpoint : MonoBehaviour
 {
+    [Header("Attributes")]
+    [SerializeField] private Vector3 scale = Vector3.one;
+    [SerializeField] private float radius = 0.5f;
     [SerializeField] private Vector3[] points;
 
-    public Vector3[] Points => points;
+    public Vector3[] Points => points.Select(p => new Vector3(p.x * scale.x, p.y * scale.y, p.z * scale.z)).ToArray();
+    public Vector3 Scale => scale;
     public Vector3 CurrentPosition => _currentPosition;
     
     private Vector3 _currentPosition;
@@ -25,10 +30,10 @@ public class Towerpoint : MonoBehaviour
             _currentPosition = transform.position;
         }
 
-        for (int i = 0; i < points.Length; i++)
+        for (int i = 0; i < Points.Length; i++)
         {
             Gizmos.color = Color.black;
-            Gizmos.DrawWireSphere(points[i] + _currentPosition, 0.5f);
+            Gizmos.DrawWireSphere(Points[i] + _currentPosition, radius * scale.x);
         }
     }
 }

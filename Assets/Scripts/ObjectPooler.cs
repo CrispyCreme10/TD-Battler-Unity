@@ -1,17 +1,14 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
-{
-    [SerializeField] private GameObject prefab;
-    [SerializeField] private int poolSize = 10;
-    
+{    
     public static ObjectPooler Instance { get; private set; }
-    private List<GameObject> _pool;
+    private Dictionary<string, ObjectPool> _pools;
     private GameObject _poolContainer;
-    private Vector3 _startingPosition;
 
     private void Awake()
     {
@@ -24,55 +21,98 @@ public class ObjectPooler : MonoBehaviour
             Instance = this;
         }
 
-        _pool = new List<GameObject>();
-        _poolContainer = new GameObject($"Pool - {prefab.name}");
-        Waypoint waypoint = GameObject.Find("Spawner").GetComponent<Waypoint>();
-        _startingPosition = waypoint.GetWaypointPosition(0);
-        CreatePooler();
+        _pools = new Dictionary<string, ObjectPool>();
+        _poolContainer = new GameObject($"Pools");
     }
 
-    private void CreatePooler()
+    public void CreatePool(string name, GameObject prefab, int poolSize = 5, ObjectPoolOptions opts = null)
     {
-        for (int i = 0; i < poolSize; i++)
+        if (!_pools.ContainsKey(name))
         {
-            _pool.Add(CreateInstance(i));
+            _pools[name] = new ObjectPool(_poolContainer.transform, name, prefab, poolSize, opts);
+
         }
     }
 
-    private GameObject CreateInstance(int i)
+    public GameObject GetInstanceFromPool(string name)
     {
-        GameObject newInstance = Instantiate(prefab, _poolContainer.transform);
-        if (i >= 0)
+        if (_pools.TryGetValue(name, out ObjectPool pool))
         {
-            newInstance.name += $" {i}";
-        }
-        newInstance.transform.position = _startingPosition;
-        newInstance.SetActive(false);
-        return newInstance;
-    }
-
-    public GameObject GetInstanceFromPool()
-    {
-        for (int i = 0; i < _pool.Count; i++)
-        {
-            if (!_pool[i].activeInHierarchy)
+            for (int i = 0; i < pool.Objects.Count; i++)
             {
-                return _pool[i];
+                if (!pool.Objects[i].activeInHierarchy)
+                {
+                    pool.Objects[i].SetActive(true);
+                    return pool.Objects[i];
+                }
             }
         }
 
-        return CreateInstance(-1);
+        return null;
     }
 
     public void ReturnToPool(GameObject instance)
     {
         instance.SetActive(false);
-        instance.transform.position = _startingPosition;
     }
 
     public static IEnumerator ReturnToPoolWithDelay(GameObject instance, float delay)
     {
         yield return new WaitForSeconds(delay);
         instance.SetActive(false);
+    }
+}
+
+public class ObjectPool : MonoBehaviour
+{
+    public string PoolName { get; private set; }
+    public int PoolSize { get; private set; }
+    public List<GameObject> Objects { get; private set; }
+    public GameObject ObjectPrefab { get; private set; }
+    private GameObject _poolContainer;
+    private ObjectPoolOptions _options;
+
+    public ObjectPool(Transform parentTransform, string name, GameObject prefab, int poolSize = 5, ObjectPoolOptions opts = null)
+    {
+        PoolName = name;
+        PoolSize = poolSize;
+        Objects = new List<GameObject>();
+        ObjectPrefab = prefab;
+        _poolContainer = new GameObject($"{name} - Pool");
+        _poolContainer.transform.parent = parentTransform;
+        _options = opts;
+
+        CreatePool();
+    }
+
+    private void CreatePool()
+    {
+        for (int i = 0; i < PoolSize; i++)
+        {
+            Objects.Add(CreateInstance(i));
+        }
+        Debug.Log($"Pool: {PoolName} created!");
+    }
+
+    private GameObject CreateInstance(int i)
+    {
+        GameObject newInstance = Instantiate(ObjectPrefab, _poolContainer.transform);
+        if (i >= 0)
+        {
+            newInstance.name += $" {i}";
+        }
+        newInstance.transform.position = _options.Position ?? newInstance.transform.position;
+        newInstance.SetActive(false);
+        return newInstance;
+    }
+}
+
+public class ObjectPoolOptions
+{
+    public Vector3? Position { get; set; }
+
+    public ObjectPoolOptions(Vector3? position)
+    {
+        Position = position;
     }
 }

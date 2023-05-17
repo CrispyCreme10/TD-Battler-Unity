@@ -62,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 6891377522185687168}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5096516902079799889}
@@ -133,9 +133,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8cce2960b3f9f44bbcf952568b3e5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 0.5
   deathCoinReward: 10
-  upgradeHealthTime: 10
+  healthUpgrades: {fileID: 11400000, guid: e037c540e1fc2f94783e06558aa838be, type: 2}
 --- !u!114 &2026056366648726029
 MonoBehaviour:
   m_ObjectHideFlags: 0

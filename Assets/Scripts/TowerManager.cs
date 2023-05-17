@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TowerManager : MonoBehaviour
@@ -20,6 +21,10 @@ public class TowerManager : MonoBehaviour
 
     private int _currentMana;
     private TowerSpawner _towerSpawner;
+    private Transform _selectedTowerCollider;
+    private Transform _selectedTower => _selectedTowerCollider?.parent?.parent;
+    private Vector3 _selectedTowerOGPosition;
+    private Vector3 _selectedTowerOffset;
 
     private void OnEnable()
     {
@@ -35,6 +40,67 @@ public class TowerManager : MonoBehaviour
     {
         _currentMana = mana;
         _towerSpawner = GameObject.Find("Towers").GetComponent<TowerSpawner>();
+    }
+
+    private void Update()
+    {
+        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (Input.GetMouseButtonDown(0))
+        {
+            Collider2D[] results = Physics2D.OverlapPointAll(mousePosition);
+            if (results.Length > 0)
+            {
+                foreach(var result in results)
+                {
+                    if (result.name == "Merge")
+                    {
+                        _selectedTowerCollider = result.transform;
+                        _selectedTowerCollider.gameObject.SetActive(false);
+                        _selectedTower.GetComponent<Tower>().enabled = false;
+                        _selectedTowerOGPosition = _selectedTower.position;
+                        _selectedTowerOffset = _selectedTower.position - mousePosition;
+                    }
+                }
+            }
+        }
+
+        if (_selectedTower)
+        {
+            _selectedTower.position = mousePosition + _selectedTowerOffset;
+
+            Collider2D[] results = Physics2D.OverlapPointAll(mousePosition);
+            // if we are dragged over a tower of the same name + merge level, then we can show highlight of tower under mouse
+            if (results.Any(c => c.name == "Merge"))
+            {
+                Transform tower = results.SingleOrDefault(c => c.name == "Merge")?.transform?.parent?.parent;
+                if (_selectedTower.name.Split('(')[0] == tower.name.Split('(')[0])
+                {
+                    Debug.Log(tower);
+                }
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0) && _selectedTower)
+        {
+            // if we are dragged over a tower of the same name + merge level, then we can merge
+            // else, send tower back to original position
+            Collider2D[] results = Physics2D.OverlapPointAll(mousePosition);
+            Transform tower = results.SingleOrDefault(c => c.name == "Merge")?.transform?.parent?.parent;
+            if (tower != null && _selectedTower.name.Split('(')[0] == tower.name.Split('(')[0])
+            {
+                // perform merge
+                // destroy both merged towers
+                // create a random tower of merge level + 1 at the merge location
+            }
+            else
+            {
+                _selectedTower.transform.position = _selectedTowerOGPosition;
+            }
+
+            _selectedTower.GetComponent<Tower>().enabled = true;
+            _selectedTowerCollider.gameObject.SetActive(true);
+            _selectedTowerCollider = null;
+        }
     }
 
     public void SpawnTower()

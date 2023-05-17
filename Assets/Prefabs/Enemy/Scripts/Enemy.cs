@@ -8,9 +8,10 @@ public class Enemy : MonoBehaviour
     public static Action<Enemy> OnEndReached;
     public static Action<Enemy> OnDeath;
 
+    [Header("Attributes")]
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private int deathCoinReward = 10;
-    [SerializeField] private float upgradeHealthTime = 30f; // in seconds
+    [SerializeField] private HealthUpgrades_SO healthUpgrades;
 
     public EnemyHealth EnemyHealth => _enemyHealth;
     public int DeathCoinReward => deathCoinReward;
@@ -109,14 +110,15 @@ public class Enemy : MonoBehaviour
         Init();
     }
 
-    private void OnTimerChanged(float startingTime, float timeInSeconds)
+    private void OnTimerChanged(float startingTime, float remainingTime)
     {
-        if (startingTime - timeInSeconds >= upgradeHealthTime)
+        int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
+        if (newHealth > 0)
         {
             try
             {
                 if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
-                _enemyHealth.UpdateInitialHealth(500);
+                _enemyHealth.UpdateInitialHealth(newHealth);
             }
             catch (System.Exception e)
             {

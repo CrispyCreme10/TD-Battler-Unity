@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40a618c4b2d9e484087456ce62baa780, type: 3}
+  m_Name: Basic_Health_Upgrades
+  m_EditorClassIdentifier: 
+  timeBetweenChange: 10
+  healthUpgrades:
+  - wave: 1
+    health: 73000000e600000059010000cc0100003f020000b202000025030000980300000b0400007e040000f104000064050000

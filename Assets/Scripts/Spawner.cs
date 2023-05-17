@@ -11,11 +11,13 @@ public class Spawner : MonoBehaviour
     public static Action<float, float> OnTimerChanged;
     public static Action OnTimerEnd;
 
+    const string GRUNT_POOL_NAME = "Grunt";
+
     [Header("Settings")]
     [SerializeField] private int enemyCount = 10;
     [SerializeField] private bool timerMode = true;
     [SerializeField] private int timerInSeconds = 120;
-    [SerializeField] private GameObject testGO;
+    [SerializeField] private GameObject gruntPrefab;
 
     [Header("Fixed Delay")]
     [SerializeField] private float initSpawnDelay = 1f;
@@ -23,11 +25,23 @@ public class Spawner : MonoBehaviour
 
     public IEnumerable<Enemy> Enemies => _enemyRefs.Select(go => go.GetComponent<Enemy>());
 
+    private Waypoint _waypoint;
     private float _spawnTimer;
     private int _enemiesSpawned;
     private List<GameObject> _enemyRefs;
     private bool _isInMinionMode;
     private float _minionTimeRemaining;
+    private Vector3 _startingPosition;
+
+    private void Awake()
+    {
+        _waypoint = GetComponent<Waypoint>();
+        _spawnTimer = initSpawnDelay;
+        _enemyRefs = new List<GameObject>();
+        _isInMinionMode = true;
+        _minionTimeRemaining = timerInSeconds;
+        _startingPosition = _waypoint.GetWaypointPosition(0);
+    }
 
     private void OnEnable()
     {
@@ -43,10 +57,9 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        _spawnTimer = initSpawnDelay;
-        _enemyRefs = new List<GameObject>();
-        _isInMinionMode = true;
-        _minionTimeRemaining = timerInSeconds;
+        // Create pools
+        ObjectPooler.Instance.CreatePool(GRUNT_POOL_NAME, gruntPrefab, 50, new ObjectPoolOptions(_startingPosition));
+
         OnTimerStart?.Invoke(_minionTimeRemaining);
     }
 
@@ -89,14 +102,14 @@ public class Spawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool();
-        newInstance.SetActive(true);
+        GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(GRUNT_POOL_NAME);
         AddEnemyRef(newInstance);
     }
 
     private void DespawnEnemy(Enemy enemy)
     {
         RemoveEnemyRef(enemy);
+        enemy.transform.position = _startingPosition;
         ObjectPooler.Instance.ReturnToPool(enemy.gameObject);
     }
 

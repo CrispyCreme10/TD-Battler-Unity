@@ -56,7 +56,7 @@ public class Tower : MonoBehaviour
     private void InitBoxCollider()
     {
         Waypoint waypoint = GameObject.Find("Spawner").GetComponent<Waypoint>();
-        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        BoxCollider2D boxCollider = GetComponentInChildren<BoxCollider2D>();
         var ((width, height), center) = waypoint.GetWaypointsBounds();
         Vector3 offset = center - transform.position;
         boxCollider.offset = new Vector2(offset.x / transform.localScale.x, offset.y / transform.localScale.y);
