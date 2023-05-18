@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -11,21 +12,113 @@ public class TowerScriptableObject : SerializedScriptableObject
     public const int MAX_ENERGY_LEVEL = 5;
     public const int MAX_PERMANENT_LEVEL = 15;
 
-    public new string name;
+    [SerializeField] private new string name;
     [TextArea]
-    public string description;
-    public int energyLevel = 1;
-    public int permanentLevel = 1;
-    public TowerFaction towerFaction;
-    public UnitType unitType;
-    public UnitTarget target;
-    public float damage;
-    public float attackInterval;
-    public float heroEnergy;
-    public Dictionary<Stat, float> stats = new Dictionary<Stat, float>();
-    public Dictionary<StatModifier, float> statModifiers = new Dictionary<StatModifier, float>();
-    public Dictionary<Stat, List<float>> statLevels = new Dictionary<Stat, List<float>>();
-    public Dictionary<StatModifier, List<float>> statModifierLevels = new Dictionary<StatModifier, List<float>>();
+    [SerializeField] private string description;
+    [SerializeField] private int energyLevel = 1;
+    [SerializeField] private int permanentLevel = 1;
+    [SerializeField] private TowerFaction towerFaction;
+    [SerializeField] private UnitType unitType;
+    [SerializeField] private UnitTarget target;
+    [SerializeField] private float damage;
+    [SerializeField] private float attackInterval;
+    [SerializeField] private float heroEnergy;
+    [SerializeField] private Dictionary<Stat, float> stats = new Dictionary<Stat, float>();
+    [SerializeField] private Dictionary<StatModifier, float> statModifiers = new Dictionary<StatModifier, float>();
+    [SerializeField] private Dictionary<Stat, List<float>> mergeStatLevels = new Dictionary<Stat, List<float>>();
+    [SerializeField] private Dictionary<Stat, List<float>> energyStatLevels = new Dictionary<Stat, List<float>>();
+    [SerializeField] private Dictionary<Stat, List<float>> permStatLevels = new Dictionary<Stat, List<float>>();
+    [SerializeField] private Dictionary<StatModifier, List<float>> statModifierLevels = new Dictionary<StatModifier, List<float>>();
+    [SerializeField] private Dictionary<StatModifier, List<float>> mergeModifierLevels = new Dictionary<StatModifier, List<float>>();
+    [SerializeField] private Dictionary<StatModifier, List<float>> energyModifierLevels = new Dictionary<StatModifier, List<float>>();
+    [SerializeField] private Dictionary<StatModifier, List<float>> permModifierLevels = new Dictionary<StatModifier, List<float>>();
+
+    private Dictionary<Stat, List<StatModifier>> statModifierMap = new Dictionary<Stat, List<StatModifier>>(){
+        {Stat.AttackInterval, new List<StatModifier>(){ StatModifier.AttackSpeedIncrease }}
+    };
+
+    public float GetStat(Stat stat, int mergeLevel, bool applyModifiers = true)
+    {
+        if (stats.TryGetValue(stat, out float value))
+        {
+            if (applyModifiers)
+            {
+                return (value + 
+                    GetMergeLevelStat(stat, mergeLevel) + 
+                    GetEnergyLevelStat(stat, energyLevel) + 
+                    GetPermLevelStat(stat, energyLevel)) *
+                    GetModifierValues(stat);
+            }
+
+            return value;
+        }
+
+        Debug.LogError($"No stat value found for {stat} on {this.name}");
+        return 0;
+    }
+
+    public float GetMergeLevelStat(Stat stat, int mergeLevel)
+    {
+        if (mergeStatLevels.TryGetValue(stat, out List<float> levels))
+        {
+            int index = mergeLevel - 2;
+            return index > 0 && index < levels.Count ? levels[mergeLevel] : 0;
+        }
+
+        Debug.LogError($"No merge levels found for {stat} on {this.name}");
+        return 0;
+    }
+
+    public float GetEnergyLevelStat(Stat stat, int energyLevel)
+    {
+        if (energyStatLevels.TryGetValue(stat, out List<float> levels))
+        {
+            int index = energyLevel - 2;
+            return index > 0 && index < levels.Count ? levels[energyLevel] : 0;
+        }
+
+        Debug.LogError($"No energy levels found for {stat} on {this.name}");
+        return 0;
+    }
+
+    public float GetPermLevelStat(Stat stat, int permLevel)
+    {
+        if (permStatLevels.TryGetValue(stat, out List<float> levels))
+        {
+            int index = permLevel - 2;
+            return index > 0 && index < levels.Count ? levels[permLevel] : 0;
+        }
+
+        Debug.LogError($"No perm levels found for {stat} on {this.name}");
+        return 0;
+    }
+
+    public float GetModifierValues(Stat stat)
+    {
+        if (statModifierMap.TryGetValue(stat, out List<StatModifier> modifiers))
+        {
+            return modifiers.Select((statModifier) => GetModifier(statModifier))
+                .Aggregate((total, value) => total * value);
+        }
+
+        Debug.LogError($"No stat modifier value found for {stat} on {this.name}");
+        return 1;
+    }
+
+    public float GetModifier(StatModifier statModifier)
+    {
+        if (statModifiers.TryGetValue(statModifier, out float value))
+        {
+            return value;
+        }
+        else
+        {
+            Debug.LogError($"No stat value found for {statModifier} on {this.name}");
+            return 1;
+        }
+    }
+
+
 }
 
 // add/remove a Field from a Scriptable Object

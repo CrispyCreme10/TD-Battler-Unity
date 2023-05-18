@@ -368,5 +368,4 @@ MonoBehaviour:
   rotationPoint: {fileID: 9138542683645119276}
   projectilePrefab: {fileID: 306722353264318623, guid: 781598a6aefb664418610207f92c5d51, type: 3}
   firingPoint: {fileID: 9138542683803835227}
-  projectileDamage: 38
-  attackInterval: 0.45
+  towerData: {fileID: 11400000, guid: bcdc5bf73c0aee78fa58e4b61808b159, type: 2}

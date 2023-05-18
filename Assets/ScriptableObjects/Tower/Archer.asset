@@ -40,7 +40,43 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
       Data: 0
+    - Name: $v
+      Entry: 4
+      Data: 29
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 4
+      Data: 0.45
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 
@@ -66,6 +102,35 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 4
+      Data: 0.1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: mergeStatLevels
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+        mscorlib]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[Stat, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
       Data: 0
     - Name: 
       Entry: 13
@@ -73,13 +138,268 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: statLevels
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 6
+    - Name: 
+      Entry: 4
+      Data: -0.23
+    - Name: 
+      Entry: 4
+      Data: -0.3
+    - Name: 
+      Entry: 4
+      Data: -0.34
+    - Name: 
+      Entry: 4
+      Data: -0.36
+    - Name: 
+      Entry: 4
+      Data: -0.38
+    - Name: 
+      Entry: 4
+      Data: -0.39
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: energyStatLevels
+      Entry: 7
+      Data: 7|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+        mscorlib]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 5
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 8|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 4
+      Data: 23
+    - Name: 
+      Entry: 4
+      Data: 46
+    - Name: 
+      Entry: 4
+      Data: 69
+    - Name: 
+      Entry: 4
+      Data: 92
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: permStatLevels
+      Entry: 7
+      Data: 9|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+        mscorlib]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 5
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 10|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 14
+    - Name: 
+      Entry: 4
+      Data: 3
+    - Name: 
+      Entry: 4
+      Data: 6
+    - Name: 
+      Entry: 4
+      Data: 9
+    - Name: 
+      Entry: 4
+      Data: 12
+    - Name: 
+      Entry: 4
+      Data: 16
+    - Name: 
+      Entry: 4
+      Data: 20
+    - Name: 
+      Entry: 4
+      Data: 25
+    - Name: 
+      Entry: 4
+      Data: 30
+    - Name: 
+      Entry: 4
+      Data: 35
+    - Name: 
+      Entry: 4
+      Data: 41
+    - Name: 
+      Entry: 4
+      Data: 47
+    - Name: 
+      Entry: 4
+      Data: 54
+    - Name: 
+      Entry: 4
+      Data: 62
+    - Name: 
+      Entry: 4
+      Data: 70
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: 11|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 14
+    - Name: 
+      Entry: 4
+      Data: 0.2
+    - Name: 
+      Entry: 4
+      Data: 0.4
+    - Name: 
+      Entry: 4
+      Data: 0.6
+    - Name: 
+      Entry: 4
+      Data: 0.8
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 1.2
+    - Name: 
+      Entry: 4
+      Data: 1.4
+    - Name: 
+      Entry: 4
+      Data: 1.6
+    - Name: 
+      Entry: 4
+      Data: 1.8
+    - Name: 
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 4
+      Data: 2.2
+    - Name: 
+      Entry: 4
+      Data: 2.4
+    - Name: 
+      Entry: 4
+      Data: 2.6
+    - Name: 
+      Entry: 4
+      Data: 2.8
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: statModifierLevels
+      Entry: 7
+      Data: 12|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+        mscorlib]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 3
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: mergeModifierLevels
+      Entry: 7
+      Data: 13|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[Stat, Assembly-CSharp]],
+      Data: 14|System.Collections.Generic.EnumEqualityComparer`1[[StatModifier, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -99,16 +419,128 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: statModifierLevels
+    - Name: energyModifierLevels
       Entry: 7
-      Data: 6|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 15|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
-      Data: 3
+      Data: 14
     - Name: 
       Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
       Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 16|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 4
+      Data: 0.1
+    - Name: 
+      Entry: 4
+      Data: 0.2
+    - Name: 
+      Entry: 4
+      Data: 0.3
+    - Name: 
+      Entry: 4
+      Data: 0.4
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: permModifierLevels
+      Entry: 7
+      Data: 17|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+        mscorlib]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 9
+      Data: 14
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 7
+      Data: 18|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 14
+    - Name: 
+      Entry: 4
+      Data: 0.02
+    - Name: 
+      Entry: 4
+      Data: 0.04
+    - Name: 
+      Entry: 4
+      Data: 0.06
+    - Name: 
+      Entry: 4
+      Data: 0.08
+    - Name: 
+      Entry: 4
+      Data: 0.1
+    - Name: 
+      Entry: 4
+      Data: 0.12
+    - Name: 
+      Entry: 4
+      Data: 0.14
+    - Name: 
+      Entry: 4
+      Data: 0.16
+    - Name: 
+      Entry: 4
+      Data: 0.18
+    - Name: 
+      Entry: 4
+      Data: 0.2
+    - Name: 
+      Entry: 4
+      Data: 0.22
+    - Name: 
+      Entry: 4
+      Data: 0.24
+    - Name: 
+      Entry: 4
+      Data: 0.26
+    - Name: 
+      Entry: 4
+      Data: 0.28
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
     - Name: 
       Entry: 13
       Data: 

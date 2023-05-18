@@ -1,0 +1,125 @@
+[
+    {
+        "name": "Archer",
+        "description": "Has high attack speed.",
+        "faction": "Forest",
+        "unitType": "Damage",
+        "target": "First",
+        "baseStats": {
+            "damage": 29,
+            "attackInterval": 0.45,
+            "attackSpeedIncrease": 0.1,
+            "heroEnergy": 1
+        },
+        "mergeLevelStats": [
+            {
+                "attackInterval": -0.23
+            },
+            {
+                "attackInterval": -0.3
+            },
+            {
+                "attackInterval": -0.34
+            },
+            {
+                "attackInterval": -0.36
+            },
+            {
+                "attackInterval": -0.38
+            },
+            {
+                "attackInterval": -0.39
+            }
+        ],
+        "energyLevelStats": [
+            {
+                "damage": 23,
+                "attackSpeedIncrease": 0.10
+            },
+            {
+                "damage": 46,
+                "attackSpeedIncrease": 0.20
+            },
+            {
+                "damage": 69,
+                "attackSpeedIncrease": 0.30
+            },
+            {
+                "damage": 92,
+                "attackSpeedIncrease": 0.40
+            }
+        ],
+        "permLevelStats": [
+            {
+                "damage": 3,
+                "attackSpeedIncrease": 0.02,
+                "heroEnergy": 0.2
+            },
+            {
+                "damage": 6,
+                "attackSpeedIncrease": 0.04,
+                "heroEnergy": 0.4
+            },
+            {
+                "damage": 9,
+                "attackSpeedIncrease": 0.06,
+                "heroEnergy": 0.6
+            },
+            {
+                "damage": 12,
+                "attackSpeedIncrease": 0.08,
+                "heroEnergy": 0.8
+            },
+            {
+                "damage": 16,
+                "attackSpeedIncrease": 0.1,
+                "heroEnergy": 1
+            },
+            {
+                "damage": 20,
+                "attackSpeedIncrease": 0.12,
+                "heroEnergy": 1.2
+            },
+            {
+                "damage": 25,
+                "attackSpeedIncrease": 0.14,
+                "heroEnergy": 1.4
+            },
+            {
+                "damage": 30,
+                "attackSpeedIncrease": 0.16,
+                "heroEnergy": 1.6
+            },
+            {
+                "damage": 35,
+                "attackSpeedIncrease": 0.18,
+                "heroEnergy": 1.8
+            },
+            {
+                "damage": 41,
+                "attackSpeedIncrease": 0.2,
+                "heroEnergy": 2
+            },
+            {
+                "damage": 47,
+                "attackSpeedIncrease": 0.22,
+                "heroEnergy": 2.2
+            },
+            {
+                "damage": 54,
+                "attackSpeedIncrease": 0.24,
+                "heroEnergy": 2.4
+            },
+            {
+                "damage": 62,
+                "attackSpeedIncrease": 0.26,
+                "heroEnergy": 2.6
+            },
+            {
+                "damage": 70,
+                "attackSpeedIncrease": 0.28,
+                "heroEnergy": 2.8
+            }
+        ]
+    }
+]

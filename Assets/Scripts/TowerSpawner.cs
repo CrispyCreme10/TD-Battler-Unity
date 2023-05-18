@@ -57,7 +57,7 @@ public class TowerSpawner : MonoBehaviour
 
     private int GetRandomAvailableTowerPointIndex()
     {
-        List<int> availablePoints = _pointData.Where(pd => pd.TowerObject != null).Select(pd => pd.PointIndex).ToList();
+        List<int> availablePoints = _pointData.Where(pd => pd.TowerObject == null).Select(pd => pd.PointIndex).ToList();
         int availableIndex = Random.Range(0, availablePoints.Count());
         return availablePoints[availableIndex];
     }

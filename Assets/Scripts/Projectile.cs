@@ -37,9 +37,9 @@ public class Projectile : MonoBehaviour
         enemy = _enemy;
     }
 
-    public void SetDamage(int _damage)
+    public void SetDamage(float _damage)
     {
-        damage = _damage;
+        damage = (int)_damage;
     }
 
     private void FixedUpdate()

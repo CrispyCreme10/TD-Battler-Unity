@@ -16,7 +16,6 @@ public class Tower : MonoBehaviour
     [SerializeField] private TowerScriptableObject towerData;
 
     public int MergeLevel => _mergeLevel;
-    public int EnergyLevel => _energyLevel;
 
     private Enemy _currentEnemyTarget;
     private List<Enemy> _enemiesInRange;
@@ -24,7 +23,6 @@ public class Tower : MonoBehaviour
 
     // battle props
     private int _mergeLevel;
-    private int _energyLevel;
 
     private void OnEnable()
     {
@@ -41,7 +39,6 @@ public class Tower : MonoBehaviour
         _enemiesInRange = new List<Enemy>();
         InitBoxCollider();
         SetMergeLevel(1);
-        SetEnergyLevel(1);
     }
 
     private void Update()
@@ -53,7 +50,7 @@ public class Tower : MonoBehaviour
         {
             timeUntilFire += Time.deltaTime;
 
-            if (timeUntilFire >= 1) // CHANGE THIS
+            if (timeUntilFire >= towerData.GetStat(Stat.AttackInterval, _mergeLevel))
             {
                 Shoot(enemyDirection);
                 timeUntilFire = 0f;
@@ -76,7 +73,7 @@ public class Tower : MonoBehaviour
         GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity);
         Projectile projectileScript = projectileObj.GetComponent<Projectile>();
         projectileScript.SetTarget(_currentEnemyTarget);
-        projectileScript.SetDamage(1); // CHANGE THIS
+        projectileScript.SetDamage(towerData.GetStat(Stat.Damage, _mergeLevel));
     }
 
     private void GetCurrentEnemyTarget()
@@ -127,20 +124,6 @@ public class Tower : MonoBehaviour
     public void IncrementMergeLevel()
     {
         _mergeLevel++;
-
-        // update other relevant values
-    }
-
-    public void SetEnergyLevel(int level)
-    {
-        _energyLevel = level;
-
-        // update other relevant values
-    }
-
-    public void IncrementEnergyLevel()
-    {
-        _energyLevel++;
 
         // update other relevant values
     }
