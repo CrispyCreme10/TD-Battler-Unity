@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e88272b41c3369c4f998dabcd88ff365, type: 3}
-  m_Name: Archer
+  m_Name: Bombardier
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -115,8 +115,8 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  name: Archer
-  description: Has high attack speed.
+  name: 
+  description: 
   energyLevel: 1
   permanentLevel: 1
   towerFaction: 0

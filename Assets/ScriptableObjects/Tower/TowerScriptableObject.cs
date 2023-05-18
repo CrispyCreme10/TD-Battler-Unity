@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public abstract class TowerScriptableObject : ScriptableObject
+[CreateAssetMenu(menuName = "Tower")]
+public class TowerScriptableObject : SerializedScriptableObject
 {
     public const int MAX_MERGE_LEVEL = 7;
     public const int MAX_ENERGY_LEVEL = 5;
@@ -12,23 +14,24 @@ public abstract class TowerScriptableObject : ScriptableObject
     public new string name;
     [TextArea]
     public string description;
-    public int mergeLevel = 1;
     public int energyLevel = 1;
     public int permanentLevel = 1;
     public TowerFaction towerFaction;
     public UnitType unitType;
     public UnitTarget target;
-    public List<Type> BattleFields;
-
-    public TowerScriptableObject()
-    {
-        bool containsField = BattleFields.Contains(typeof(int));
-        // add/remove a Field from a Scriptable Object
-        // ability to check if a Scritable Object has a specific Field
-        // ability to retrieve a Fields value which has had the level modifiers applied
-        // load json file data into to avoid losing Scriptable Object data due to refactor
-    }
+    public float damage;
+    public float attackInterval;
+    public float heroEnergy;
+    public Dictionary<Stat, float> stats = new Dictionary<Stat, float>();
+    public Dictionary<StatModifier, float> statModifiers = new Dictionary<StatModifier, float>();
+    public Dictionary<Stat, List<float>> statLevels = new Dictionary<Stat, List<float>>();
+    public Dictionary<StatModifier, List<float>> statModifierLevels = new Dictionary<StatModifier, List<float>>();
 }
+
+// add/remove a Field from a Scriptable Object
+// ability to check if a Scritable Object has a specific Field
+// ability to retrieve a Fields value which has had the level modifiers applied
+// load json file data into to avoid losing Scriptable Object data due to refactor
 
 // want the ability to specify a group of non-base stats that a tower can have
 // want the ability to upgrade 1..N grouping of stats for a tower (rn just for merge level & energy level increase/decrease)
@@ -56,7 +59,14 @@ public enum UnitTarget
     Random
 }
 
-public class TowerFields
+public enum Stat
 {
-    [SerializeField] private float heroEnergy;
+    Damage,
+    AttackInterval,
+    HeroEnergy
+}
+
+public enum StatModifier
+{
+    AttackSpeedIncrease
 }

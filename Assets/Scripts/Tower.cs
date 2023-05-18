@@ -53,7 +53,7 @@ public class Tower : MonoBehaviour
         {
             timeUntilFire += Time.deltaTime;
 
-            if (timeUntilFire >= (towerData as IAttackIntervalField)) // CHANGE THIS
+            if (timeUntilFire >= 1) // CHANGE THIS
             {
                 Shoot(enemyDirection);
                 timeUntilFire = 0f;
