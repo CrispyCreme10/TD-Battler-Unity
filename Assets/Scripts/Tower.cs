@@ -13,8 +13,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private Transform firingPoint;
 
     [Header("Attributes")]
-    [SerializeField] private int projectileDamage = 1;
-    [SerializeField] private float attackInterval = 1f; // projectiles per second
+    [SerializeField] private TowerScriptableObject towerData;
 
     public int MergeLevel => _mergeLevel;
     public int EnergyLevel => _energyLevel;
@@ -54,7 +53,7 @@ public class Tower : MonoBehaviour
         {
             timeUntilFire += Time.deltaTime;
 
-            if (timeUntilFire >= attackInterval)
+            if (timeUntilFire >= (towerData as IAttackIntervalField)) // CHANGE THIS
             {
                 Shoot(enemyDirection);
                 timeUntilFire = 0f;
@@ -77,7 +76,7 @@ public class Tower : MonoBehaviour
         GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity);
         Projectile projectileScript = projectileObj.GetComponent<Projectile>();
         projectileScript.SetTarget(_currentEnemyTarget);
-        projectileScript.SetDamage(projectileDamage);
+        projectileScript.SetDamage(1); // CHANGE THIS
     }
 
     private void GetCurrentEnemyTarget()

@@ -5,17 +5,29 @@ using UnityEngine;
 
 public abstract class TowerScriptableObject : ScriptableObject
 {
-    protected const int MAX_MERGE_LEVEL = 7;
-    protected const int MAX_ENERGY_LEVEL = 5;
-    protected const int MAX_PERMANENT_LEVEL = 15;
+    public const int MAX_MERGE_LEVEL = 7;
+    public const int MAX_ENERGY_LEVEL = 5;
+    public const int MAX_PERMANENT_LEVEL = 15;
 
-    [SerializeField] protected new string name;
+    public new string name;
     [TextArea]
-    [SerializeField] protected string description;
-    [SerializeField] protected int permanentLevel = 1;
-    [SerializeField] protected TowerFaction towerFaction;
-    [SerializeField] protected UnitType unitType;
-    [SerializeField] protected UnitTarget target;
+    public string description;
+    public int mergeLevel = 1;
+    public int energyLevel = 1;
+    public int permanentLevel = 1;
+    public TowerFaction towerFaction;
+    public UnitType unitType;
+    public UnitTarget target;
+    public List<Type> BattleFields;
+
+    public TowerScriptableObject()
+    {
+        bool containsField = BattleFields.Contains(typeof(int));
+        // add/remove a Field from a Scriptable Object
+        // ability to check if a Scritable Object has a specific Field
+        // ability to retrieve a Fields value which has had the level modifiers applied
+        // load json file data into to avoid losing Scriptable Object data due to refactor
+    }
 }
 
 // want the ability to specify a group of non-base stats that a tower can have
