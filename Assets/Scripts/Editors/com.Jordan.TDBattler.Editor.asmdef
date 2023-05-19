@@ -1,0 +1,16 @@
+{
+    "name": "com.Jordan.TDBattler.Editor",
+    "rootNamespace": "TDBattler.Editor",
+    "references": [
+        "GUID:453792c1d1229d048b7c1f2d3506a844"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

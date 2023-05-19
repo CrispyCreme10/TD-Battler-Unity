@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/battle.uss?fileID=7433441132597879392&amp;guid=187e85c672257024b93b9a4940d4139b&amp;type=3#battle" />
     <ui:VisualElement name="Root" style="height: 100%; flex-direction: column; justify-content: space-between;">
         <ui:VisualElement name="TopHUD" style="background-color: rgb(91, 91, 91); height: 100px; flex-direction: row; align-items: center; justify-content: center;">
             <ui:Label text="00:00" display-tooltip-when-elided="true" name="RoundTimer" style="font-size: 40px; margin-right: 0;" />
@@ -6,16 +7,31 @@
         </ui:VisualElement>
         <ui:VisualElement name="BottomHUD" style="height: 100px; background-color: rgb(91, 91, 91); align-items: center; justify-content: center; flex-direction: column;">
             <ui:VisualElement name="TopDisplay" style="flex-direction: row; top: -15%; height: 150px;">
-                <ui:Label text="0" display-tooltip-when-elided="true" name="ManaLabel" style="font-size: 30px; margin-right: 2px; background-color: rgba(0, 0, 0, 0.59); width: 80px; white-space: nowrap; -unity-text-align: middle-center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 2px; margin-top: 2px; margin-bottom: 2px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; color: rgba(255, 255, 255, 255);" />
-                <ui:Button text="0" display-tooltip-when-elided="true" name="SpawnBtn" style="font-size: 30px; height: auto; width: 120px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                <ui:Label text="0" display-tooltip-when-elided="true" name="ManaLabel" style="font-size: 30px; margin-right: 2px; background-color: rgba(0, 0, 0, 0.69); width: 80px; white-space: nowrap; -unity-text-align: middle-center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 2px; margin-top: 2px; margin-bottom: 2px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; color: rgb(255, 255, 255);" />
+                <ui:Button text="0" display-tooltip-when-elided="true" name="SpawnBtn" style="font-size: 30px; height: auto; width: 100px; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
             </ui:VisualElement>
             <ui:VisualElement name="BottomDisplay" style="width: 100%; height: 250px;">
                 <ui:VisualElement name="MergeBtns" style="width: 100%; height: 100%; flex-direction: row; align-items: stretch; justify-content: center; padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
-                    <ui:Button text="Tower 1" display-tooltip-when-elided="true" name="Tower1" />
-                    <ui:Button text="Tower 2" display-tooltip-when-elided="true" name="Tower2" />
-                    <ui:Button text="Tower 3" display-tooltip-when-elided="true" name="Tower3" />
-                    <ui:Button text="Tower 4" display-tooltip-when-elided="true" name="Tower4" />
-                    <ui:Button text="Tower 5" display-tooltip-when-elided="true" name="Tower5" />
+                    <ui:VisualElement name="Tower1" class="tower-container">
+                        <ui:Button text="Tower 1" display-tooltip-when-elided="true" name="Tower1Btn" class="tower-btn" />
+                        <ui:Label text="1" display-tooltip-when-elided="true" name="Tower1Label" class="energy-label tower-label" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Tower2" class="tower-container">
+                        <ui:Button text="Tower 1" display-tooltip-when-elided="true" name="Tower2Btn" class="tower-btn" />
+                        <ui:Label text="1" display-tooltip-when-elided="true" name="Tower2Label" class="energy-label tower-label" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Tower3" class="tower-container">
+                        <ui:Button text="Tower 1" display-tooltip-when-elided="true" name="Tower3Btn" class="tower-btn" />
+                        <ui:Label text="1" display-tooltip-when-elided="true" name="Tower3Label" class="energy-label tower-label" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Tower4" class="tower-container">
+                        <ui:Button text="Tower 1" display-tooltip-when-elided="true" name="Tower4Btn" class="tower-btn" />
+                        <ui:Label text="1" display-tooltip-when-elided="true" name="Tower4Label" class="tower-label" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Tower5" class="tower-container">
+                        <ui:Button text="Tower 1" display-tooltip-when-elided="true" name="Tower5Btn" class="tower-btn" />
+                        <ui:Label text="1" display-tooltip-when-elided="true" name="Tower5Label" class="tower-label" />
+                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
