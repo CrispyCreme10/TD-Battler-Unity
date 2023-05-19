@@ -111,7 +111,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 4
-      Data: 0.1
+      Data: 0.9
     - Name: 
       Entry: 8
       Data: 
@@ -443,16 +443,16 @@ MonoBehaviour:
       Data: 4
     - Name: 
       Entry: 4
-      Data: 0.1
+      Data: -0.1
     - Name: 
       Entry: 4
-      Data: 0.2
+      Data: -0.2
     - Name: 
       Entry: 4
-      Data: 0.3
+      Data: -0.3
     - Name: 
       Entry: 4
-      Data: 0.4
+      Data: -0.4
     - Name: 
       Entry: 13
       Data: 

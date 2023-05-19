@@ -24,6 +24,9 @@ public class Tower : MonoBehaviour
     // battle props
     private int _mergeLevel;
 
+    Coroutine currentCoroutine;
+    Quaternion? enemyDir;
+
     private void OnEnable()
     {
         Spawner.OnEnemiesChanged += UpdateEnemies;
@@ -43,19 +46,24 @@ public class Tower : MonoBehaviour
 
     private void Update()
     {
-        GetCurrentEnemyTarget();
-        Quaternion? enemyDirection = RotateTowardsTarget();
-
-        if (_currentEnemyTarget != null)
+        if (currentCoroutine == null)
         {
-            timeUntilFire += Time.deltaTime;
-
-            if (timeUntilFire >= towerData.GetStat(Stat.AttackInterval, _mergeLevel))
-            {
-                Shoot(enemyDirection);
-                timeUntilFire = 0f;
-            }
+            currentCoroutine = StartCoroutine(Shoot());
         }
+
+        GetCurrentEnemyTarget();
+        enemyDir = RotateTowardsTarget();
+
+        // if (_currentEnemyTarget != null)
+        // {
+        //     timeUntilFire += Time.deltaTime;
+
+        //     if (timeUntilFire >= towerData.GetStat(Stat.AttackInterval, _mergeLevel))
+        //     {
+        //         Shoot(enemyDirection);
+        //         timeUntilFire = 0f;
+        //     }
+        // }
     }
 
     private void InitBoxCollider()
@@ -68,12 +76,16 @@ public class Tower : MonoBehaviour
         boxCollider.size = new Vector2(width / transform.localScale.x, height / transform.localScale.y);
     }
 
-    private void Shoot(Quaternion? enemyDir)
+    private IEnumerator Shoot()
     {
+        yield return new WaitForSeconds(towerData.GetStat(Stat.AttackInterval, _mergeLevel));
+
         GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity);
         Projectile projectileScript = projectileObj.GetComponent<Projectile>();
         projectileScript.SetTarget(_currentEnemyTarget);
         projectileScript.SetDamage(towerData.GetStat(Stat.Damage, _mergeLevel));
+
+        currentCoroutine = null;
     }
 
     private void GetCurrentEnemyTarget()

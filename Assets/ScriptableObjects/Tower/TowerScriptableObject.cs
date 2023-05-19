@@ -43,11 +43,13 @@ public class TowerScriptableObject : SerializedScriptableObject
         {
             if (applyModifiers)
             {
-                return (value + 
+                float baseVal = (value + 
                     GetMergeLevelStat(stat, mergeLevel) + 
                     GetEnergyLevelStat(stat, energyLevel) + 
-                    GetPermLevelStat(stat, energyLevel)) *
-                    GetModifierValues(stat);
+                    GetPermLevelStat(stat, energyLevel));
+                float val = GetModifierValues(stat).Aggregate(baseVal, (total, val) => total * val);
+                Debug.Log($"GET STAT: {stat} {mergeLevel} {val} {this.name}");
+                return val;
             }
 
             return value;
@@ -62,10 +64,11 @@ public class TowerScriptableObject : SerializedScriptableObject
         if (mergeStatLevels.TryGetValue(stat, out List<float> levels))
         {
             int index = mergeLevel - 2;
-            return index > 0 && index < levels.Count ? levels[mergeLevel] : 0;
+            float val = index > 0 && index < levels.Count ? levels[mergeLevel] : 0;
+            Debug.Log($"MERGE LEVEL: {stat} {mergeLevel} {val} {this.name}");
+            return val;
         }
 
-        Debug.LogError($"No merge levels found for {stat} on {this.name}");
         return 0;
     }
 
@@ -74,10 +77,11 @@ public class TowerScriptableObject : SerializedScriptableObject
         if (energyStatLevels.TryGetValue(stat, out List<float> levels))
         {
             int index = energyLevel - 2;
-            return index > 0 && index < levels.Count ? levels[energyLevel] : 0;
+            float val = index > 0 && index < levels.Count ? levels[energyLevel] : 0;
+            Debug.Log($"ENERGY LEVEL: {stat} {energyLevel} {val} {this.name}");
+            return val;
         }
 
-        Debug.LogError($"No energy levels found for {stat} on {this.name}");
         return 0;
     }
 
@@ -86,23 +90,22 @@ public class TowerScriptableObject : SerializedScriptableObject
         if (permStatLevels.TryGetValue(stat, out List<float> levels))
         {
             int index = permLevel - 2;
-            return index > 0 && index < levels.Count ? levels[permLevel] : 0;
+            float val = index > 0 && index < levels.Count ? levels[permLevel] : 0;
+            Debug.Log($"PERM LEVEL: {stat} {permLevel} {val} {this.name}");
+            return val;
         }
 
-        Debug.LogError($"No perm levels found for {stat} on {this.name}");
         return 0;
     }
 
-    public float GetModifierValues(Stat stat)
+    public List<float> GetModifierValues(Stat stat)
     {
         if (statModifierMap.TryGetValue(stat, out List<StatModifier> modifiers))
         {
-            return modifiers.Select((statModifier) => GetModifier(statModifier))
-                .Aggregate((total, value) => total * value);
+            return modifiers.Select((statModifier) => GetModifier(statModifier)).ToList();
         }
 
-        Debug.LogError($"No stat modifier value found for {stat} on {this.name}");
-        return 1;
+        return new List<float> { 1 };
     }
 
     public float GetModifier(StatModifier statModifier)
