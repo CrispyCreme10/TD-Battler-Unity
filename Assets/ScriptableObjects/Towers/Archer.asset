@@ -23,11 +23,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: stats
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Single,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Stat, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Stat, com.Jordan.TDBattler.Runtime]],
         mscorlib
     - Name: 
       Entry: 12
@@ -85,11 +85,11 @@ MonoBehaviour:
       Data: 
     - Name: statModifiers
       Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Single,
+      Data: 2|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[StatModifier, Assembly-CSharp]],
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[StatModifier, com.Jordan.TDBattler.Runtime]],
         mscorlib
     - Name: 
       Entry: 12
@@ -123,11 +123,11 @@ MonoBehaviour:
       Data: 
     - Name: mergeStatLevels
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 4|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[Stat, Assembly-CSharp]],
+      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[Stat, com.Jordan.TDBattler.Runtime]],
         mscorlib
     - Name: 
       Entry: 12
@@ -188,7 +188,7 @@ MonoBehaviour:
       Data: 
     - Name: energyStatLevels
       Entry: 7
-      Data: 7|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 7|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
@@ -237,7 +237,7 @@ MonoBehaviour:
       Data: 
     - Name: permStatLevels
       Entry: 7
-      Data: 9|System.Collections.Generic.Dictionary`2[[Stat, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 9|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
@@ -379,7 +379,7 @@ MonoBehaviour:
       Data: 
     - Name: statModifierLevels
       Entry: 7
-      Data: 12|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 12|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
@@ -395,11 +395,11 @@ MonoBehaviour:
       Data: 
     - Name: mergeModifierLevels
       Entry: 7
-      Data: 13|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 13|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 14|System.Collections.Generic.EnumEqualityComparer`1[[StatModifier, Assembly-CSharp]],
+      Data: 14|System.Collections.Generic.EnumEqualityComparer`1[[StatModifier, com.Jordan.TDBattler.Runtime]],
         mscorlib
     - Name: 
       Entry: 12
@@ -421,7 +421,7 @@ MonoBehaviour:
       Data: 
     - Name: energyModifierLevels
       Entry: 7
-      Data: 15|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 15|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
@@ -470,7 +470,7 @@ MonoBehaviour:
       Data: 
     - Name: permModifierLevels
       Entry: 7
-      Data: 17|System.Collections.Generic.Dictionary`2[[StatModifier, Assembly-CSharp],[System.Collections.Generic.List`1[[System.Single,
+      Data: 17|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
         mscorlib]], mscorlib]], mscorlib
     - Name: comparer
       Entry: 9
@@ -549,6 +549,7 @@ MonoBehaviour:
       Data: 
   name: Archer
   description: Has high attack speed.
+  debugColor: {r: 0.011764707, g: 0.6039216, b: 0.4666667, a: 0}
   energyLevel: 1
   permanentLevel: 1
   towerFaction: 0

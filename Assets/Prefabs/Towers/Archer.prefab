@@ -139,37 +139,6 @@ Transform:
   m_Father: {fileID: 9138542685181519765}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8831861537937200707
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 504375263011932210}
-  m_Layer: 0
-  m_Name: MergeShape
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &504375263011932210
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8831861537937200707}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9138542685181519765}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9138542683645119277
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,7 +214,7 @@ GameObject:
   - component: {fileID: 9138542684810442353}
   - component: {fileID: 9138542684810442352}
   m_Layer: 0
-  m_Name: turret_Model
+  m_Name: TurretSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -260,7 +229,7 @@ Transform:
   m_GameObject: {fileID: 9138542684810442354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9138542683645119276}
@@ -307,7 +276,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 170659737, guid: 0795e661e6f93234fbc6b8f356d3747d, type: 3}
+  m_Sprite: {fileID: 1932490963, guid: 0929ddabdee16fe45bb48bd5d7607326, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -349,7 +318,6 @@ Transform:
   m_Children:
   - {fileID: 9138542683645119276}
   - {fileID: 6920478377727519821}
-  - {fileID: 504375263011932210}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -365,8 +333,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50513df0c6081484fb71a95068e22a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: stats
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Single,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Stat, com.Jordan.TDBattler.Runtime]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   rotationPoint: {fileID: 9138542683645119276}
   projectilePrefab: {fileID: 306722353264318623, guid: 781598a6aefb664418610207f92c5d51, type: 3}
   firingPoint: {fileID: 9138542683803835227}
   towerData: {fileID: 11400000, guid: bcdc5bf73c0aee78fa58e4b61808b159, type: 2}
+  textPrefab: {fileID: 7387962130193737361, guid: a51ac77331d458a43ab5f6a65231ae8c, type: 3}
   mergeLevel: 0

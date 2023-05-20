@@ -13,6 +13,7 @@ namespace TDBattler.Runtime
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Transform firingPoint;
         [SerializeField] private TowerScriptableObject towerData;
+        [SerializeField] private GameObject textPrefab;
 
         
         public int MergeLevel => mergeLevel;
@@ -51,8 +52,8 @@ namespace TDBattler.Runtime
             _projectileContainer.transform.parent = transform;
             _enemiesInRange = new List<Enemy>();
             InitBoxCollider();
-            SetMergeLevel(1);
-            RefreshStats();
+            // DEBUG
+            GetComponentInChildren<SpriteRenderer>().color = towerData.DebugColor;
         }
 
         private void Update()
@@ -76,9 +77,17 @@ namespace TDBattler.Runtime
             boxCollider.size = new Vector2(width / transform.localScale.x, height / transform.localScale.y);
         }
 
+        private void InitDebugText()
+        {
+            var go = Instantiate(textPrefab, transform.position, Quaternion.identity, transform);
+            go.GetComponent<TextMesh>().text = mergeLevel.ToString();
+        }
+
         public void SetMergeLevel(int level)
         {
             mergeLevel = level;
+            RefreshStats();
+            InitDebugText();
         }
 
         private void RefreshStats()
@@ -97,6 +106,7 @@ namespace TDBattler.Runtime
             Projectile projectileScript = projectileObj.GetComponent<Projectile>();
             projectileScript.SetTarget(_currentEnemyTarget);
             projectileScript.SetDamage(GetStat(Stat.Damage));
+            projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;
 
             currentCoroutine = null;
         }

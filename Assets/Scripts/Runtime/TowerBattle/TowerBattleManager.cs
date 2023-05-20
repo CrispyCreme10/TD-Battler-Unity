@@ -8,7 +8,7 @@ namespace TDBattler.Runtime
     // responsible for handling the state for an active battle
     public class TowerBattleManager : MonoBehaviour
     {
-        public static Action<int, int, List<int>> OnManaChange;
+        public static Action<int, int, List<int>, bool> OnManaChange;
 
         [Header("References")]
         [SerializeField] private TowerSpawner _towerSpawner;
@@ -92,18 +92,11 @@ namespace TDBattler.Runtime
                 // else, send tower back to original position
                 Collider2D[] results = Physics2D.OverlapPointAll(mousePosition);
                 Transform towerTransform = results.SingleOrDefault(c => c.name == "Merge")?.transform?.parent?.parent;
-                if (towerTransform != null && _selectedTower.name.Split('(')[0] == towerTransform.name.Split('(')[0])
+                if (towerTransform == null)
                 {
-                    // --perform merge
-                    // destroy both merged towers
-                    // release the tower point that the selected tower was on
-                    // create a random tower of merge level + 1 at the merge location
-                    int mergeLevel = _selectedTower.MergeLevel;
-                    _towerSpawner.DespawnTower(_selectedTower);
-                    var towerPointIndex = _towerSpawner.DespawnTower(towerTransform.GetComponent<Tower>());
-                    _towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, mergeLevel + 1);
+                    _selectedTower.transform.position = _selectedTowerOGPosition;
                 }
-                else
+                else if(!MergeTowers(towerTransform.GetComponent<Tower>()))
                 {
                     _selectedTower.transform.position = _selectedTowerOGPosition;
                 }
@@ -139,12 +132,27 @@ namespace TDBattler.Runtime
         private void ManaChange()
         {
             var energyCosts = _energyLevelsPerTower.Select(i => energyLevelCosts[i]).ToList();
-            OnManaChange?.Invoke(mana, towerCost, energyCosts);
+            OnManaChange?.Invoke(mana, towerCost, energyCosts, _towerSpawner.IsFieldFull());
         }
 
         private void OnTowerEnergyIncrease(int index, int energyLevel)
         {
             _energyLevelsPerTower[index]++;
+        }
+
+        private bool MergeTowers(Tower otherTower)
+        {
+            int selectedMergeLevel = _selectedTower?.MergeLevel ?? 1;
+            int otherTowerMergeLevel = otherTower?.MergeLevel ?? 1;
+            if (_selectedTower.name.Split('(')[0] == otherTower.name.Split('(')[0] && selectedMergeLevel == otherTowerMergeLevel && selectedMergeLevel < TowerScriptableObject.MAX_MERGE_LEVEL)
+            {
+                _towerSpawner.DespawnTower(_selectedTower);
+                var towerPointIndex = _towerSpawner.DespawnTower(otherTower);
+                _towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, ++selectedMergeLevel);
+                return true;
+            }
+
+            return false;
         }
     }
 }

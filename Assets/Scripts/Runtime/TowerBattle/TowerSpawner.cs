@@ -60,13 +60,14 @@ namespace TDBattler.Runtime
             SpawnTower(RandomTowerIndex, towerPointIndex, mergeLevel);
         }
 
-        private void SpawnTower(int towerIndex, int towerPointIndex, int mergeLevel = 0)
+        private void SpawnTower(int towerIndex, int towerPointIndex, int mergeLevel = 1)
         {
             Tower instance = Instantiate(_playerSelectedTowers[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
             UpdatePointData(instance, towerPointIndex);
             instance.name += " " + ++_spawnTowerCount;
             if (mergeLevel > 0)
             {
+                Debug.Log(mergeLevel);
                 instance.SetMergeLevel(mergeLevel);
             }
             instance.UpdateEnemies(enemySpawner.Enemies);
@@ -106,6 +107,11 @@ namespace TDBattler.Runtime
         {
             var energyLevel = _towerData[index].IncrementEnergyLevel();
             OnTowerEnergyIncrease?.Invoke(index, energyLevel);
+        }
+
+        public bool IsFieldFull()
+        {
+            return _spawnTowerCount == _towerpoint.Points.Length;
         }
     }
 

@@ -57,11 +57,11 @@ namespace TDBattler.Runtime
             _spawnBtn.clicked +=  adapter.SpawnTower;
         }
 
-        public void OnManaChange(int mana, int towerCost, List<int> energyCosts)
+        public void OnManaChange(int mana, int towerCost, List<int> energyCosts, bool fieldIsFull)
         {
             SetManaLabel(mana);
             SetSpawnBtnText(towerCost);
-            _spawnBtn.SetEnabled(mana >= towerCost);
+            _spawnBtn.SetEnabled(mana >= towerCost && !fieldIsFull);
             _energyButton1.SetEnabled(mana >= energyCosts[0]);
             _energyButton2.SetEnabled(mana >= energyCosts[1]);
             _energyButton3.SetEnabled(mana >= energyCosts[2]);

@@ -2838,10 +2838,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyCount: 50
   timerMode: 1
-  timerInSeconds: 120
+  timerInSeconds: 300
   gruntPrefab: {fileID: 6891377522185687168, guid: 53734d57775bdc14fa5a1278cc8d3cce, type: 3}
   initSpawnDelay: 1
-  delayBtwSpawns: 2
+  delayBtwSpawns: 0.5
 --- !u!4 &1848261896
 Transform:
   m_ObjectHideFlags: 0

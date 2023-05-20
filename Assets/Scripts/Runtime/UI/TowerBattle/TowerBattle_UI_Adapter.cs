@@ -49,9 +49,9 @@ namespace TDBattler.Runtime
 
         #region Events
         
-        private void OnManaChange(int mana, int towerCost, List<int> energyCosts)
+        private void OnManaChange(int mana, int towerCost, List<int> energyCosts, bool fieldIsFull)
         {
-            document.OnManaChange(mana, towerCost, energyCosts);
+            document.OnManaChange(mana, towerCost, energyCosts, fieldIsFull);
         }
 
         private void SetRoundTimer(float startingTime, float timeInSeconds)

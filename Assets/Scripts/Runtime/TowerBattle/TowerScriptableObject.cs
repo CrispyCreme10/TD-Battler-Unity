@@ -6,13 +6,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Tower")]
 public class TowerScriptableObject : SerializedScriptableObject
 {
-    public const int MAX_MERGE_LEVEL = 7;
-    public const int MAX_ENERGY_LEVEL = 5;
-    public const int MAX_PERMANENT_LEVEL = 15;
+    public static int MAX_MERGE_LEVEL = 7;
+    public static int MAX_ENERGY_LEVEL = 5;
+    public static int MAX_PERMANENT_LEVEL = 15;
 
     [SerializeField] private new string name;
     [TextArea]
     [SerializeField] private string description;
+    [SerializeField] private Color debugColor;
     [SerializeField] private int energyLevel = 1;
     [SerializeField] private int permanentLevel = 1;
     [SerializeField] private TowerFaction towerFaction;
@@ -32,6 +33,7 @@ public class TowerScriptableObject : SerializedScriptableObject
     [SerializeField] private Dictionary<StatModifier, List<float>> permModifierLevels = new Dictionary<StatModifier, List<float>>();
 
     public string Name => name;
+    public Color DebugColor => debugColor;
     public int EnergyLevel => energyLevel;
     public Dictionary<Stat, float> Stats => stats;
 
