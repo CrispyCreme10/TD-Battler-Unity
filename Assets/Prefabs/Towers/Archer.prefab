@@ -369,3 +369,4 @@ MonoBehaviour:
   projectilePrefab: {fileID: 306722353264318623, guid: 781598a6aefb664418610207f92c5d51, type: 3}
   firingPoint: {fileID: 9138542683803835227}
   towerData: {fileID: 11400000, guid: bcdc5bf73c0aee78fa58e4b61808b159, type: 2}
+  mergeLevel: 0

@@ -81,7 +81,7 @@ namespace TDBattler.Runtime
                     Transform tower = results.SingleOrDefault(c => c.name == "Merge")?.transform?.parent?.parent;
                     if (_selectedTower.name.Split('(')[0] == tower.name.Split('(')[0])
                     {
-                        Debug.Log(tower);
+                        // Debug.Log(tower);
                     }
                 }
             }
@@ -98,9 +98,9 @@ namespace TDBattler.Runtime
                     // destroy both merged towers
                     // release the tower point that the selected tower was on
                     // create a random tower of merge level + 1 at the merge location
+                    int mergeLevel = _selectedTower.MergeLevel;
                     _towerSpawner.DespawnTower(_selectedTower);
                     var towerPointIndex = _towerSpawner.DespawnTower(towerTransform.GetComponent<Tower>());
-                    int mergeLevel = _selectedTower.MergeLevel;
                     _towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, mergeLevel + 1);
                 }
                 else

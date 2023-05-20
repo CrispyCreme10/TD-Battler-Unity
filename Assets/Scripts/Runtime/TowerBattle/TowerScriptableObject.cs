@@ -33,6 +33,7 @@ public class TowerScriptableObject : SerializedScriptableObject
 
     public string Name => name;
     public int EnergyLevel => energyLevel;
+    public Dictionary<Stat, float> Stats => stats;
 
     private Dictionary<Stat, List<StatModifier>> statModifierMap = new Dictionary<Stat, List<StatModifier>>(){
         {Stat.AttackInterval, new List<StatModifier>(){ StatModifier.AttackSpeedIncrease }}
@@ -52,7 +53,7 @@ public class TowerScriptableObject : SerializedScriptableObject
                 GetStatEnergyLevelValue(stat, energyLevel) + 
                 GetStatPermLevelValue(stat, permanentLevel));
             float val = GetModifierValues(stat, mergeLevel).Aggregate(baseVal, (total, val) => total * val);
-            Debug.Log($"GET STAT: {stat} {mergeLevel} {val} {this.name}");
+            // Debug.Log($"GET STAT: {stat} {mergeLevel} {val} {this.name}");
             return val;
         }
 
@@ -79,7 +80,7 @@ public class TowerScriptableObject : SerializedScriptableObject
         {
             int index = energyLevel - 2;
             float val = index >= 0 && index < levels.Count ? levels[index] : 0;
-            Debug.Log($"ENERGY LEVEL: {stat} {energyLevel} {val} {this.name}");
+            // Debug.Log($"ENERGY LEVEL: {stat} {energyLevel} {val} {this.name}");
             return val;
         }
 
@@ -117,7 +118,7 @@ public class TowerScriptableObject : SerializedScriptableObject
                     GetModMergeLevelValue(statModifier, mergeLevel) + 
                     GetModEnergyLevelValue(statModifier, energyLevel) + 
                     GetModPermLevelValue(statModifier, permanentLevel));
-            Debug.Log($"GET MOD: {statModifier} {mergeLevel} {val} {this.name}");
+            // Debug.Log($"GET MOD: {statModifier} {mergeLevel} {val} {this.name}");
             return val;
         }
         else

@@ -12,6 +12,7 @@ namespace TDBattler.Runtime
 
         [Header("References")]
         [SerializeField] private EnemySpawner enemySpawner;
+        [SerializeField] private PlayerManager playerManager;
 
         private Transform _towersContainer;
         private Towerpoint _towerpoint;
@@ -59,16 +60,6 @@ namespace TDBattler.Runtime
             SpawnTower(RandomTowerIndex, towerPointIndex, mergeLevel);
         }
 
-        public int DespawnTower(Tower tower)
-        {
-            var pd = _pointData.SingleOrDefault(pd => pd.Tower == tower);
-            int index = pd.PointIndex;
-            Debug.Log(pd.Tower);
-            Destroy(tower);
-            Debug.Log(pd.Tower);
-            return index;
-        }
-
         private void SpawnTower(int towerIndex, int towerPointIndex, int mergeLevel = 0)
         {
             Tower instance = Instantiate(_playerSelectedTowers[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
@@ -80,6 +71,14 @@ namespace TDBattler.Runtime
             }
             instance.UpdateEnemies(enemySpawner.Enemies);
             OnTowerSpawn?.Invoke(instance);
+        }
+
+        public int DespawnTower(Tower tower)
+        {
+            var pd = _pointData.SingleOrDefault(pd => pd.Tower == tower);
+            pd.Tower = null;
+            Destroy(tower.gameObject);
+            return pd.PointIndex;
         }
 
         private int GetRandomAvailableTowerPointIndex()

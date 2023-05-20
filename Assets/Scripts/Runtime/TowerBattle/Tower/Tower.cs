@@ -1,28 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace TDBattler.Runtime
 {
-    public class Tower : MonoBehaviour
+    public class Tower : SerializedMonoBehaviour
     {
         [Header("References")]
         [SerializeField] private Transform rotationPoint;
         [SerializeField] private GameObject projectilePrefab;
         [SerializeField] private Transform firingPoint;
-
-        [Header("Attributes")]
         [SerializeField] private TowerScriptableObject towerData;
 
-        public int MergeLevel => _mergeLevel;
+        
+        public int MergeLevel => mergeLevel;
         public TowerScriptableObject TowerData => towerData;
 
+        private GameObject _projectileContainer;
         private Enemy _currentEnemyTarget;
         private List<Enemy> _enemiesInRange;
 
         // battle props
-        [SerializeField] private int _mergeLevel;
+        [Header("Attributes")]
+        [ReadOnly]
+        [SerializeField] 
+        private int mergeLevel;
+        [ReadOnly]
+        [SerializeField] 
+        private Dictionary<Stat, float> stats = new Dictionary<Stat, float>();
 
         Coroutine currentCoroutine;
         Quaternion? enemyDir;
@@ -30,6 +37,7 @@ namespace TDBattler.Runtime
         private void OnEnable()
         {
             EnemySpawner.OnEnemiesChanged += UpdateEnemies;
+            TowerSpawner.OnTowerEnergyIncrease += TowerEnergyIncrease;
         }
 
         private void OnDisable()
@@ -39,9 +47,12 @@ namespace TDBattler.Runtime
 
         private void Start()
         {
+            _projectileContainer = new GameObject("Projectiles");
+            _projectileContainer.transform.parent = transform;
             _enemiesInRange = new List<Enemy>();
             InitBoxCollider();
             SetMergeLevel(1);
+            RefreshStats();
         }
 
         private void Update()
@@ -65,14 +76,27 @@ namespace TDBattler.Runtime
             boxCollider.size = new Vector2(width / transform.localScale.x, height / transform.localScale.y);
         }
 
+        public void SetMergeLevel(int level)
+        {
+            mergeLevel = level;
+        }
+
+        private void RefreshStats()
+        {
+            foreach(Stat stat in towerData.Stats.Keys)
+            {
+                stats[stat] = towerData.GetStat(stat, mergeLevel);
+            }
+        }
+
         private IEnumerator Shoot()
         {
-            yield return new WaitForSeconds(towerData.GetStat(Stat.AttackInterval, _mergeLevel));
+            yield return new WaitForSeconds(GetStat(Stat.AttackInterval));
 
-            GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity);
+            GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity, _projectileContainer.transform);
             Projectile projectileScript = projectileObj.GetComponent<Projectile>();
             projectileScript.SetTarget(_currentEnemyTarget);
-            projectileScript.SetDamage(towerData.GetStat(Stat.Damage, _mergeLevel));
+            projectileScript.SetDamage(GetStat(Stat.Damage));
 
             currentCoroutine = null;
         }
@@ -107,26 +131,20 @@ namespace TDBattler.Runtime
             _enemiesInRange = enemies.ToList();
         }
 
-        private void RemoveEnemyFromRange(Enemy enemy)
+        public float GetStat(Stat stat)
         {
-            if (_enemiesInRange.Contains(enemy))
+            if (stats.TryGetValue(stat, out float value))
             {
-                _enemiesInRange.Remove(enemy);
+                return value;
             }
+
+            Debug.LogError($"No stat value found for {stat} on {this.name}");
+            return 0;
         }
 
-        public void SetMergeLevel(int level)
+        private void TowerEnergyIncrease(int index, int energyLevel)
         {
-            _mergeLevel = level;
-
-            // update other relevant values
-        }
-
-        public void IncrementMergeLevel()
-        {
-            _mergeLevel++;
-
-            // update other relevant values
+            RefreshStats();
         }
     }
 }

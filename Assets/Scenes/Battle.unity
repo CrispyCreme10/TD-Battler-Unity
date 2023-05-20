@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 1848261895}
+  playerManager: {fileID: 0}
 --- !u!114 &174559307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2840,7 +2841,7 @@ MonoBehaviour:
   timerInSeconds: 120
   gruntPrefab: {fileID: 6891377522185687168, guid: 53734d57775bdc14fa5a1278cc8d3cce, type: 3}
   initSpawnDelay: 1
-  delayBtwSpawns: 0.5
+  delayBtwSpawns: 2
 --- !u!4 &1848261896
 Transform:
   m_ObjectHideFlags: 0
@@ -4786,7 +4787,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1994204747}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84d7a07cff373834e8f6e4bd38628027, type: 3}
+  m_Script: {fileID: 11500000, guid: f87e56752bfee114d95d0157bd27be9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 11400000, guid: 6c651fe409ee13641bb37c0e19692259, type: 2}
