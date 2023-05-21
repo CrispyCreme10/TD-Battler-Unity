@@ -20,536 +20,10 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: stats
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Single,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Stat, com.Jordan.TDBattler.Runtime]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 4
-      Data: 29
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 4
-      Data: 0.45
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 4
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: statModifiers
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Single,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[StatModifier, com.Jordan.TDBattler.Runtime]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 4
-      Data: 0.9
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: mergeStatLevels
-      Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
-        mscorlib]], mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[Stat, com.Jordan.TDBattler.Runtime]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 7
-      Data: 6|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 6
-    - Name: 
-      Entry: 4
-      Data: -0.23
-    - Name: 
-      Entry: 4
-      Data: -0.3
-    - Name: 
-      Entry: 4
-      Data: -0.34
-    - Name: 
-      Entry: 4
-      Data: -0.36
-    - Name: 
-      Entry: 4
-      Data: -0.38
-    - Name: 
-      Entry: 4
-      Data: -0.39
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: energyStatLevels
-      Entry: 7
-      Data: 7|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
-        mscorlib]], mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 9
-      Data: 5
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 7
-      Data: 8|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 4
-    - Name: 
-      Entry: 4
-      Data: 23
-    - Name: 
-      Entry: 4
-      Data: 46
-    - Name: 
-      Entry: 4
-      Data: 69
-    - Name: 
-      Entry: 4
-      Data: 92
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: permStatLevels
-      Entry: 7
-      Data: 9|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
-        mscorlib]], mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 9
-      Data: 5
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 7
-      Data: 10|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 14
-    - Name: 
-      Entry: 4
-      Data: 3
-    - Name: 
-      Entry: 4
-      Data: 6
-    - Name: 
-      Entry: 4
-      Data: 9
-    - Name: 
-      Entry: 4
-      Data: 12
-    - Name: 
-      Entry: 4
-      Data: 16
-    - Name: 
-      Entry: 4
-      Data: 20
-    - Name: 
-      Entry: 4
-      Data: 25
-    - Name: 
-      Entry: 4
-      Data: 30
-    - Name: 
-      Entry: 4
-      Data: 35
-    - Name: 
-      Entry: 4
-      Data: 41
-    - Name: 
-      Entry: 4
-      Data: 47
-    - Name: 
-      Entry: 4
-      Data: 54
-    - Name: 
-      Entry: 4
-      Data: 62
-    - Name: 
-      Entry: 4
-      Data: 70
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 7
-      Data: 11|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 14
-    - Name: 
-      Entry: 4
-      Data: 0.2
-    - Name: 
-      Entry: 4
-      Data: 0.4
-    - Name: 
-      Entry: 4
-      Data: 0.6
-    - Name: 
-      Entry: 4
-      Data: 0.8
-    - Name: 
-      Entry: 4
-      Data: 1
-    - Name: 
-      Entry: 4
-      Data: 1.2
-    - Name: 
-      Entry: 4
-      Data: 1.4
-    - Name: 
-      Entry: 4
-      Data: 1.6
-    - Name: 
-      Entry: 4
-      Data: 1.8
-    - Name: 
-      Entry: 4
-      Data: 2
-    - Name: 
-      Entry: 4
-      Data: 2.2
-    - Name: 
-      Entry: 4
-      Data: 2.4
-    - Name: 
-      Entry: 4
-      Data: 2.6
-    - Name: 
-      Entry: 4
-      Data: 2.8
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: statModifierLevels
-      Entry: 7
-      Data: 12|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
-        mscorlib]], mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 9
-      Data: 3
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: mergeModifierLevels
-      Entry: 7
-      Data: 13|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
-        mscorlib]], mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 14|System.Collections.Generic.EnumEqualityComparer`1[[StatModifier, com.Jordan.TDBattler.Runtime]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: energyModifierLevels
-      Entry: 7
-      Data: 15|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
-        mscorlib]], mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 9
-      Data: 14
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 7
-      Data: 16|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 4
-    - Name: 
-      Entry: 4
-      Data: -0.1
-    - Name: 
-      Entry: 4
-      Data: -0.2
-    - Name: 
-      Entry: 4
-      Data: -0.3
-    - Name: 
-      Entry: 4
-      Data: -0.4
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: permModifierLevels
-      Entry: 7
-      Data: 17|System.Collections.Generic.Dictionary`2[[StatModifier, com.Jordan.TDBattler.Runtime],[System.Collections.Generic.List`1[[System.Single,
-        mscorlib]], mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 9
-      Data: 14
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 7
-      Data: 18|System.Collections.Generic.List`1[[System.Single, mscorlib]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 14
-    - Name: 
-      Entry: 4
-      Data: 0.02
-    - Name: 
-      Entry: 4
-      Data: 0.04
-    - Name: 
-      Entry: 4
-      Data: 0.06
-    - Name: 
-      Entry: 4
-      Data: 0.08
-    - Name: 
-      Entry: 4
-      Data: 0.1
-    - Name: 
-      Entry: 4
-      Data: 0.12
-    - Name: 
-      Entry: 4
-      Data: 0.14
-    - Name: 
-      Entry: 4
-      Data: 0.16
-    - Name: 
-      Entry: 4
-      Data: 0.18
-    - Name: 
-      Entry: 4
-      Data: 0.2
-    - Name: 
-      Entry: 4
-      Data: 0.22
-    - Name: 
-      Entry: 4
-      Data: 0.24
-    - Name: 
-      Entry: 4
-      Data: 0.26
-    - Name: 
-      Entry: 4
-      Data: 0.28
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   name: Archer
   description: Has high attack speed.
-  debugColor: {r: 0.011764707, g: 0.6039216, b: 0.4666667, a: 0}
+  debugColor: {r: 0.011764707, g: 0.6039216, b: 0.4666667, a: 1}
   energyLevel: 1
   permanentLevel: 1
   towerFaction: 0
@@ -558,3 +32,93 @@ MonoBehaviour:
   damage: 0
   attackInterval: 0
   heroEnergy: 0
+  stats:
+  - type: 0
+    value: 29
+    modifiers: []
+    statLevels:
+      mergePatternValue: 0
+      MergeLevels: []
+      energyPatternValue: 0
+      EnergyLevels:
+      - 23
+      - 46
+      - 69
+      - 92
+      permanentPatternValue: 0
+      PermanentLevels:
+      - 3
+      - 6
+      - 9
+      - 12
+      - 16
+      - 20
+      - 25
+      - 30
+      - 35
+      - 41
+      - 47
+      - 54
+      - 62
+      - 70
+  - type: 1
+    value: 0.45
+    modifiers:
+    - type: 0
+      increasesValue: 0
+      statModifierLevels:
+        mergePatternValue: 0
+        MergeLevels: []
+        energyPatternValue: 0
+        EnergyLevels:
+        - 0.1
+        - 0.2
+        - 0.3
+        - 0.4
+        permanentPatternValue: 0
+        PermanentLevels:
+        - 0.02
+        - 0.04
+        - 0.06
+        - 0.08
+        - 0.1
+        - 0.12
+        - 0.14
+        - 0.16
+        - 0.18
+        - 0.2
+        - 0.22
+        - 0.24
+        - 0.26
+        - 0.28
+    statLevels:
+      mergePatternValue: 0
+      MergeLevels: []
+      energyPatternValue: 0
+      EnergyLevels: []
+      permanentPatternValue: 0
+      PermanentLevels: []
+  - type: 2
+    value: 1
+    modifiers: []
+    statLevels:
+      mergePatternValue: 0
+      MergeLevels: []
+      energyPatternValue: 0
+      EnergyLevels: []
+      permanentPatternValue: 0
+      PermanentLevels:
+      - 0.2
+      - 0.4
+      - 0.6
+      - 0.8
+      - 1
+      - 1.2
+      - 1.4
+      - 1.6
+      - 1.8
+      - 2
+      - 2.2
+      - 2.4
+      - 2.6
+      - 2.8

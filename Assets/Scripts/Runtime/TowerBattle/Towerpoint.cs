@@ -4,6 +4,7 @@ using UnityEngine;
 public class Towerpoint : MonoBehaviour
 {
     [Header("Attributes")]
+    public bool hideDebug;
     [SerializeField] private Vector3 scale = Vector3.one;
     [SerializeField] private float radius = 0.5f;
     [SerializeField] private Vector3[] points;
@@ -23,6 +24,8 @@ public class Towerpoint : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (hideDebug) return;
+
         if (!_gameStarted && transform.hasChanged)
         {
             _currentPosition = transform.position;

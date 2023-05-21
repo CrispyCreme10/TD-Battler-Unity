@@ -126,5 +126,20 @@ namespace TDBattler.Runtime
         {
 
         }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            var damageable = other.gameObject.GetComponent<Damageable>();
+            if (damageable != null)
+            {
+                _enemyHealth.DealDamage(damageable.Damage);
+                damageable.PerformedDamage();
+            }
+        }
+
+        public Vector3 GetTargetPosition()
+        {
+            return transform.position;
+        }
     }
 }

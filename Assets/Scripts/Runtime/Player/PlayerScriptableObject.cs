@@ -7,9 +7,10 @@ namespace TDBattler.Runtime
     [CreateAssetMenu(menuName = "Player/Player Info")]
     public class PlayerScriptableObject : SerializedScriptableObject
     {
-        [SerializeField] private List<Tower> _selectedTowers;
-        [SerializeField] private List<Tower> _availableTowers;
+        [SerializeField] private int criticalStrike = 200;
+        [SerializeField] private List<Tower> selectedTowers;
+        [SerializeField] private List<Tower> availableTowers;
 
-        public List<Tower> SelectedTowers => _selectedTowers;
+        public List<Tower> SelectedTowers => selectedTowers;
     }
 }

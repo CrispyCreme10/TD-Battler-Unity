@@ -12,7 +12,6 @@ namespace TDBattler.Runtime
 
         [Header("References")]
         [SerializeField] private EnemySpawner enemySpawner;
-        [SerializeField] private PlayerManager playerManager;
 
         private Transform _towersContainer;
         private Towerpoint _towerpoint;

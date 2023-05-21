@@ -12,6 +12,8 @@ namespace TDBattler.Editor
 
         private void OnSceneGUI()
         {
+            if (Towerpoint.hideDebug) return;
+
             if (Towerpoint.Points.Length > 0)
             {
                 Handles.color = Color.red;

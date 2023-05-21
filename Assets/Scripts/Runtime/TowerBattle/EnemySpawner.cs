@@ -111,7 +111,7 @@ namespace TDBattler.Runtime
         {
             RemoveEnemyRef(enemy);
             enemy.transform.position = _startingPosition;
-            ObjectPooler.Instance.ReturnToPool(enemy.gameObject);
+            ObjectPooler.Instance.ReturnToPoolWithDelay(enemy.gameObject, 2);
         }
 
         private void AddEnemyRef(GameObject enemyGO)

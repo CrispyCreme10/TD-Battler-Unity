@@ -10,60 +10,67 @@ namespace TDBattler.Runtime
         [Header("Attributes")]
         [SerializeField] private float speed = 5f;
 
-        private Enemy enemy;
-        private int damage;
+        private Enemy _enemy;
+
+        // Scripts
+        private Damageable _damageable;
+
+        private void Awake()
+        {
+            _damageable = GetComponent<Damageable>();
+        }
 
         private void OnEnable()
         {
             Enemy.OnDeath += SetTarget;
             Enemy.OnEndReached += SetTarget;
+            _damageable.AfterDamage += Damageable_AfterDamage;
         }
 
         private void OnDisable()
         {
             Enemy.OnDeath -= SetTarget;
-            Enemy.OnEndReached += SetTarget;
+            Enemy.OnEndReached -= SetTarget;
+            _damageable.AfterDamage -= Damageable_AfterDamage;
         }
 
         public void SetTarget(Enemy _enemy)
         {
-            if (enemy == _enemy) 
+            if (this._enemy == _enemy)
             {
-                enemy = null;
+                this._enemy = null;
                 return;
             }
 
-            enemy = _enemy;
+            this._enemy = _enemy;
         }
 
         public void SetDamage(float _damage)
         {
-            damage = (int)_damage;
+            _damageable.SetDamage(_damage);
         }
 
         private void FixedUpdate()
         {
-            if (!enemy)
+            if (!_enemy)
             {
                 Destroy(gameObject);
                 return;
             }
-            Vector2 direction = (enemy.transform.position - transform.position).normalized;
 
-            float angle = Mathf.Atan2(enemy.transform.position.y - transform.position.y, enemy.transform.position.x - transform.position.x) * Mathf.Rad2Deg - 90f;
+            Vector3 enemyTargetPos = _enemy.GetTargetPosition();
+
+            Vector2 direction = (enemyTargetPos - transform.position).normalized;
+
+            float angle = Mathf.Atan2(enemyTargetPos.y - transform.position.y, enemyTargetPos.x - transform.position.x) * Mathf.Rad2Deg - 90f;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
             transform.rotation = targetRotation;
 
             rigidBody.velocity = direction * speed;
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void Damageable_AfterDamage()
         {
-            if (other.collider.CompareTag("Enemy"))
-            {
-                Enemy enemy = other.gameObject.GetComponent<Enemy>();
-                enemy.EnemyHealth.DealDamage(damage);
-            }
             Destroy(gameObject);
         }
     }

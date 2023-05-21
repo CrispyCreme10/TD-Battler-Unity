@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459346010213155182}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: -0.124, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8cce2960b3f9f44bbcf952568b3e5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.5
+  moveSpeed: 0.4
   deathCoinReward: 10
   healthUpgrades: {fileID: 11400000, guid: e037c540e1fc2f94783e06558aa838be, type: 2}
 --- !u!114 &2026056366648726029
@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarPrefab: {fileID: 1120872262769045871, guid: eb22a81a80031c942a5629f2d76b5218, type: 3}
+  damageTextPrefab: {fileID: 6881026438257822051, guid: de48d17838e632d498efc280b4e4353d, type: 3}
   barPosition: {fileID: 5096516902079799889}
   initialHealth: 250
   maxHealth: 10000

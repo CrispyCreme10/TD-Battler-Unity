@@ -9,6 +9,7 @@ namespace TDBattler.Runtime
         public static Action<Enemy> OnEnemyHit;
 
         [SerializeField] private GameObject healthBarPrefab;
+        [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Transform barPosition;
         [SerializeField] private int initialHealth = 250;
         [SerializeField] private int maxHealth = 100_000;
@@ -35,6 +36,11 @@ namespace TDBattler.Runtime
 
         public void DealDamage(int damageRecieved)
         {
+            if (damageTextPrefab != null)
+            {
+                ShowDamageText(damageRecieved);
+            }
+
             currentHealth -= damageRecieved;
             if (CurrentHealth <= 0)
             {
@@ -46,6 +52,12 @@ namespace TDBattler.Runtime
 
             UpdateHealthText();
             OnEnemyHit?.Invoke(_enemy);
+        }
+
+        private void ShowDamageText(int damage)
+        {
+            var go = Instantiate(damageTextPrefab, transform.position, Quaternion.identity, transform);
+            go.GetComponent<TextMesh>().text = damage.ToString();
         }
 
         public void Init()

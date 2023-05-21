@@ -277,7 +277,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 1932490963, guid: 0929ddabdee16fe45bb48bd5d7607326, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.011764706, g: 0.6039216, b: 0.46666667, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -296,7 +296,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9138542685181519765}
-  - component: {fileID: 9138542685181519766}
+  - component: {fileID: 8157241084054667046}
+  - component: {fileID: 552294029}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -321,7 +322,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9138542685181519766
+--- !u!114 &8157241084054667046
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -330,7 +331,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9138542685181519784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50513df0c6081484fb71a95068e22a51, type: 3}
+  m_Script: {fileID: 11500000, guid: 63e6dd24f270a2e479dbd03f23e0858b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serializationData:
@@ -342,13 +343,13 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: stats
+    - Name: statMap
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Stat, com.Jordan.TDBattler.Runtime],[System.Single,
+      Data: 0|System.Collections.Generic.Dictionary`2[[StatType, com.Jordan.TDBattler.Runtime],[System.Single,
         mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Stat, com.Jordan.TDBattler.Runtime]],
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[StatType, com.Jordan.TDBattler.Runtime]],
         mscorlib
     - Name: 
       Entry: 12
@@ -373,4 +374,26 @@ MonoBehaviour:
   firingPoint: {fileID: 9138542683803835227}
   towerData: {fileID: 11400000, guid: bcdc5bf73c0aee78fa58e4b61808b159, type: 2}
   textPrefab: {fileID: 7387962130193737361, guid: a51ac77331d458a43ab5f6a65231ae8c, type: 3}
+  anim: {fileID: 552294029}
   mergeLevel: 0
+--- !u!95 &552294029
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9138542685181519784}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1b783e8813690874d8a2d2f9ea2ce88b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

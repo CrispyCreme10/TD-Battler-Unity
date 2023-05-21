@@ -216,7 +216,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 1848261895}
-  playerManager: {fileID: 0}
 --- !u!114 &174559307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0becae44589734286f440fc295d442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hideDebug: 1
   scale: {x: 0.35, y: 0.35, z: 1}
   radius: 0.5
   points:
@@ -2558,6 +2558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0becae44589734286f440fc295d442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hideDebug: 0
   scale: {x: 1, y: 1, z: 1}
   radius: 0.5
   points:
@@ -2620,6 +2621,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0becae44589734286f440fc295d442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hideDebug: 0
   scale: {x: 1, y: 1, z: 1}
   radius: 0.5
   points:
@@ -2838,10 +2840,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyCount: 50
   timerMode: 1
-  timerInSeconds: 300
+  timerInSeconds: 120
   gruntPrefab: {fileID: 6891377522185687168, guid: 53734d57775bdc14fa5a1278cc8d3cce, type: 3}
-  initSpawnDelay: 1
-  delayBtwSpawns: 0.5
+  initSpawnDelay: 2
+  delayBtwSpawns: 0.65
 --- !u!4 &1848261896
 Transform:
   m_ObjectHideFlags: 0
@@ -2871,6 +2873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99015dd9ee963538fbd5522e4a4b4531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hideDebug: 1
   scale: {x: 0.35, y: 0.35, z: 1}
   radius: 0.5
   points:

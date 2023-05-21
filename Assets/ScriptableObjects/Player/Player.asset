@@ -21,7 +21,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _selectedTowers:
-  - {fileID: 9138542685181519766, guid: d690a72ad684d3d4c964a9a764c14849, type: 3}
-  _availableTowers:
-  - {fileID: 9138542685181519766, guid: d690a72ad684d3d4c964a9a764c14849, type: 3}
+  criticalStrike: 200
+  selectedTowers:
+  - {fileID: 8157241084054667046, guid: d690a72ad684d3d4c964a9a764c14849, type: 3}
+  availableTowers:
+  - {fileID: 8157241084054667046, guid: d690a72ad684d3d4c964a9a764c14849, type: 3}
