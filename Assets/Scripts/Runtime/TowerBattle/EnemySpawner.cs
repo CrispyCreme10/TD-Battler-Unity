@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace TDBattler.Runtime
@@ -19,6 +21,9 @@ namespace TDBattler.Runtime
         [SerializeField] private bool timerMode = true;
         [SerializeField] private int timerInSeconds = 120;
         [SerializeField] private GameObject gruntPrefab;
+        [SerializeField] private GameObject speederPrefab;
+        [SerializeField] private GameObject miniBossPrefab;
+        [SerializeField] private List<SpawnGroup> spawnGroups;
 
         [Header("Fixed Delay")]
         [SerializeField] private float initSpawnDelay = 1f;
@@ -28,11 +33,15 @@ namespace TDBattler.Runtime
 
         private Waypoint _waypoint;
         private float _spawnTimer;
-        private int _enemiesSpawned;
         private List<GameObject> _enemyRefs;
         private bool _isInMinionMode;
         private float _minionTimeRemaining;
         private Vector3 _startingPosition;
+        private int _spawnGroupIndex;
+        private Coroutine _spawnGroupCoroutine;
+        private bool _isSpawning;
+        private Dictionary<EnemyPoolName, string> enemyPoolNameMap = new Dictionary<EnemyPoolName, string>();
+        private Dictionary<EnemyPoolName, GameObject> enemyPrefabMap = new Dictionary<EnemyPoolName, GameObject>();
 
         private void Awake()
         {
@@ -42,6 +51,11 @@ namespace TDBattler.Runtime
             _isInMinionMode = true;
             _minionTimeRemaining = timerInSeconds;
             _startingPosition = _waypoint.GetWaypointPosition(0);
+            _spawnGroupIndex = 0;
+
+            // map enemy pool name to enemy prefab
+            enemyPoolNameMap[EnemyPoolName.Grunt] = GRUNT_POOL_NAME;
+            enemyPrefabMap[EnemyPoolName.Grunt] = gruntPrefab;
         }
 
         private void OnEnable()
@@ -66,15 +80,9 @@ namespace TDBattler.Runtime
 
         private void Update()
         {
-            _spawnTimer -= Time.deltaTime;
-            if (_spawnTimer < 0)
+            if(_spawnGroupCoroutine == null && CanSpawnEnemy() && !_isSpawning)
             {
-                _spawnTimer = delayBtwSpawns;
-                if (CanSpawnEnemy())
-                {
-                    _enemiesSpawned++;
-                    SpawnEnemy();
-                }
+                _spawnGroupCoroutine = StartCoroutine(SpawnEnemyGroup());
             }
 
             if (_minionTimeRemaining > 0)
@@ -98,13 +106,35 @@ namespace TDBattler.Runtime
                 return _minionTimeRemaining != 0;
             }
 
-            return _enemiesSpawned < enemyCount;
+            return _enemyRefs.Count < enemyCount;
         }
 
-        private void SpawnEnemy()
+        private IEnumerator SpawnEnemy(EnemyPoolName enemyPoolName, float waitTime)
         {
-            GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(GRUNT_POOL_NAME);
+            yield return new WaitForSeconds(waitTime);
+            string poolName = enemyPoolNameMap[enemyPoolName];
+            GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(poolName);
             AddEnemyRef(newInstance);
+        }
+
+        private IEnumerator SpawnEnemyGroup()
+        {
+            _isSpawning = true;
+            var group = spawnGroups[_spawnGroupIndex];
+
+            yield return new WaitForSeconds(group.spawnDelay);
+
+            foreach(var enemy in group.enemies)
+            {
+                SpawnEnemy(enemy.poolName, group.spawnDelayGap);
+            }
+
+            _spawnGroupIndex++;
+            if (_spawnGroupIndex == spawnGroups.Count)
+            {
+                _spawnGroupIndex = 0;
+            }
+            _isSpawning = false;
         }
 
         private void DespawnEnemy(Enemy enemy)
@@ -131,5 +161,27 @@ namespace TDBattler.Runtime
                 OnEnemiesChanged?.Invoke(_enemyRefs.Select(go => go.GetComponent<Enemy>()));
             }
         }
+    }
+
+    [Serializable]
+    public class SpawnGroup
+    {
+        public float spawnDelay = 1f;
+        public float spawnDelayGap = 0.5f;
+        public List<SpawnPair> enemies;
+    }
+
+    [Serializable]
+    public struct SpawnPair
+    {
+        public int count;
+        public EnemyPoolName poolName;
+    }
+
+    public enum EnemyPoolName
+    {
+        Grunt,
+        Speeder,
+        MiniBoss
     }
 }

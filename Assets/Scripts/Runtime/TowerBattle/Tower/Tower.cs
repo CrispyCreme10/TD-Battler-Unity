@@ -59,11 +59,16 @@ namespace TDBattler.Runtime
         {
             EnemySpawner.OnEnemiesChanged += UpdateEnemies;
             TowerSpawner.OnTowerEnergyIncrease += TowerEnergyIncrease;
+
+            anim.SetBool("CanShoot", true);
         }
 
         private void OnDisable()
         {
             EnemySpawner.OnEnemiesChanged -= UpdateEnemies;
+            TowerSpawner.OnTowerEnergyIncrease += TowerEnergyIncrease;
+
+            anim.SetBool("CanShoot", false);
         }
 
         private void Update()
@@ -156,7 +161,7 @@ namespace TDBattler.Runtime
         {
             // just get the enemies that are relevant
             _enemiesInRange = enemies.ToList();
-            anim.SetBool("IsEnemyInRange", _enemiesInRange.Count > 0);
+            anim.SetBool("CanShoot", _enemiesInRange.Count > 0);
         }
 
         public float GetStat(StatType stat)
