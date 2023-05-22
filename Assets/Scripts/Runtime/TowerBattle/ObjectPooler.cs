@@ -39,14 +39,7 @@ namespace TDBattler.Runtime
         {
             if (_pools.TryGetValue(name, out ObjectPool pool))
             {
-                for (int i = 0; i < pool.Objects.Count; i++)
-                {
-                    if (!pool.Objects[i].activeInHierarchy)
-                    {
-                        pool.Objects[i].SetActive(true);
-                        return pool.Objects[i];
-                    }
-                }
+                return pool.GetObjectFromPool();
             }
 
             return null;
@@ -68,6 +61,7 @@ namespace TDBattler.Runtime
     {
         public string PoolName { get; private set; }
         public int PoolSize { get; private set; }
+        public int ObjectIndex { get; private set; }
         public List<GameObject> Objects { get; private set; }
         public GameObject ObjectPrefab { get; private set; }
         private GameObject _poolContainer;
@@ -77,6 +71,7 @@ namespace TDBattler.Runtime
         {
             PoolName = name;
             PoolSize = poolSize;
+            ObjectIndex = 0;
             Objects = new List<GameObject>();
             ObjectPrefab = prefab;
             _poolContainer = new GameObject($"{name} - Pool");
@@ -105,6 +100,25 @@ namespace TDBattler.Runtime
             newInstance.transform.position = _options.Position ?? newInstance.transform.position;
             newInstance.SetActive(false);
             return newInstance;
+        }
+    
+        public GameObject GetObjectFromPool()
+        {
+            var obj = Objects[ObjectIndex];
+            obj.SetActive(true);
+            IncrementIndex();
+            return obj;  
+        }
+
+        private void IncrementIndex()
+        {
+            if (ObjectIndex == Objects.Count)
+            {
+                ObjectIndex = 0;
+                return;
+            }
+
+            ObjectIndex++;
         }
     }
 

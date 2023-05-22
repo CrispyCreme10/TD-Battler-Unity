@@ -5,53 +5,27 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Enemy/Health Upgrades", fileName = "New Health Upgrades")]
 public class HealthUpgrades_SO : ScriptableObject
 {
-    [SerializeField] private int timeBetweenChange = 10;
-    [SerializeField] private List<HealthUpgrades> healthUpgrades;
-
-    private bool waitUntilChange;
-    private int currentIndex;
-    private int currentHealth;
-    private int currentWave;
-
-    private void OnEnable()
-    {
-        waitUntilChange = false;
-        currentIndex = -1;
-        currentHealth = 69;
-        currentWave = 1;
-    }
+    public Action<int> OnHealthIncrease;
+    [SerializeField] private List<HealthUpgrade> healthUpgrades;
 
     public int GetCurrentHealth(float initialTime, float timeRemaining, int wave)
     {
+        HealthUpgrade currHealthUpgrade = healthUpgrades[wave - 1];
         float timeDelta = initialTime - timeRemaining;
+        int timeBetweenChange = currHealthUpgrade.TimeFrequency;
         int flatTime = Mathf.FloorToInt(timeDelta / timeBetweenChange);
-        if (flatTime > currentIndex)
-        {
-            currentIndex = flatTime;
-            waitUntilChange = true;
-        }
-
-        if (currentIndex < healthUpgrades[currentWave - 1].Health.Count && waitUntilChange)
-        {
-            currentHealth = GetHealthByWave(wave, currentIndex);
-            waitUntilChange = false;
-        }
-
-        return currentHealth;
-    }
-
-    public int GetHealthByWave(int wave, int index)
-    {
-        return healthUpgrades[wave - 1].Health[index];
+        return currHealthUpgrade.InitHealth + (currHealthUpgrade.HealthIncrement * flatTime);
     }
 }
 
 [Serializable]
-public class HealthUpgrades
+public class HealthUpgrade
 {
-    [SerializeField] private int wave;
-    [SerializeField] private List<int> health;
+    [SerializeField] private int timeFrequency = 10;
+    [SerializeField] private int initHealth = 0;
+    [SerializeField] private int healthIncrement = 100;
 
-    public int Wave => wave;
-    public List<int> Health => health;
+    public int TimeFrequency => timeFrequency;
+    public int InitHealth => initHealth;
+    public int HealthIncrement => healthIncrement;
 }

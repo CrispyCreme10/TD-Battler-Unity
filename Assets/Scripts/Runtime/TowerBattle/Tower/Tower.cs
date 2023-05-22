@@ -29,7 +29,7 @@ namespace TDBattler.Runtime
         public TowerScriptableObject TowerData => towerData;
 
         private GameObject _projectileContainer;
-        private Enemy _currentEnemyTarget;
+        
         private List<Enemy> _enemiesInRange;
 
         // battle props
@@ -40,6 +40,9 @@ namespace TDBattler.Runtime
         [ReadOnly]
         [SerializeField]
         private Dictionary<StatType, float> statMap = new Dictionary<StatType, float>();
+        [ReadOnly]
+        [SerializeField]
+        private Enemy _currentEnemyTarget;
 
         Coroutine currentCoroutine;
         Quaternion? enemyDir;

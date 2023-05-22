@@ -15,6 +15,8 @@ namespace TDBattler.Runtime
         public static Action OnTimerEnd;
 
         const string GRUNT_POOL_NAME = "Grunt";
+        const string SPEEDER_POOL_NAME = "Speeder";
+        const string MINIBOSS_POOL_NAME = "Miniboss";
 
         [Header("Settings")]
         [SerializeField] private int enemyCount = 10;
@@ -22,7 +24,7 @@ namespace TDBattler.Runtime
         [SerializeField] private int timerInSeconds = 120;
         [SerializeField] private GameObject gruntPrefab;
         [SerializeField] private GameObject speederPrefab;
-        [SerializeField] private GameObject miniBossPrefab;
+        [SerializeField] private GameObject minibossPrefab;
         [SerializeField] private List<SpawnGroup> spawnGroups;
 
         [Header("Fixed Delay")]
@@ -38,7 +40,7 @@ namespace TDBattler.Runtime
         private float _minionTimeRemaining;
         private Vector3 _startingPosition;
         private int _spawnGroupIndex;
-        private Coroutine _spawnGroupCoroutine;
+        private List<Coroutine> _spawnGroupCoroutines = new List<Coroutine>();
         private bool _isSpawning;
         private Dictionary<EnemyPoolName, string> enemyPoolNameMap = new Dictionary<EnemyPoolName, string>();
         private Dictionary<EnemyPoolName, GameObject> enemyPrefabMap = new Dictionary<EnemyPoolName, GameObject>();
@@ -74,19 +76,23 @@ namespace TDBattler.Runtime
         {
             // Create pools
             ObjectPooler.Instance.CreatePool(GRUNT_POOL_NAME, gruntPrefab, 50, new ObjectPoolOptions(_startingPosition));
+            ObjectPooler.Instance.CreatePool(SPEEDER_POOL_NAME, speederPrefab, 20, new ObjectPoolOptions(_startingPosition));
+            ObjectPooler.Instance.CreatePool(MINIBOSS_POOL_NAME, minibossPrefab, 10, new ObjectPoolOptions(_startingPosition));
 
             OnTimerStart?.Invoke(_minionTimeRemaining);
         }
 
+        private Coroutine _gruntCoroutine;
+
         private void Update()
         {
-            if(_spawnGroupCoroutine == null && CanSpawnEnemy() && !_isSpawning)
+            if (CanSpawnEnemy())
             {
-                _spawnGroupCoroutine = StartCoroutine(SpawnEnemyGroup());
-            }
+                if (_gruntCoroutine == null)
+                {
+                    _gruntCoroutine = StartCoroutine(SpawnEnemy(EnemyPoolName.Grunt, delayBtwSpawns, timerInSeconds, _minionTimeRemaining));
+                }
 
-            if (_minionTimeRemaining > 0)
-            {
                 _minionTimeRemaining -= Time.deltaTime;
                 OnTimerChanged?.Invoke(timerInSeconds, _minionTimeRemaining);
             }
@@ -103,39 +109,44 @@ namespace TDBattler.Runtime
         {
             if (timerMode)
             {
-                return _minionTimeRemaining != 0;
+                return _minionTimeRemaining >= 0;
             }
 
             return _enemyRefs.Count < enemyCount;
         }
 
-        private IEnumerator SpawnEnemy(EnemyPoolName enemyPoolName, float waitTime)
+        private IEnumerator SpawnEnemy(EnemyPoolName enemyPoolName, float waitTime, float startingTime, float remainingTime)
         {
             yield return new WaitForSeconds(waitTime);
-            string poolName = enemyPoolNameMap[enemyPoolName];
-            GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(poolName);
-            AddEnemyRef(newInstance);
-        }
-
-        private IEnumerator SpawnEnemyGroup()
-        {
-            _isSpawning = true;
-            var group = spawnGroups[_spawnGroupIndex];
-
-            yield return new WaitForSeconds(group.spawnDelay);
-
-            foreach(var enemy in group.enemies)
+            if (enemyPoolNameMap.TryGetValue(enemyPoolName, out string poolName))
             {
-                SpawnEnemy(enemy.poolName, group.spawnDelayGap);
+                GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(poolName);
+                newInstance.GetComponent<Enemy>().SetHealth(startingTime, remainingTime);
+                AddEnemyRef(newInstance);
             }
 
-            _spawnGroupIndex++;
-            if (_spawnGroupIndex == spawnGroups.Count)
-            {
-                _spawnGroupIndex = 0;
-            }
-            _isSpawning = false;
+            _gruntCoroutine = null;
         }
+
+        // private IEnumerator SpawnEnemyGroup(int index)
+        // {
+        //     _isSpawning = true;
+        //     var group = spawnGroups[index];
+
+        //     yield return new WaitForSeconds(group.spawnDelay);
+
+        //     foreach(var enemy in group.enemies)
+        //     {
+        //         SpawnEnemy(enemy.poolName, group.spawnDelayGap);
+        //     }
+
+        //     _spawnGroupIndex++;
+        //     if (_spawnGroupIndex == spawnGroups.Count)
+        //     {
+        //         _spawnGroupIndex = 0;
+        //     }
+        //     _isSpawning = false;
+        // }
 
         private void DespawnEnemy(Enemy enemy)
         {
@@ -174,6 +185,9 @@ namespace TDBattler.Runtime
     [Serializable]
     public struct SpawnPair
     {
+        public float spawnFrequency;
+        public float spawnDelay;
+        public float spawnDelayGap;
         public int count;
         public EnemyPoolName poolName;
     }

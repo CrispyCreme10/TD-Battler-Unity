@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace TDBattler.Runtime
@@ -44,6 +45,7 @@ namespace TDBattler.Runtime
 
         private void Update()
         {
+
             Move();
 
             if (CurrentPointPositionReached())
@@ -106,19 +108,34 @@ namespace TDBattler.Runtime
 
         private void OnTimerChanged(float startingTime, float remainingTime)
         {
+            // int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
+            // if (newHealth > 0)
+            // {
+            //     try
+            //     {
+            //         if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
+            //         _enemyHealth.UpdateInitialHealth(newHealth);
+            //     }
+            //     catch (System.Exception e)
+            //     {
+            //         Debug.Log(name);
+            //         throw e;
+            //     }
+            // }
+        }
+
+        public void SetHealth(float startingTime, float remainingTime)
+        {
             int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
-            if (newHealth > 0)
+            try
             {
-                try
-                {
-                    if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
-                    _enemyHealth.UpdateInitialHealth(newHealth);
-                }
-                catch (System.Exception e)
-                {
-                    Debug.Log(name);
-                    throw e;
-                }
+                if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
+                _enemyHealth.UpdateInitialHealth(newHealth);
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(name);
+                throw e;
             }
         }
 

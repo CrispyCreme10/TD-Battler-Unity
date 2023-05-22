@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40a618c4b2d9e484087456ce62baa780, type: 3}
-  m_Name: Basic_Health_Upgrades
+  m_Name: BasicHealthUpgrades
   m_EditorClassIdentifier: 
-  timeBetweenChange: 10
   healthUpgrades:
-  - wave: 1
-    health: 73000000e600000059010000cc0100003f020000b202000025030000980300000b0400007e040000f104000064050000
+  - timeFrequency: 10
+    initHealth: 115
+    healthIncrement: 115
