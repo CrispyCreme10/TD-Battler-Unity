@@ -20,12 +20,17 @@ namespace TDBattler.Runtime
         private Enemy _enemy;
         private EnemyHealthContainer _container;
 
-        private void Start()
+        private void Awake()
         {
             CreateHealthBar();
             Init();
 
             _enemy = GetComponent<Enemy>();
+        }
+
+        private void Start()
+        {
+            
         }
 
         private void CreateHealthBar()

@@ -53,7 +53,7 @@ namespace TDBattler.Runtime
         public IEnumerator ReturnToPoolWithDelay(GameObject instance, float delay)
         {
             yield return new WaitForSeconds(delay);
-            instance.SetActive(false);
+            ReturnToPool(instance);
         }
     }
 
@@ -112,7 +112,7 @@ namespace TDBattler.Runtime
 
         private void IncrementIndex()
         {
-            if (ObjectIndex == Objects.Count)
+            if (ObjectIndex >= Objects.Count - 1)
             {
                 ObjectIndex = 0;
                 return;

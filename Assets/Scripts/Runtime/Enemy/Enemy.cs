@@ -25,6 +25,14 @@ namespace TDBattler.Runtime
         private int _currentWaypointIndex;
         private EnemyHealth _enemyHealth;
 
+        private void Awake() 
+        {
+            _waypoint = GameObject.Find("EnemySpawner").GetComponent<Waypoint>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            _enemyHealth = GetComponent<EnemyHealth>();
+            Init();
+        }
+
         private void OnEnable()
         {
             EnemySpawner.OnTimerChanged += OnTimerChanged;
@@ -37,10 +45,7 @@ namespace TDBattler.Runtime
 
         private void Start()
         {
-            _waypoint = GameObject.Find("EnemySpawner").GetComponent<Waypoint>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-            _enemyHealth = GetComponent<EnemyHealth>();
-            Init();
+            
         }
 
         private void Update()
@@ -91,16 +96,14 @@ namespace TDBattler.Runtime
         private void EndPointReached()
         {
             OnEndReached?.Invoke(this);
-            ResetEnemy();
         }
 
         public void Death()
         {
             OnDeath?.Invoke(this);
-            ResetEnemy();
         }
 
-        private void ResetEnemy()
+        public void ResetEnemy()
         {
             _enemyHealth.Init();
             Init();
@@ -127,6 +130,7 @@ namespace TDBattler.Runtime
         public void SetHealth(float startingTime, float remainingTime)
         {
             int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
+            Debug.Log($"{this.name} {newHealth}");
             try
             {
                 if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();

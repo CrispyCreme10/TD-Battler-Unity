@@ -75,7 +75,7 @@ namespace TDBattler.Runtime
         private void Start()
         {
             // Create pools
-            ObjectPooler.Instance.CreatePool(GRUNT_POOL_NAME, gruntPrefab, 50, new ObjectPoolOptions(_startingPosition));
+            ObjectPooler.Instance.CreatePool(GRUNT_POOL_NAME, gruntPrefab, 20, new ObjectPoolOptions(_startingPosition));
             ObjectPooler.Instance.CreatePool(SPEEDER_POOL_NAME, speederPrefab, 20, new ObjectPoolOptions(_startingPosition));
             ObjectPooler.Instance.CreatePool(MINIBOSS_POOL_NAME, minibossPrefab, 10, new ObjectPoolOptions(_startingPosition));
 
@@ -88,12 +88,13 @@ namespace TDBattler.Runtime
         {
             if (CanSpawnEnemy())
             {
+                _minionTimeRemaining -= Time.deltaTime;
+
                 if (_gruntCoroutine == null)
                 {
                     _gruntCoroutine = StartCoroutine(SpawnEnemy(EnemyPoolName.Grunt, delayBtwSpawns, timerInSeconds, _minionTimeRemaining));
                 }
 
-                _minionTimeRemaining -= Time.deltaTime;
                 OnTimerChanged?.Invoke(timerInSeconds, _minionTimeRemaining);
             }
             else
@@ -121,6 +122,7 @@ namespace TDBattler.Runtime
             if (enemyPoolNameMap.TryGetValue(enemyPoolName, out string poolName))
             {
                 GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(poolName);
+                newInstance.GetComponent<Enemy>().ResetEnemy();
                 newInstance.GetComponent<Enemy>().SetHealth(startingTime, remainingTime);
                 AddEnemyRef(newInstance);
             }
@@ -150,9 +152,15 @@ namespace TDBattler.Runtime
 
         private void DespawnEnemy(Enemy enemy)
         {
+            StartCoroutine(DespawnEnemyWithDelay(enemy, 1f));
+        }
+
+        private IEnumerator DespawnEnemyWithDelay(Enemy enemy, float delay)
+        {
             RemoveEnemyRef(enemy);
+            ObjectPooler.Instance.ReturnToPool(enemy.gameObject);
+            yield return new WaitForSeconds(delay);
             enemy.transform.position = _startingPosition;
-            ObjectPooler.Instance.ReturnToPoolWithDelay(enemy.gameObject, 2);
         }
 
         private void AddEnemyRef(GameObject enemyGO)

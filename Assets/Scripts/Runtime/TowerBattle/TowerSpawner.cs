@@ -66,7 +66,6 @@ namespace TDBattler.Runtime
             instance.name += " " + ++_spawnTowerCount;
             if (mergeLevel > 0)
             {
-                Debug.Log(mergeLevel);
                 instance.SetMergeLevel(mergeLevel);
             }
             instance.UpdateEnemies(enemySpawner.Enemies);
