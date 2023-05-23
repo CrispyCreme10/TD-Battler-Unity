@@ -314,7 +314,7 @@ Transform:
   m_GameObject: {fileID: 9138542685181519784}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5, y: 2.06, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9138542683645119276}
@@ -376,6 +376,7 @@ MonoBehaviour:
   textPrefab: {fileID: 7387962130193737361, guid: a51ac77331d458a43ab5f6a65231ae8c, type: 3}
   anim: {fileID: 552294029}
   mergeLevel: 0
+  _currentEnemyTarget: {fileID: 0}
 --- !u!95 &552294029
 Animator:
   serializedVersion: 5

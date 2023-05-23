@@ -80,5 +80,10 @@ namespace TDBattler.Runtime
         {
             initialHealth = newHealth;
         }
+
+        public void UpdateCurrentHealth()
+        {
+            currentHealth = initialHealth;
+        }
     }
 }

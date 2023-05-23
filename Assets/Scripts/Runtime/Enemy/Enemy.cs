@@ -135,6 +135,7 @@ namespace TDBattler.Runtime
             {
                 if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
                 _enemyHealth.UpdateInitialHealth(newHealth);
+                _enemyHealth.UpdateCurrentHealth();
             }
             catch (System.Exception e)
             {

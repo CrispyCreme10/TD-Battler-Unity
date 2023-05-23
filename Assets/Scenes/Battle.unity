@@ -180,7 +180,6 @@ GameObject:
   m_Component:
   - component: {fileID: 174559305}
   - component: {fileID: 174559306}
-  - component: {fileID: 174559307}
   m_Layer: 0
   m_Name: TowerSpawner
   m_TagString: Untagged
@@ -199,7 +198,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 205756458}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -216,37 +216,72 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 1848261895}
---- !u!114 &174559307
+--- !u!1 &205756457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 205756458}
+  - component: {fileID: 205756459}
+  m_Layer: 0
+  m_Name: Towerpoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &205756458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205756457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 174559305}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &205756459
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174559304}
-  m_Enabled: 1
+  m_GameObject: {fileID: 205756457}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b0becae44589734286f440fc295d442, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hideDebug: 0
-  scale: {x: 0.35, y: 0.35, z: 1}
+  scale: {x: 0.5, y: 0.5, z: 1}
   radius: 0.5
   points:
-  - {x: -5.015428, y: -0.009688184, z: 0}
-  - {x: -2.970711, y: -0.00000011920929, z: 0}
-  - {x: -1.0000601, y: 0.016011968, z: 0}
-  - {x: 1.0107865, y: -0.0018471032, z: 0}
-  - {x: 2.9992967, y: 0.011530638, z: 0}
-  - {x: -4.988997, y: -2.0383925, z: 0}
-  - {x: -2.9993727, y: -1.9948347, z: 0}
-  - {x: -1.016073, y: -2.0000434, z: 0}
-  - {x: 0.99998045, y: -1.9993156, z: 0}
-  - {x: 3.0171542, y: -2.0108492, z: 0}
-  - {x: -4.9986863, y: -3.9781365, z: 0}
-  - {x: -2.9878387, y: -3.9896698, z: 0}
-  - {x: -0.9993303, y: -3.982615, z: 0}
-  - {x: 0.99029493, y: -3.9941492, z: 0}
-  - {x: 3.001141, y: -3.978136, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 1.5, y: -0, z: 0}
+  - {x: 3, y: -0, z: 0}
+  - {x: 4.5, y: -0, z: 0}
+  - {x: 6, y: -0, z: 0}
+  - {x: 0, y: -1.5, z: 0}
+  - {x: 1.5, y: -1.5, z: 0}
+  - {x: 3, y: -1.5, z: 0}
+  - {x: 4.5, y: -1.5, z: 0}
+  - {x: 6, y: -1.5, z: 0}
+  - {x: 0, y: -3, z: 0}
+  - {x: 1.5, y: -3, z: 0}
+  - {x: 3, y: -3, z: 0}
+  - {x: 4.5, y: -3, z: 0}
+  - {x: 6, y: -3, z: 0}
+  rows: 3
+  columns: 5
+  gridScale: {x: 1.5, y: 1.5}
 --- !u!1 &240826934
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,6 +2612,9 @@ MonoBehaviour:
   - {x: -0.9993303, y: -3.982615, z: 0}
   - {x: 0.99029493, y: -3.9941492, z: 0}
   - {x: 3.001141, y: -3.978136, z: 0}
+  rows: 0
+  columns: 0
+  gridScale: {x: 1, y: 1}
 --- !u!1 &1601977078
 GameObject:
   m_ObjectHideFlags: 0
@@ -2649,6 +2687,9 @@ MonoBehaviour:
   - {x: 5.022406, y: -0.0000019073486, z: 0}
   - {x: 5.0011845, y: -2.0160573, z: 0}
   - {x: 5.0011845, y: -3.9684484, z: 0}
+  rows: 0
+  columns: 0
+  gridScale: {x: 1, y: 1}
 --- !u!1 &1647685610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2788,7 +2829,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815731671}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.42, y: 3.51, z: -10}
+  m_LocalPosition: {x: 1.55, y: 1.88, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2864,7 +2905,7 @@ MonoBehaviour:
       count: 1
       poolName: 2
   initSpawnDelay: 1.5
-  delayBtwSpawns: 0.75
+  delayBtwSpawns: 1
 --- !u!4 &1848261896
 Transform:
   m_ObjectHideFlags: 0
@@ -2895,13 +2936,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hideDebug: 0
-  scale: {x: 0.35, y: 0.35, z: 1}
+  scale: {x: 0.5, y: 0.5, z: 1}
   radius: 0.5
   points:
-  - {x: -6.5, y: -5, z: 0}
-  - {x: -6.5, y: 1.5, z: 0}
-  - {x: 4.5, y: 1.5, z: 0}
-  - {x: 4.5, y: -5, z: 0}
+  - {x: -1.5, y: -3.5, z: 0}
+  - {x: -1.5, y: 1.5, z: 0}
+  - {x: 7.5, y: 1.5, z: 0}
+  - {x: 7.5, y: -3.5, z: 0}
 --- !u!1 &1883867388
 GameObject:
   m_ObjectHideFlags: 0

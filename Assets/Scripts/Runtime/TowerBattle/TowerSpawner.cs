@@ -33,7 +33,7 @@ namespace TDBattler.Runtime
 
         private void Start()
         {
-            _towerpoint = GetComponent<Towerpoint>();
+            _towerpoint = GetComponentInChildren<Towerpoint>();
             _towersContainer = new GameObject("Towers").transform;
             _pointData = Enumerable.Range(0, _towerpoint.Points.Length).Select(i => new PointData(i)).ToList();
             _spawnTowerCount = 0;
