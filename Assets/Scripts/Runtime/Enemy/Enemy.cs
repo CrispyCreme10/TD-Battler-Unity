@@ -105,26 +105,26 @@ namespace TDBattler.Runtime
 
         public void ResetEnemy()
         {
-            _enemyHealth.Init();
+            _enemyHealth.RefreshHealth();
             Init();
         }
 
         private void OnTimerChanged(float startingTime, float remainingTime)
         {
-            // int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
-            // if (newHealth > 0)
-            // {
-            //     try
-            //     {
-            //         if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
-            //         _enemyHealth.UpdateInitialHealth(newHealth);
-            //     }
-            //     catch (System.Exception e)
-            //     {
-            //         Debug.Log(name);
-            //         throw e;
-            //     }
-            // }
+            int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
+            if (newHealth > 0)
+            {
+                try
+                {
+                    if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
+                    _enemyHealth.UpdateInitialHealth(newHealth);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.Log(name);
+                    throw e;
+                }
+            }
         }
 
         public void SetHealth(float startingTime, float remainingTime)
@@ -135,7 +135,7 @@ namespace TDBattler.Runtime
             {
                 if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
                 _enemyHealth.UpdateInitialHealth(newHealth);
-                _enemyHealth.UpdateCurrentHealth();
+                _enemyHealth.RefreshHealth();
             }
             catch (System.Exception e)
             {
@@ -151,17 +151,22 @@ namespace TDBattler.Runtime
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            var damageable = other.gameObject.GetComponent<Damageable>();
-            if (damageable != null)
-            {
-                _enemyHealth.DealDamage(damageable.Damage);
-                damageable.PerformedDamage();
-            }
+            
         }
 
         public Vector3 GetTargetPosition()
         {
             return transform.position;
+        }
+    }
+
+    public class DistanceCovered
+    {
+        public float TotalDistance { get; private set; }
+
+        public void UpdateDistance(float totalDistanceFromPrevWaypoints, float distanceFromLastWaypoint)
+        {
+            TotalDistance = totalDistanceFromPrevWaypoints + distanceFromLastWaypoint;
         }
     }
 }

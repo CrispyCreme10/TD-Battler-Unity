@@ -2895,15 +2895,10 @@ MonoBehaviour:
       count: 5
       poolName: 0
     - spawnFrequency: 0
-      spawnDelay: 2.5
+      spawnDelay: 1.5
       spawnDelayGap: 0
       count: 1
       poolName: 1
-    - spawnFrequency: 0
-      spawnDelay: 0
-      spawnDelayGap: 0
-      count: 1
-      poolName: 2
   initSpawnDelay: 1.5
   delayBtwSpawns: 1
 --- !u!4 &1848261896

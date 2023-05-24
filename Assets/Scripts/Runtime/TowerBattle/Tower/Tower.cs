@@ -30,7 +30,7 @@ namespace TDBattler.Runtime
 
         private GameObject _projectileContainer;
         
-        private List<Enemy> _enemiesInRange;
+        
 
         // battle props
         [Header("Attributes")]
@@ -43,6 +43,9 @@ namespace TDBattler.Runtime
         [ReadOnly]
         [SerializeField]
         private Enemy _currentEnemyTarget;
+        [ReadOnly]
+        [SerializeField]
+        private List<Enemy> _enemiesInRange;
 
         Coroutine currentCoroutine;
         Quaternion? enemyDir;

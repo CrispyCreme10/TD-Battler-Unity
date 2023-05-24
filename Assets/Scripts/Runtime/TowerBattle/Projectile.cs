@@ -54,6 +54,7 @@ namespace TDBattler.Runtime
         {
             if (!_enemy)
             {
+                Debug.Log("Destroy projectile");
                 Destroy(gameObject);
                 return;
             }
@@ -72,6 +73,16 @@ namespace TDBattler.Runtime
         private void Damageable_AfterDamage()
         {
             Destroy(gameObject);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            var enemy = other.gameObject.GetComponent<Enemy>();
+            if (enemy != null && enemy == _enemy)
+            {
+                enemy.EnemyHealth.DealDamage(_damageable.Damage);
+                Damageable_AfterDamage();
+            }
         }
     }
 }

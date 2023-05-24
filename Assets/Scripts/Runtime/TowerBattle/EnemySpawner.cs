@@ -40,11 +40,11 @@ namespace TDBattler.Runtime
         private float _minionTimeRemaining;
         private Vector3 _startingPosition;
         private int _spawnGroupIndex;
-        private List<Coroutine> _spawnGroupCoroutines = new List<Coroutine>();
         private bool _isSpawning;
         private Dictionary<EnemyPoolName, string> enemyPoolNameMap = new Dictionary<EnemyPoolName, string>();
         private Dictionary<EnemyPoolName, GameObject> enemyPrefabMap = new Dictionary<EnemyPoolName, GameObject>();
-
+        private Coroutine _spawnGroupCoroutine;
+        
         private void Awake()
         {
             _waypoint = GetComponent<Waypoint>();
@@ -58,6 +58,15 @@ namespace TDBattler.Runtime
             // map enemy pool name to enemy prefab
             enemyPoolNameMap[EnemyPoolName.Grunt] = GRUNT_POOL_NAME;
             enemyPrefabMap[EnemyPoolName.Grunt] = gruntPrefab;
+            enemyPoolNameMap[EnemyPoolName.Speeder] = SPEEDER_POOL_NAME;
+            enemyPrefabMap[EnemyPoolName.Speeder] = speederPrefab;
+            enemyPoolNameMap[EnemyPoolName.MiniBoss] = MINIBOSS_POOL_NAME;
+            enemyPrefabMap[EnemyPoolName.MiniBoss] = minibossPrefab;
+
+            // Create pools
+            ObjectPooler.Instance.CreatePool(GRUNT_POOL_NAME, gruntPrefab, 50, new ObjectPoolOptions(_startingPosition));
+            ObjectPooler.Instance.CreatePool(SPEEDER_POOL_NAME, speederPrefab, 20, new ObjectPoolOptions(_startingPosition));
+            ObjectPooler.Instance.CreatePool(MINIBOSS_POOL_NAME, minibossPrefab, 10, new ObjectPoolOptions(_startingPosition));
         }
 
         private void OnEnable()
@@ -74,15 +83,8 @@ namespace TDBattler.Runtime
 
         private void Start()
         {
-            // Create pools
-            ObjectPooler.Instance.CreatePool(GRUNT_POOL_NAME, gruntPrefab, 20, new ObjectPoolOptions(_startingPosition));
-            ObjectPooler.Instance.CreatePool(SPEEDER_POOL_NAME, speederPrefab, 20, new ObjectPoolOptions(_startingPosition));
-            ObjectPooler.Instance.CreatePool(MINIBOSS_POOL_NAME, minibossPrefab, 10, new ObjectPoolOptions(_startingPosition));
-
             OnTimerStart?.Invoke(_minionTimeRemaining);
         }
-
-        private Coroutine _gruntCoroutine;
 
         private void Update()
         {
@@ -90,9 +92,9 @@ namespace TDBattler.Runtime
             {
                 _minionTimeRemaining -= Time.deltaTime;
 
-                if (_gruntCoroutine == null)
+                if (_spawnGroupCoroutine == null)
                 {
-                    _gruntCoroutine = StartCoroutine(SpawnEnemy(EnemyPoolName.Grunt, delayBtwSpawns, timerInSeconds, _minionTimeRemaining));
+                    _spawnGroupCoroutine = StartCoroutine(SpawnEnemyGroup());
                 }
 
                 OnTimerChanged?.Invoke(timerInSeconds, _minionTimeRemaining);
@@ -116,39 +118,42 @@ namespace TDBattler.Runtime
             return _enemyRefs.Count < enemyCount;
         }
 
-        private IEnumerator SpawnEnemy(EnemyPoolName enemyPoolName, float waitTime, float startingTime, float remainingTime)
+        private IEnumerator SpawnEnemyPair(SpawnPair enemyPair)
         {
-            yield return new WaitForSeconds(waitTime);
-            if (enemyPoolNameMap.TryGetValue(enemyPoolName, out string poolName))
+            yield return new WaitForSeconds(enemyPair.spawnDelay);
+            if (enemyPoolNameMap.TryGetValue(enemyPair.poolName, out string poolName))
             {
-                GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(poolName);
-                newInstance.GetComponent<Enemy>().ResetEnemy();
-                newInstance.GetComponent<Enemy>().SetHealth(startingTime, remainingTime);
-                AddEnemyRef(newInstance);
+                for(int i = 0; i < enemyPair.count; i++)
+                {
+                    SpawnEnemy(poolName);
+                    yield return new WaitForSeconds(enemyPair.spawnDelayGap);
+                }                
             }
-
-            _gruntCoroutine = null;
         }
 
-        // private IEnumerator SpawnEnemyGroup(int index)
-        // {
-        //     _isSpawning = true;
-        //     var group = spawnGroups[index];
+        private void SpawnEnemy(string poolName)
+        {
+            GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(poolName);
+            AddEnemyRef(newInstance);
+        }
 
-        //     yield return new WaitForSeconds(group.spawnDelay);
+        private IEnumerator SpawnEnemyGroup()
+        {
+            var group = spawnGroups[_spawnGroupIndex];
+            yield return new WaitForSeconds(group.spawnDelay);
+            foreach(var enemyPair in group.enemies)
+            {
+                yield return SpawnEnemyPair(enemyPair);
+            }
 
-        //     foreach(var enemy in group.enemies)
-        //     {
-        //         SpawnEnemy(enemy.poolName, group.spawnDelayGap);
-        //     }
+            _spawnGroupIndex++;
+            if (_spawnGroupIndex == spawnGroups.Count)
+            {
+                _spawnGroupIndex = 0;
+            }
 
-        //     _spawnGroupIndex++;
-        //     if (_spawnGroupIndex == spawnGroups.Count)
-        //     {
-        //         _spawnGroupIndex = 0;
-        //     }
-        //     _isSpawning = false;
-        // }
+            _spawnGroupCoroutine = null;
+        }
 
         private void DespawnEnemy(Enemy enemy)
         {

@@ -14,7 +14,6 @@ public class HealthUpgrades_SO : ScriptableObject
         float timeDelta = initialTime - timeRemaining;
         int timeBetweenChange = currHealthUpgrade.TimeFrequency;
         int flatTime = Mathf.FloorToInt(timeDelta / timeBetweenChange);
-        Debug.Log(flatTime);
         return currHealthUpgrade.InitHealth + (currHealthUpgrade.HealthIncrement * flatTime);
     }
 }

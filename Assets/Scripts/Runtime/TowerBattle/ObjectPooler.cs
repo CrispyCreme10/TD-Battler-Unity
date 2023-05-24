@@ -31,8 +31,24 @@ namespace TDBattler.Runtime
             if (!_pools.ContainsKey(name))
             {
                 _pools[name] = new ObjectPool(_poolContainer.transform, name, prefab, poolSize, opts);
-
+                InitPool(_pools[name]);
             }
+        }
+
+        private void InitPool(ObjectPool pool)
+        {
+            for (int i = 0; i < pool.PoolSize; i++)
+            {
+                var instance = CreateInstance(pool.ObjectPrefab, pool.PoolContainer.transform);
+                pool.InitObject(instance, i);
+                pool.Objects.Add(instance);
+            }
+            Debug.Log($"Pool: {pool.PoolName} created!");
+        }
+
+        private GameObject CreateInstance(GameObject prefab, Transform parent)
+        {
+            return Instantiate(prefab, parent);
         }
 
         public GameObject GetInstanceFromPool(string name)
@@ -57,14 +73,14 @@ namespace TDBattler.Runtime
         }
     }
 
-    public class ObjectPool : MonoBehaviour
+    public class ObjectPool
     {
         public string PoolName { get; private set; }
         public int PoolSize { get; private set; }
         public int ObjectIndex { get; private set; }
         public List<GameObject> Objects { get; private set; }
         public GameObject ObjectPrefab { get; private set; }
-        private GameObject _poolContainer;
+        public GameObject PoolContainer { get; private set; }
         private ObjectPoolOptions _options;
 
         public ObjectPool(Transform parentTransform, string name, GameObject prefab, int poolSize = 5, ObjectPoolOptions opts = null)
@@ -74,32 +90,19 @@ namespace TDBattler.Runtime
             ObjectIndex = 0;
             Objects = new List<GameObject>();
             ObjectPrefab = prefab;
-            _poolContainer = new GameObject($"{name} - Pool");
-            _poolContainer.transform.parent = parentTransform;
+            PoolContainer = new GameObject($"{name} - Pool");
+            PoolContainer.transform.parent = parentTransform;
             _options = opts;
-
-            CreatePool();
         }
 
-        private void CreatePool()
+        public void InitObject(GameObject newInstance, int i)
         {
-            for (int i = 0; i < PoolSize; i++)
-            {
-                Objects.Add(CreateInstance(i));
-            }
-            Debug.Log($"Pool: {PoolName} created!");
-        }
-
-        private GameObject CreateInstance(int i)
-        {
-            GameObject newInstance = Instantiate(ObjectPrefab, _poolContainer.transform);
             if (i >= 0)
             {
                 newInstance.name += $" {i}";
             }
             newInstance.transform.position = _options.Position ?? newInstance.transform.position;
             newInstance.SetActive(false);
-            return newInstance;
         }
     
         public GameObject GetObjectFromPool()

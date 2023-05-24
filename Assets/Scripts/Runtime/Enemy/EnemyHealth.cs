@@ -23,7 +23,7 @@ namespace TDBattler.Runtime
         private void Awake()
         {
             CreateHealthBar();
-            Init();
+            RefreshHealth();
 
             _enemy = GetComponent<Enemy>();
         }
@@ -65,7 +65,7 @@ namespace TDBattler.Runtime
             go.GetComponent<TextMesh>().text = damage.ToString();
         }
 
-        public void Init()
+        public void RefreshHealth()
         {
             currentHealth = initialHealth;
             UpdateHealthText();
@@ -79,11 +79,6 @@ namespace TDBattler.Runtime
         public void UpdateInitialHealth(int newHealth)
         {
             initialHealth = newHealth;
-        }
-
-        public void UpdateCurrentHealth()
-        {
-            currentHealth = initialHealth;
         }
     }
 }
