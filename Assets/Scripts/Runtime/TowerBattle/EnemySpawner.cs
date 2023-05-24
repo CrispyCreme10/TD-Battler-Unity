@@ -10,26 +10,19 @@ namespace TDBattler.Runtime
     public class EnemySpawner : MonoBehaviour
     {
         public static Action<IEnumerable<Enemy>> OnEnemiesChanged;
-        public static Action<float> OnTimerStart;
-        public static Action<float, float> OnTimerChanged;
-        public static Action OnTimerEnd;
 
         const string GRUNT_POOL_NAME = "Grunt";
         const string SPEEDER_POOL_NAME = "Speeder";
         const string MINIBOSS_POOL_NAME = "Miniboss";
 
-        [Header("Settings")]
-        [SerializeField] private int enemyCount = 10;
-        [SerializeField] private bool timerMode = true;
-        [SerializeField] private int timerInSeconds = 120;
+        [Header("References")]
         [SerializeField] private GameObject gruntPrefab;
         [SerializeField] private GameObject speederPrefab;
         [SerializeField] private GameObject minibossPrefab;
-        [SerializeField] private List<SpawnGroup> spawnGroups;
 
-        [Header("Fixed Delay")]
-        [SerializeField] private float initSpawnDelay = 1f;
-        [SerializeField] private float delayBtwSpawns = 1f;
+
+        [Header("Settings")]
+        [SerializeField] private List<SpawnGroup> spawnGroups;
 
         public IEnumerable<Enemy> Enemies => _enemyRefs.Select(go => go.GetComponent<Enemy>());
 
@@ -48,10 +41,8 @@ namespace TDBattler.Runtime
         private void Awake()
         {
             _waypoint = GetComponent<Waypoint>();
-            _spawnTimer = initSpawnDelay;
             _enemyRefs = new List<GameObject>();
             _isInMinionMode = true;
-            _minionTimeRemaining = timerInSeconds;
             _startingPosition = _waypoint.GetWaypointPosition(0);
             _spawnGroupIndex = 0;
 
@@ -71,62 +62,50 @@ namespace TDBattler.Runtime
 
         private void OnEnable()
         {
+            BattleManager.OnMinionWaveUpdate += WaveTimeUpdate;
             Enemy.OnDeath += DespawnEnemy;
             Enemy.OnEndReached += DespawnEnemy;
         }
 
         private void OnDisable()
         {
+            BattleManager.OnMinionWaveUpdate -= WaveTimeUpdate;
             Enemy.OnDeath -= DespawnEnemy;
             Enemy.OnEndReached -= DespawnEnemy;
         }
 
         private void Start()
         {
-            OnTimerStart?.Invoke(_minionTimeRemaining);
+             
         }
 
         private void Update()
         {
-            if (CanSpawnEnemy())
-            {
-                _minionTimeRemaining -= Time.deltaTime;
 
-                if (_spawnGroupCoroutine == null)
+        }
+
+        private void WaveTimeUpdate(float waveTimer, float waveTimerRemaining)
+        {
+            // loop spawn groups
+            // foreach create a coroutine that is associated with the group
+            foreach (SpawnGroup spawnGroup in spawnGroups)
+            {
+                if (spawnGroup.coroutine == null)
                 {
-                    _spawnGroupCoroutine = StartCoroutine(SpawnEnemyGroup());
+                    spawnGroup.coroutine = StartCoroutine(SpawnEnemyGroup(spawnGroup));
                 }
-
-                OnTimerChanged?.Invoke(timerInSeconds, _minionTimeRemaining);
-            }
-            else
-            {
-                OnTimerEnd?.Invoke();
-                _minionTimeRemaining = 0;
-                // spawn boss
-                // hide & reset timer
             }
         }
 
-        private bool CanSpawnEnemy()
+        private IEnumerator SpawnEnemyPair(SpawnUnit enemyPair)
         {
-            if (timerMode)
-            {
-                return _minionTimeRemaining >= 0;
-            }
-
-            return _enemyRefs.Count < enemyCount;
-        }
-
-        private IEnumerator SpawnEnemyPair(SpawnPair enemyPair)
-        {
-            yield return new WaitForSeconds(enemyPair.spawnDelay);
+            yield return new WaitForSeconds(enemyPair.initialDelay);
             if (enemyPoolNameMap.TryGetValue(enemyPair.poolName, out string poolName))
             {
                 for(int i = 0; i < enemyPair.count; i++)
                 {
                     SpawnEnemy(poolName);
-                    yield return new WaitForSeconds(enemyPair.spawnDelayGap);
+                    yield return new WaitForSeconds(enemyPair.enemyDelayGap);
                 }                
             }
         }
@@ -134,14 +113,13 @@ namespace TDBattler.Runtime
         private void SpawnEnemy(string poolName)
         {
             GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(poolName);
+            newInstance.GetComponent<Enemy>().SpawnInit();
             AddEnemyRef(newInstance);
         }
 
-        private IEnumerator SpawnEnemyGroup()
+        private IEnumerator SpawnEnemyGroup(SpawnGroup spawnGroup)
         {
-            var group = spawnGroups[_spawnGroupIndex];
-            yield return new WaitForSeconds(group.spawnDelay);
-            foreach(var enemyPair in group.enemies)
+            foreach(var enemyPair in spawnGroup.enemies)
             {
                 yield return SpawnEnemyPair(enemyPair);
             }
@@ -152,7 +130,8 @@ namespace TDBattler.Runtime
                 _spawnGroupIndex = 0;
             }
 
-            _spawnGroupCoroutine = null;
+            yield return new WaitForSeconds(spawnGroup.unitDelayGap);
+            // coroutine = null;
         }
 
         private void DespawnEnemy(Enemy enemy)
@@ -162,8 +141,8 @@ namespace TDBattler.Runtime
 
         private IEnumerator DespawnEnemyWithDelay(Enemy enemy, float delay)
         {
-            RemoveEnemyRef(enemy);
             ObjectPooler.Instance.ReturnToPool(enemy.gameObject);
+            RemoveEnemyRef(enemy);
             yield return new WaitForSeconds(delay);
             enemy.transform.position = _startingPosition;
         }
@@ -190,17 +169,16 @@ namespace TDBattler.Runtime
     [Serializable]
     public class SpawnGroup
     {
-        public float spawnDelay = 1f;
-        public float spawnDelayGap = 0.5f;
-        public List<SpawnPair> enemies;
+        public float unitDelayGap = 1f;
+        public List<SpawnUnit> enemies;
+        public Coroutine coroutine;
     }
 
     [Serializable]
-    public struct SpawnPair
+    public struct SpawnUnit
     {
-        public float spawnFrequency;
-        public float spawnDelay;
-        public float spawnDelayGap;
+        public float initialDelay;
+        public float enemyDelayGap;
         public int count;
         public EnemyPoolName poolName;
     }

@@ -12,10 +12,11 @@ namespace TDBattler.Runtime
         [Header("Attributes")]
         [SerializeField] private float moveSpeed = 1f;
         [SerializeField] private int deathCoinReward = 10;
-        [SerializeField] private HealthUpgrades_SO healthUpgrades;
+        
 
         public EnemyHealth EnemyHealth => _enemyHealth;
         public int DeathCoinReward => deathCoinReward;
+        public float DistanceTraveled => _distanceTraveled;
 
         private float MoveSpeed => moveSpeed;
         private Waypoint _waypoint;
@@ -24,23 +25,23 @@ namespace TDBattler.Runtime
         private Vector3 _lastPointPosition;
         private int _currentWaypointIndex;
         private EnemyHealth _enemyHealth;
+        private float _distanceTraveled;
 
         private void Awake() 
         {
             _waypoint = GameObject.Find("EnemySpawner").GetComponent<Waypoint>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _enemyHealth = GetComponent<EnemyHealth>();
-            Init();
         }
 
         private void OnEnable()
         {
-            EnemySpawner.OnTimerChanged += OnTimerChanged;
+            
         }
 
         private void OnDisable()
         {
-            EnemySpawner.OnTimerChanged -= OnTimerChanged;
+            
         }
 
         private void Start()
@@ -53,17 +54,21 @@ namespace TDBattler.Runtime
 
             Move();
 
-            if (CurrentPointPositionReached())
+            var distanceToNextWaypoint = (transform.position - _currentPointPosition).magnitude;
+            if (CurrentPointPositionReached(distanceToNextWaypoint))
             {
                 UpdateCurrentPointIndex();
             }
+
+            UpdateDistanceTraveled(distanceToNextWaypoint);
         }
 
-        private void Init()
+        public void SpawnInit()
         {
             _currentWaypointIndex = 0;
             _currentPointPosition = _waypoint.GetWaypointPosition(_currentWaypointIndex);
             _lastPointPosition = transform.position;
+            _enemyHealth.SpawnInit();
         }
 
         private void Move()
@@ -71,9 +76,8 @@ namespace TDBattler.Runtime
             transform.position = Vector3.MoveTowards(transform.position, _currentPointPosition, MoveSpeed * Time.deltaTime);
         }
 
-        private bool CurrentPointPositionReached()
+        private bool CurrentPointPositionReached(float distanceToNextPointPosition)
         {
-            var distanceToNextPointPosition = (transform.position - _currentPointPosition).magnitude;
             if (!(distanceToNextPointPosition < 0.1f)) return false;
             _lastPointPosition = transform.position;
             return true;
@@ -81,7 +85,7 @@ namespace TDBattler.Runtime
 
         private void UpdateCurrentPointIndex()
         {
-            int lastWaypointIndex = _waypoint.Points.Length - 1;
+            int lastWaypointIndex = _waypoint.Points.Count - 1;
             if (_currentWaypointIndex < lastWaypointIndex)
             {
                 _currentWaypointIndex++;
@@ -93,6 +97,12 @@ namespace TDBattler.Runtime
             }
         }
 
+        private void UpdateDistanceTraveled(float distanceToNextPointPosition)
+        {
+            _distanceTraveled = Mathf.Abs(_waypoint.GetDistanceBetweenPoints(_currentWaypointIndex - 1)) + 
+                (Mathf.Abs(_waypoint.GetDistanceBetweenPoints(_currentWaypointIndex)) - Mathf.Abs(distanceToNextPointPosition));
+        }
+
         private void EndPointReached()
         {
             OnEndReached?.Invoke(this);
@@ -101,72 +111,12 @@ namespace TDBattler.Runtime
         public void Death()
         {
             OnDeath?.Invoke(this);
-        }
 
-        public void ResetEnemy()
-        {
-            _enemyHealth.RefreshHealth();
-            Init();
-        }
-
-        private void OnTimerChanged(float startingTime, float remainingTime)
-        {
-            int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
-            if (newHealth > 0)
-            {
-                try
-                {
-                    if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
-                    _enemyHealth.UpdateInitialHealth(newHealth);
-                }
-                catch (System.Exception e)
-                {
-                    Debug.Log(name);
-                    throw e;
-                }
-            }
-        }
-
-        public void SetHealth(float startingTime, float remainingTime)
-        {
-            int newHealth = healthUpgrades.GetCurrentHealth(startingTime, remainingTime, LevelManager.Instance.CurrentWave);
-            Debug.Log($"{this.name} {newHealth}");
-            try
-            {
-                if (_enemyHealth == null) _enemyHealth = GetComponent<EnemyHealth>();
-                _enemyHealth.UpdateInitialHealth(newHealth);
-                _enemyHealth.RefreshHealth();
-            }
-            catch (System.Exception e)
-            {
-                Debug.Log(name);
-                throw e;
-            }
-        }
-
-        private void OnTimerEnd()
-        {
-
-        }
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            
         }
 
         public Vector3 GetTargetPosition()
         {
             return transform.position;
-        }
-    }
-
-    public class DistanceCovered
-    {
-        public float TotalDistance { get; private set; }
-
-        public void UpdateDistance(float totalDistanceFromPrevWaypoints, float distanceFromLastWaypoint)
-        {
-            TotalDistance = totalDistanceFromPrevWaypoints + distanceFromLastWaypoint;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,16 +8,25 @@ public class Waypoint : MonoBehaviour
     public bool hideDebug;
     [SerializeField] private Vector3 scale = Vector3.one;
     [SerializeField] private float radius = 0.5f;
-    [SerializeField] private Vector3[] points;
+    [SerializeField] private List<Vector3> points;
 
-    public Vector3[] Points => points.Select(p => new Vector3(p.x * scale.x, p.y * scale.y, p.z * scale.z)).ToArray();
+    public List<Vector3> Points => points.Select(p => new Vector3(p.x * scale.x, p.y * scale.y, p.z * scale.z)).ToList();
     public Vector3 Scale => scale;
     public Vector3 CurrentPosition => _currentPosition;
     
     private Vector3 _currentPosition;
     private bool _gameStarted;
     private float _defaultRadius;
+    private List<float> _distanceBetweenPoints = new List<float>();
     
+    private void Awake()
+    {
+        for(int i = 1; i < points.Count; i++)
+        {
+            _distanceBetweenPoints.Add((points[i] - points[i - 1]).magnitude);
+        }
+    }
+
     private void Start()
     {
         _gameStarted = true;
@@ -26,6 +36,11 @@ public class Waypoint : MonoBehaviour
     public Vector3 GetWaypointPosition(int index)
     {
         return CurrentPosition + Points[index];
+    }
+
+    public float GetDistanceBetweenPoints(int index)
+    {
+        return index < 1 || index >= _distanceBetweenPoints.Count ? 0 : _distanceBetweenPoints[index];
     }
 
     public ((float, float), Vector3) GetWaypointsBounds()
@@ -47,12 +62,12 @@ public class Waypoint : MonoBehaviour
             _currentPosition = transform.position;
         }
 
-        for (int i = 0; i < Points.Length; i++)
+        for (int i = 0; i < Points.Count; i++)
         {
             Gizmos.color = Color.black;
             Gizmos.DrawWireSphere(Points[i] + _currentPosition, radius * scale.x);
 
-            if (i >= Points.Length - 1) continue;
+            if (i >= Points.Count - 1) continue;
             Gizmos.color = Color.gray;
             Gizmos.DrawLine(Points[i] + _currentPosition, Points[i + 1] + _currentPosition);
         }

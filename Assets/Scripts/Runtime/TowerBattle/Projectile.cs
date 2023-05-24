@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace TDBattler.Runtime
@@ -10,7 +11,10 @@ namespace TDBattler.Runtime
         [Header("Attributes")]
         [SerializeField] private float speed = 5f;
 
-        private Enemy _enemy;
+        [Header("Display")]
+        [ReadOnly]
+        [SerializeField]
+        private Enemy _enemyTarget;
 
         // Scripts
         private Damageable _damageable;
@@ -36,13 +40,13 @@ namespace TDBattler.Runtime
 
         public void SetTarget(Enemy _enemy)
         {
-            if (this._enemy == _enemy)
+            if (this._enemyTarget == _enemy)
             {
-                this._enemy = null;
+                this._enemyTarget = null;
                 return;
             }
 
-            this._enemy = _enemy;
+            this._enemyTarget = _enemy;
         }
 
         public void SetDamage(float _damage)
@@ -52,14 +56,13 @@ namespace TDBattler.Runtime
 
         private void FixedUpdate()
         {
-            if (!_enemy)
+            if (!_enemyTarget || !_enemyTarget.isActiveAndEnabled)
             {
-                Debug.Log("Destroy projectile");
                 Destroy(gameObject);
                 return;
             }
 
-            Vector3 enemyTargetPos = _enemy.GetTargetPosition();
+            Vector3 enemyTargetPos = _enemyTarget.GetTargetPosition();
 
             Vector2 direction = (enemyTargetPos - transform.position).normalized;
 
@@ -78,10 +81,10 @@ namespace TDBattler.Runtime
         private void OnCollisionEnter2D(Collision2D other)
         {
             var enemy = other.gameObject.GetComponent<Enemy>();
-            if (enemy != null && enemy == _enemy)
+            if (enemy != null && enemy == _enemyTarget)
             {
                 enemy.EnemyHealth.DealDamage(_damageable.Damage);
-                Damageable_AfterDamage();
+                _damageable.PerformedDamage();
             }
         }
     }

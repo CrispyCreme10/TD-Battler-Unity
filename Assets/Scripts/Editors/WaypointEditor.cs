@@ -14,10 +14,10 @@ namespace TDBattler.Editor
         {
             if (Waypoint.hideDebug) return;
 
-            if (Waypoint.Points.Length > 0)
+            if (Waypoint.Points.Count > 0)
             {
                 Handles.color = Color.cyan;
-                for (int i = 0; i < Waypoint.Points.Length; i++)
+                for (int i = 0; i < Waypoint.Points.Count; i++)
                 {
                     EditorGUI.BeginChangeCheck();
 

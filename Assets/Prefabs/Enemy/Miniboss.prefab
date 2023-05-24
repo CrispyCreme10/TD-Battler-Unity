@@ -104,7 +104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0.35
   deathCoinReward: 50
-  healthUpgrades: {fileID: 11400000, guid: e037c540e1fc2f94783e06558aa838be, type: 2}
 --- !u!114 &7067726444075012130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,10 +116,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486d6672bd243a8449c4c2389b9c292f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthUpgrades: {fileID: 11400000, guid: e037c540e1fc2f94783e06558aa838be, type: 2}
   healthBarPrefab: {fileID: 1120872262769045871, guid: eb22a81a80031c942a5629f2d76b5218, type: 3}
   damageTextPrefab: {fileID: 6881026438257822051, guid: de48d17838e632d498efc280b4e4353d, type: 3}
   barPosition: {fileID: 4085349082762076286}
-  initialHealth: 1000
   maxHealth: 10000
   currentHealth: 0
 --- !u!95 &9081618903527946931

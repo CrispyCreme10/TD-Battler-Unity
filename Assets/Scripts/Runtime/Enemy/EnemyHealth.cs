@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TDBattler.Runtime
@@ -8,10 +9,13 @@ namespace TDBattler.Runtime
         public static Action<Enemy> OnEnemyKilled;
         public static Action<Enemy> OnEnemyHit;
 
+        [Header("References")]
+        [SerializeField] private HealthUpgrades_SO healthUpgrades;
         [SerializeField] private GameObject healthBarPrefab;
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Transform barPosition;
-        [SerializeField] private int initialHealth = 250;
+
+        [Header("Attributes")]
         [SerializeField] private int maxHealth = 100_000;
         [SerializeField] private int currentHealth;
 
@@ -19,12 +23,11 @@ namespace TDBattler.Runtime
         private string _healthBar;
         private Enemy _enemy;
         private EnemyHealthContainer _container;
+        private List<GameObject> _damageTextObjs = new List<GameObject>();
 
         private void Awake()
         {
             CreateHealthBar();
-            RefreshHealth();
-
             _enemy = GetComponent<Enemy>();
         }
 
@@ -63,22 +66,20 @@ namespace TDBattler.Runtime
         {
             var go = Instantiate(damageTextPrefab, transform.position, Quaternion.identity, transform);
             go.GetComponent<TextMesh>().text = damage.ToString();
+            _damageTextObjs.Add(go);
         }
 
-        public void RefreshHealth()
+        public void SpawnInit()
         {
-            currentHealth = initialHealth;
+            currentHealth = healthUpgrades.SpawnHealth;
             UpdateHealthText();
+            _damageTextObjs.ForEach(obj => Destroy(obj));
+            _damageTextObjs.Clear();
         }
 
         private void UpdateHealthText()
         {
             _container.SetHealthText(currentHealth);
-        }
-
-        public void UpdateInitialHealth(int newHealth)
-        {
-            initialHealth = newHealth;
         }
     }
 }

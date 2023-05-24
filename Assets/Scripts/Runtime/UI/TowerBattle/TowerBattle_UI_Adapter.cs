@@ -16,14 +16,14 @@ namespace TDBattler.Runtime
         private void OnEnable()
         {
             TowerBattleManager.OnManaChange += OnManaChange;
-            EnemySpawner.OnTimerChanged += SetRoundTimer;
+            BattleManager.OnMinionWaveUpdate += SetRoundTimer;
             TowerSpawner.OnTowerEnergyIncrease += OnTowerEnergyIncrease;
         }
 
         private void OnDisable()
         {
             TowerBattleManager.OnManaChange -= OnManaChange;
-            EnemySpawner.OnTimerChanged -= SetRoundTimer;
+            BattleManager.OnMinionWaveUpdate -= SetRoundTimer;
             TowerSpawner.OnTowerEnergyIncrease -= OnTowerEnergyIncrease;
         }
 

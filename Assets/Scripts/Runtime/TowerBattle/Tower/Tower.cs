@@ -29,8 +29,6 @@ namespace TDBattler.Runtime
         public TowerScriptableObject TowerData => towerData;
 
         private GameObject _projectileContainer;
-        
-        
 
         // battle props
         [Header("Attributes")]
@@ -45,10 +43,19 @@ namespace TDBattler.Runtime
         private Enemy _currentEnemyTarget;
         [ReadOnly]
         [SerializeField]
+        [ListDrawerSettings(OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
+        private List<EnemyDistance> _enemiesDistance;
         private List<Enemy> _enemiesInRange;
 
         Coroutine currentCoroutine;
         Quaternion? enemyDir;
+
+        [Serializable]
+        private struct EnemyDistance
+        {
+            public float Distance;
+            public string Name;
+        }
 
         private void Awake()
         {
@@ -133,6 +140,7 @@ namespace TDBattler.Runtime
             projectileScript.SetTarget(_currentEnemyTarget);
             projectileScript.SetDamage(GetStat(StatType.Damage));
             projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;
+            projectileObj.name = $"{name} - {projectileObj.name}";
 
             currentCoroutine = null;
         }
@@ -147,7 +155,14 @@ namespace TDBattler.Runtime
                 return;
             }
 
-            _currentEnemyTarget = _enemiesInRange[0];
+            _currentEnemyTarget = GetFirstEnemy();
+        }
+
+        private Enemy GetFirstEnemy()
+        {
+            var orderedEnemies = _enemiesInRange.OrderByDescending(e => e.DistanceTraveled);
+            _enemiesDistance = orderedEnemies.Select(e => new EnemyDistance{ Distance = e.DistanceTraveled, Name = e.name}).ToList();
+            return orderedEnemies.First();
         }
 
         private Quaternion? RotateTowardsTarget()
@@ -184,6 +199,16 @@ namespace TDBattler.Runtime
         private void TowerEnergyIncrease(int index, int energyLevel)
         {
             RefreshStats();
+        }
+
+        private void BeginDrawListElement(int index)
+        {
+            SirenixEditorGUI.BeginBox(this._enemiesDistance[index].Name);
+        }
+
+        private void EndDrawListElement(int index)
+        {
+            SirenixEditorGUI.EndBox();
         }
     }
 }

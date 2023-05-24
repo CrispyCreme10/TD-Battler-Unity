@@ -42,7 +42,6 @@ public class TowerScriptableObject : SerializedScriptableObject
     public int IncrementEnergyLevel()
     {
         energyLevel++;
-        Debug.Log($"Increase energy level {energyLevel} {this.name}");
         return energyLevel;
     }
 }
