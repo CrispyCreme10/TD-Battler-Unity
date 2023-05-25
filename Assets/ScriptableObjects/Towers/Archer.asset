@@ -62,6 +62,7 @@ MonoBehaviour:
     value: 0.45
     modifiers:
     - type: 0
+      value: 0.1
       increasesValue: 0
       statModifierLevels:
         mergePatternValue: 0

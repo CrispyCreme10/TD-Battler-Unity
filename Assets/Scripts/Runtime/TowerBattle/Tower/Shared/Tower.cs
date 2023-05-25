@@ -141,6 +141,11 @@ namespace TDBattler.Runtime
             projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;
             projectileObj.name = $"{name} - {projectileObj.name}";
 
+            if (GenerateEnemyDebuff(out EnemyDebuff enemyDebuff))
+            {
+                projectileScript.EnemyDebuff = enemyDebuff;
+            }
+
             if (_currentEnemyTarget != null)
             {
                 _currentEnemyTarget.AddProjectile(projectileScript);
@@ -234,6 +239,12 @@ namespace TDBattler.Runtime
             // provides optional override to derived classes
         }
 
+        public virtual bool GenerateEnemyDebuff(out EnemyDebuff enemyDebuff)
+        {
+            enemyDebuff = null;
+            return false;
+        }
+
         #endregion
     }
 
@@ -271,6 +282,7 @@ namespace TDBattler.Runtime
     public struct StatModifier
     {
         [SerializeField] private StatModifierType type;
+        [SerializeField] private float value;
         [SerializeField] private bool increasesValue;
         [SerializeField] private StatLevels statModifierLevels;
 
@@ -278,7 +290,7 @@ namespace TDBattler.Runtime
 
         public float GetValueAtLevels(int mergeIndex, int energyIndex, int permanentIndex)
         {
-            return statModifierLevels.GetMergeValue(mergeIndex) +
+            return value + statModifierLevels.GetMergeValue(mergeIndex) +
                 statModifierLevels.GetEnergyValue(energyIndex) +
                 statModifierLevels.GetPermanentValue(permanentIndex);
         }
@@ -369,7 +381,7 @@ namespace TDBattler.Runtime
 
                 for (int i = 0; i < list.Count; i++)
                 {
-                    list[i] = MathF.Round(patternValue * (i + 1), 2);
+                    list[i] = MathF.Round(patternValue * (i + 1), 3);
                 }
 
                 mergePatternValue = 0;

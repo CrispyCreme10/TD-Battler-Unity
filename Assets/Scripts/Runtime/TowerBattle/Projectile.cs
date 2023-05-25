@@ -16,8 +16,10 @@ namespace TDBattler.Runtime
         [SerializeField]
         private Enemy _enemyTarget;
 
-        // Scripts
+        public EnemyDebuff EnemyDebuff { get => _enemyDebuff; set => _enemyDebuff = value; }
+
         private Damageable _damageable;
+        private EnemyDebuff _enemyDebuff;
 
         private void Awake()
         {

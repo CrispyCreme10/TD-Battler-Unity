@@ -17,7 +17,7 @@ namespace TDBattler.Runtime
         private Towerpoint _towerpoint;
         private List<PointData> _pointData;
         private PlayerTowers _playerSelectedTowers => Singleton.Instance.PlayerManager.SelectedTowers;
-        private int RandomTowerIndex => (int)Mathf.Round(Random.value) * (_playerSelectedTowers.Towers.Count - 1);
+        private int RandomTowerIndex => (int)Mathf.Round(Random.Range(0, _playerSelectedTowers.Towers.Count));
         private int _spawnTowerCount;
         private List<TowerScriptableObject> _towerData;
 

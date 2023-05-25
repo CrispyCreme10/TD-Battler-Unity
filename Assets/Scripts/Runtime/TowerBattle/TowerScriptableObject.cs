@@ -76,11 +76,13 @@ namespace TDBattler.Runtime
         Damage,
         AttackInterval,
         HeroEnergy,
-        GenerateMana
+        GenerateMana,
+        SlowTarget
     }
 
     public enum StatModifierType
     {
-        AttackSpeedIncrease
+        AttackSpeedIncrease,
+        DamageIncrease
     }
 }

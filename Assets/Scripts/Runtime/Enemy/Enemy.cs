@@ -29,6 +29,7 @@ namespace TDBattler.Runtime
         private float _distanceTraveled;
         private List<Projectile> _projectilesTargeting = new List<Projectile>();
         private float _timeAlive;
+        private Vector3 _prevPosition;
 
         private void Awake()
         {
@@ -39,17 +40,7 @@ namespace TDBattler.Runtime
 
         private void OnEnable()
         {
-
-        }
-
-        private void OnDisable()
-        {
-
-        }
-
-        private void Start()
-        {
-
+            _prevPosition = transform.position;
         }
 
         private void Update()
@@ -63,7 +54,10 @@ namespace TDBattler.Runtime
             {
                 UpdateCurrentPointIndex();
             }
+        }
 
+        private void FixedUpdate()
+        {
             UpdateDistanceTraveled();
         }
 
@@ -105,7 +99,8 @@ namespace TDBattler.Runtime
 
         private void UpdateDistanceTraveled()
         {
-            _distanceTraveled = _timeAlive * moveSpeed;
+            _distanceTraveled += Vector3.Distance(transform.position, _prevPosition);
+            _prevPosition = transform.position;
         }
 
         private void EndPointReached()
@@ -133,6 +128,10 @@ namespace TDBattler.Runtime
                 _enemyHealth.DealDamage(damageable.Damage);
                 damageable.PerformedDamage();
                 RemoveProjectile(projectile);
+                if (projectile.EnemyDebuff != null)
+                {
+                    ApplyDebuff(projectile.EnemyDebuff);
+                }
             }
         }
 
@@ -145,5 +144,35 @@ namespace TDBattler.Runtime
         {
             _projectilesTargeting.Remove(projectile);
         }
+    
+        public void ApplyDebuff(EnemyDebuff enemyDebuff)
+        {
+            if (enemyDebuff.EnemyDebuffType == EnemyDebuffType.MovementSpeed)
+            {
+                moveSpeed -= moveSpeed * enemyDebuff.ValueToApply;
+            }
+        }
+    }
+
+    [Serializable]
+    public class EnemyDebuff
+    {
+        [SerializeField] private float valueToApply;
+        [SerializeField] private EnemyDebuffType enemyDebuffType;
+
+        public float ValueToApply => valueToApply;
+        public EnemyDebuffType EnemyDebuffType => enemyDebuffType;
+
+        public EnemyDebuff(float value, EnemyDebuffType type)
+        {
+            valueToApply = value;
+            enemyDebuffType = type;
+        }
+    }
+
+    [Serializable]
+    public enum EnemyDebuffType
+    {
+        MovementSpeed,
     }
 }
