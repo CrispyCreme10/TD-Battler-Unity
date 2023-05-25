@@ -28,6 +28,8 @@ namespace TDBattler.Runtime
 
         private Waypoint _waypoint;
         private float _spawnTimer;
+        [ReadOnly]
+        [SerializeField]
         private List<GameObject> _enemyRefs;
         private bool _isInMinionMode;
         private float _minionTimeRemaining;
@@ -131,7 +133,7 @@ namespace TDBattler.Runtime
             }
 
             yield return new WaitForSeconds(spawnGroup.unitDelayGap);
-            // coroutine = null;
+            spawnGroup.coroutine = null;
         }
 
         private void DespawnEnemy(Enemy enemy)

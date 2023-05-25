@@ -2420,8 +2420,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 320b0e528b5943d4f93d8e9c14aaf0b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lives: 10
-  totalLives: 10
+  lives: 3
+  totalLives: 3
   currentWave: 1
 --- !u!1 &656525518
 GameObject:
@@ -2996,6 +2996,7 @@ MonoBehaviour:
       enemyDelayGap: 0
       count: 1
       poolName: 2
+  _enemyRefs: []
 --- !u!4 &1848261896
 Transform:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TDBattler.Runtime
@@ -12,7 +13,7 @@ namespace TDBattler.Runtime
         [Header("Attributes")]
         [SerializeField] private float moveSpeed = 1f;
         [SerializeField] private int deathCoinReward = 10;
-        
+
 
         public EnemyHealth EnemyHealth => _enemyHealth;
         public int DeathCoinReward => deathCoinReward;
@@ -26,8 +27,10 @@ namespace TDBattler.Runtime
         private int _currentWaypointIndex;
         private EnemyHealth _enemyHealth;
         private float _distanceTraveled;
+        private List<Projectile> _projectilesTargeting = new List<Projectile>();
+        private float _timeAlive;
 
-        private void Awake() 
+        private void Awake()
         {
             _waypoint = GameObject.Find("EnemySpawner").GetComponent<Waypoint>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -36,21 +39,22 @@ namespace TDBattler.Runtime
 
         private void OnEnable()
         {
-            
+
         }
 
         private void OnDisable()
         {
-            
+
         }
 
         private void Start()
         {
-            
+
         }
 
         private void Update()
         {
+            _timeAlive += Time.deltaTime;
 
             Move();
 
@@ -60,7 +64,7 @@ namespace TDBattler.Runtime
                 UpdateCurrentPointIndex();
             }
 
-            UpdateDistanceTraveled(distanceToNextWaypoint);
+            UpdateDistanceTraveled();
         }
 
         public void SpawnInit()
@@ -68,6 +72,8 @@ namespace TDBattler.Runtime
             _currentWaypointIndex = 0;
             _currentPointPosition = _waypoint.GetWaypointPosition(_currentWaypointIndex);
             _lastPointPosition = transform.position;
+            _distanceTraveled = 0;
+            _timeAlive = 0;
             _enemyHealth.SpawnInit();
         }
 
@@ -97,10 +103,9 @@ namespace TDBattler.Runtime
             }
         }
 
-        private void UpdateDistanceTraveled(float distanceToNextPointPosition)
+        private void UpdateDistanceTraveled()
         {
-            _distanceTraveled = Mathf.Abs(_waypoint.GetDistanceBetweenPoints(_currentWaypointIndex - 1)) + 
-                (Mathf.Abs(_waypoint.GetDistanceBetweenPoints(_currentWaypointIndex)) - Mathf.Abs(distanceToNextPointPosition));
+            _distanceTraveled = _timeAlive * moveSpeed;
         }
 
         private void EndPointReached()
@@ -117,6 +122,28 @@ namespace TDBattler.Runtime
         public Vector3 GetTargetPosition()
         {
             return transform.position;
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            var projectile = other.gameObject.GetComponent<Projectile>();
+            if (projectile != null && _projectilesTargeting.Contains(projectile))
+            {
+                var damageable = projectile.gameObject.GetComponent<Damageable>();
+                _enemyHealth.DealDamage(damageable.Damage);
+                damageable.PerformedDamage();
+                RemoveProjectile(projectile);
+            }
+        }
+
+        public void AddProjectile(Projectile projectile)
+        {
+            _projectilesTargeting.Add(projectile);
+        }
+
+        public void RemoveProjectile(Projectile projectile)
+        {
+            _projectilesTargeting.Remove(projectile);
         }
     }
 }

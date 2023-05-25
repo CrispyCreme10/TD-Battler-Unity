@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Waypoint : MonoBehaviour
@@ -41,6 +42,19 @@ public class Waypoint : MonoBehaviour
     public float GetDistanceBetweenPoints(int index)
     {
         return index < 1 || index >= _distanceBetweenPoints.Count ? 0 : _distanceBetweenPoints[index];
+    }
+
+    public float GetTotalDistanceFromIndex(int waypointIndex)
+    {
+        if (waypointIndex < 0 || waypointIndex >= _distanceBetweenPoints.Count) return 0;
+
+        float total = 0;
+        for(int i = 0; i < waypointIndex; i++)
+        {
+            total += _distanceBetweenPoints[i];
+        }
+
+        return total;
     }
 
     public ((float, float), Vector3) GetWaypointsBounds()

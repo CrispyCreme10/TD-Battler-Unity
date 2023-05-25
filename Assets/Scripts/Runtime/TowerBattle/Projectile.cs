@@ -9,7 +9,7 @@ namespace TDBattler.Runtime
         [SerializeField] private Rigidbody2D rigidBody;
 
         [Header("Attributes")]
-        [SerializeField] private float speed = 5f;
+        [SerializeField] private float speed = 11f;
 
         [Header("Display")]
         [ReadOnly]
@@ -76,16 +76,6 @@ namespace TDBattler.Runtime
         private void Damageable_AfterDamage()
         {
             Destroy(gameObject);
-        }
-
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            var enemy = other.gameObject.GetComponent<Enemy>();
-            if (enemy != null && enemy == _enemyTarget)
-            {
-                enemy.EnemyHealth.DealDamage(_damageable.Damage);
-                _damageable.PerformedDamage();
-            }
         }
     }
 }

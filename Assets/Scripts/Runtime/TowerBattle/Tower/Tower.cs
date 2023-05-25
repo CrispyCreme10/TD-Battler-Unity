@@ -142,6 +142,11 @@ namespace TDBattler.Runtime
             projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;
             projectileObj.name = $"{name} - {projectileObj.name}";
 
+            if (_currentEnemyTarget != null)
+            {
+                _currentEnemyTarget.AddProjectile(projectileScript);
+            }
+
             currentCoroutine = null;
         }
 

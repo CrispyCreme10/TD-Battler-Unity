@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 namespace TDBattler.Runtime
 {
     public class LevelManager : MonoBehaviour
     {
+        public static Action OnAllLivesLost;
         private static LevelManager _instance;
         
         [SerializeField] private int lives = 3;
@@ -38,18 +40,8 @@ namespace TDBattler.Runtime
             if (TotalLives <= 0)
             {
                 totalLives = 0;
-                GameOver();
+                OnAllLivesLost?.Invoke();
             }
-        }
-
-        private void GameOver()
-        {
-            
-        }
-
-        private void WaveCompleted()
-        {
-            
         }
 
         private void OnEnable()

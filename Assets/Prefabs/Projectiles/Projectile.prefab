@@ -148,7 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 941766833}
-  speed: 12
+  speed: 11
+  _enemyTarget: {fileID: 0}
 --- !u!114 &-4077989133834900905
 MonoBehaviour:
   m_ObjectHideFlags: 0

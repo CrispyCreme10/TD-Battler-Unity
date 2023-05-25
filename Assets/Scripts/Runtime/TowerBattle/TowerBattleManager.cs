@@ -78,7 +78,7 @@ namespace TDBattler.Runtime
                 // if we are dragged over a tower of the same name + merge level, then we can show highlight of tower under mouse
                 if (results.Any(c => c.name == "Merge"))
                 {
-                    Transform tower = results.SingleOrDefault(c => c.name == "Merge")?.transform?.parent?.parent;
+                    Transform tower = results.FirstOrDefault(c => c.name == "Merge")?.transform?.parent?.parent;
                     if (_selectedTower.name.Split('(')[0] == tower.name.Split('(')[0])
                     {
                         // Debug.Log(tower);

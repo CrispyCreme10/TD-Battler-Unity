@@ -11,6 +11,7 @@ namespace TDBattler.Runtime
     {
         public static Action<float, float> OnMinionWaveUpdate;
         public static Action OnBossWaveUpdate;
+        public static Action OnGameOver;
 
         [Header("References")]
         [SerializeField] private EnemySpawner enemySpawner;
@@ -37,6 +38,16 @@ namespace TDBattler.Runtime
         {
             ResetMinionWaveTimer();
             battleTimeElapsed = 0;
+        }
+
+        private void OnEnable()
+        {
+            LevelManager.OnAllLivesLost += GameOver;
+        }
+
+        private void OnDisable()
+        {
+            LevelManager.OnAllLivesLost -= GameOver;
         }
 
         private void Update()
@@ -89,6 +100,13 @@ namespace TDBattler.Runtime
         private void ResetMinionWaveTimer()
         {
             waveTimeRemaining = minionWaveTimer;
+        }
+
+        private void GameOver()
+        {
+            _isGameOver = true;
+            Time.timeScale = 0;
+            OnGameOver?.Invoke();
         }
     }
 }
