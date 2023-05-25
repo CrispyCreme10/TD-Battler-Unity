@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e88272b41c3369c4f998dabcd88ff365, type: 3}
-  m_Name: Archer
+  m_Name: Priest
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,88 +21,61 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  name: Archer
-  description: Has high attack speed.
-  debugColor: {r: 0.011764707, g: 0.6039216, b: 0.4666667, a: 1}
+  name: Priest
+  description: Gives mana when merged or killed.
+  debugColor: {r: 0, g: 1, b: 0.972549, a: 1}
   energyLevel: 1
   permanentLevel: 1
-  towerFaction: 0
-  unitType: 0
+  towerFaction: 2
+  unitType: 2
   target: 0
   stats:
   - type: 0
-    value: 29
+    value: 20
     modifiers: []
     statLevels:
       mergePatternValue: 0
       MergeLevels: []
       energyPatternValue: 0
       EnergyLevels:
-      - 23
-      - 46
-      - 69
-      - 92
+      - 24
+      - 48
+      - 72
+      - 96
       permanentPatternValue: 0
       PermanentLevels:
+      - 2
       - 3
-      - 6
-      - 9
-      - 12
-      - 16
-      - 20
+      - 5
+      - 10
+      - 17
       - 25
-      - 30
       - 35
-      - 41
-      - 47
-      - 54
-      - 62
-      - 70
+      - 46
+      - 60
+      - 76
+      - 95
+      - 118
+      - 146
+      - 178
   - type: 1
-    value: 0.45
-    modifiers:
-    - type: 0
-      increasesValue: 0
-      statModifierLevels:
-        mergePatternValue: 0
-        MergeLevels: []
-        energyPatternValue: 0
-        EnergyLevels:
-        - 0.1
-        - 0.2
-        - 0.3
-        - 0.4
-        permanentPatternValue: 0
-        PermanentLevels:
-        - 0.02
-        - 0.04
-        - 0.06
-        - 0.08
-        - 0.1
-        - 0.12
-        - 0.14
-        - 0.16
-        - 0.18
-        - 0.2
-        - 0.22
-        - 0.24
-        - 0.26
-        - 0.28
+    value: 1
+    modifiers: []
     statLevels:
       mergePatternValue: 0
       MergeLevels:
-      - -0.23
-      - -0.3
-      - -0.34
-      - -0.36
-      - -0.38
-      - -0.39
+      - -0.5
+      - -0.67
+      - -0.75
+      - -0.8
+      - -0.83
+      - -0.86
       energyPatternValue: 0
       EnergyLevels: []
       permanentPatternValue: 0
       PermanentLevels: []
   - type: 2
-    value: 1
+    value: 2
     modifiers: []
     statLevels:
       mergePatternValue: 0
@@ -111,17 +84,33 @@ MonoBehaviour:
       EnergyLevels: []
       permanentPatternValue: 0
       PermanentLevels:
-      - 0.2
-      - 0.4
-      - 0.6
-      - 0.8
+      - 0.5
       - 1
-      - 1.2
-      - 1.4
-      - 1.6
-      - 1.8
+      - 1.5
       - 2
-      - 2.2
-      - 2.4
-      - 2.6
-      - 2.8
+      - 2.5
+      - 3
+      - 3.5
+      - 4
+      - 4.5
+      - 5
+      - 5.5
+      - 6
+      - 6.5
+      - 7
+  - type: 3
+    value: 80
+    modifiers: []
+    statLevels:
+      mergePatternValue: 0
+      MergeLevels:
+      - 80
+      - 160
+      - 240
+      - 320
+      - 400
+      - 480
+      energyPatternValue: 0
+      EnergyLevels: []
+      permanentPatternValue: 0
+      PermanentLevels: []

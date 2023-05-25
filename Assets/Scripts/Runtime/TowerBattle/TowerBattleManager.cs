@@ -11,7 +11,8 @@ namespace TDBattler.Runtime
         public static Action<int, int, List<int>, bool> OnManaChange;
 
         [Header("References")]
-        [SerializeField] private TowerSpawner _towerSpawner;
+        [SerializeField] private PlayerManager playerManager;
+        [SerializeField] private TowerSpawner towerSpawner;
 
         [Header("Attributes")]
         [SerializeField] private int mana = 100;
@@ -23,29 +24,34 @@ namespace TDBattler.Runtime
         public int TowerCost => towerCost;
 
         private int _currentMana;
-        
+
         private Collider2D _selectedTowerCollider;
         private Tower _selectedTower => _selectedTowerCollider?.transform.parent?.parent.GetComponent<Tower>();
         private Vector3 _selectedTowerOGPosition;
         private Vector3 _selectedTowerOffset;
-        private List<int> _energyLevelsPerTower;
+        private List<int> _energyLevelCostsTowerIndex;
+        private IDictionary<string, Tower> _towerNameDict;
+
+        private void Awake()
+        {
+            _towerNameDict = playerManager.SelectedTowers.Towers.ToDictionary(t => t.name, t => t);
+        }
 
         private void OnEnable()
         {
             Enemy.OnDeath += OnEnemyDeath;
-            TowerSpawner.OnTowerEnergyIncrease += OnTowerEnergyIncrease;
+            TowerBattle_UI_Adapter.OnEnergyIncrease += OnTowerEnergyIncrease;
         }
 
         private void OnDisable()
         {
             Enemy.OnDeath -= OnEnemyDeath;
-            TowerSpawner.OnTowerEnergyIncrease -= OnTowerEnergyIncrease;
         }
 
         private void Start()
         {
             _currentMana = mana;
-            _energyLevelsPerTower = new List<int> { 0, 0, 0, 0, 0 };
+            _energyLevelCostsTowerIndex = new List<int> { 0, 0, 0, 0, 0 };
         }
 
         private void Update()
@@ -56,7 +62,7 @@ namespace TDBattler.Runtime
                 Collider2D[] results = Physics2D.OverlapPointAll(mousePosition);
                 if (results.Length > 0)
                 {
-                    foreach(var result in results)
+                    foreach (var result in results)
                     {
                         if (result.name == "Merge")
                         {
@@ -96,7 +102,7 @@ namespace TDBattler.Runtime
                 {
                     _selectedTower.transform.position = _selectedTowerOGPosition;
                 }
-                else if(!MergeTowers(towerTransform.GetComponent<Tower>()))
+                else if (!MergeTowers(towerTransform.GetComponent<Tower>()))
                 {
                     _selectedTower.transform.position = _selectedTowerOGPosition;
                 }
@@ -113,7 +119,7 @@ namespace TDBattler.Runtime
             {
                 mana -= towerCost;
                 towerCost += costIncrease;
-                _towerSpawner.SpawnRandomFirstTower();
+                towerSpawner.SpawnRandomFirstTower();
                 ManaChange();
             }
         }
@@ -123,36 +129,72 @@ namespace TDBattler.Runtime
             IncreaseMana(enemy.DeathCoinReward);
         }
 
+        public void TryIncreaseMana(int incrMana)
+        {
+            IncreaseMana(incrMana);
+        }
+
         private void IncreaseMana(int incrMana)
         {
             mana += incrMana;
             ManaChange();
         }
 
-        private void ManaChange()
+        private void DecreaseMana(int decrMana)
         {
-            var energyCosts = _energyLevelsPerTower.Select(i => energyLevelCosts[i]).ToList();
-            OnManaChange?.Invoke(mana, towerCost, energyCosts, _towerSpawner.IsFieldFull());
+            mana -= decrMana;
+            ManaChange();
         }
 
-        private void OnTowerEnergyIncrease(int index, int energyLevel)
+        private void ManaChange()
         {
-            _energyLevelsPerTower[index]++;
+            var energyCosts = _energyLevelCostsTowerIndex.Select(i => energyLevelCosts[i]).ToList();
+            OnManaChange?.Invoke(mana, towerCost, energyCosts, towerSpawner.IsFieldFull());
+        }
+
+        private void OnTowerEnergyIncrease(string name)
+        {
+            if (_towerNameDict.ContainsKey(name))
+            {
+                // update tower
+                Tower tower = _towerNameDict[name];
+                tower.IncreaseTowerEnergy();
+
+                // update this & UI
+                int index = playerManager.SelectedTowers.Towers.IndexOf(tower);
+                int decrManaAmt = energyLevelCosts[_energyLevelCostsTowerIndex[index]];
+                _energyLevelCostsTowerIndex[index]++;
+                string debugOut = string.Join(',', _energyLevelCostsTowerIndex);
+                Debug.Log($"{name} {index} {decrManaAmt} {debugOut}");
+                DecreaseMana(decrManaAmt);
+            }
         }
 
         private bool MergeTowers(Tower otherTower)
         {
             int selectedMergeLevel = _selectedTower?.MergeLevel ?? 1;
             int otherTowerMergeLevel = otherTower?.MergeLevel ?? 1;
-            if (_selectedTower.name.Split('(')[0] == otherTower.name.Split('(')[0] && selectedMergeLevel == otherTowerMergeLevel && selectedMergeLevel < TowerScriptableObject.MAX_MERGE_LEVEL)
+            if (IsValidMerge(otherTower, selectedMergeLevel, otherTowerMergeLevel))
             {
-                _towerSpawner.DespawnTower(_selectedTower);
-                var towerPointIndex = _towerSpawner.DespawnTower(otherTower);
-                _towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, ++selectedMergeLevel);
+                // allow towers to update something on merge
+                _selectedTower.OnMerge(this);
+                otherTower.OnMerge(this);
+
+                // merge cleanup
+                towerSpawner.DespawnTower(_selectedTower);
+                var towerPointIndex = towerSpawner.DespawnTower(otherTower);
+                towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, ++selectedMergeLevel);
                 return true;
             }
 
             return false;
+        }
+
+        private bool IsValidMerge(Tower otherTower, int selectedMergeLevel, int otherTowerMergeLevel)
+        {
+            return _selectedTower.name.Split('(')[0] == otherTower.name.Split('(')[0] && 
+                selectedMergeLevel == otherTowerMergeLevel && 
+                selectedMergeLevel < TowerScriptableObject.MAX_MERGE_LEVEL;
         }
     }
 }

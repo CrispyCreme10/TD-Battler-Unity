@@ -22,7 +22,7 @@ namespace TDBattler.Runtime
 
 
         [Header("Settings")]
-        [SerializeField] private List<SpawnGroup> spawnGroups;
+        [SerializeField] private EnemySpawnGroups enemySpawnGroups;
 
         public IEnumerable<Enemy> Enemies => _enemyRefs.Select(go => go.GetComponent<Enemy>());
 
@@ -90,7 +90,7 @@ namespace TDBattler.Runtime
         {
             // loop spawn groups
             // foreach create a coroutine that is associated with the group
-            foreach (SpawnGroup spawnGroup in spawnGroups)
+            foreach (SpawnGroup spawnGroup in enemySpawnGroups.SpawnGroups)
             {
                 if (spawnGroup.coroutine == null)
                 {
@@ -127,7 +127,7 @@ namespace TDBattler.Runtime
             }
 
             _spawnGroupIndex++;
-            if (_spawnGroupIndex == spawnGroups.Count)
+            if (_spawnGroupIndex == enemySpawnGroups.SpawnGroups.Count)
             {
                 _spawnGroupIndex = 0;
             }
@@ -166,29 +166,5 @@ namespace TDBattler.Runtime
                 OnEnemiesChanged?.Invoke(_enemyRefs.Select(go => go.GetComponent<Enemy>()));
             }
         }
-    }
-
-    [Serializable]
-    public class SpawnGroup
-    {
-        public float unitDelayGap = 1f;
-        public List<SpawnUnit> enemies;
-        public Coroutine coroutine;
-    }
-
-    [Serializable]
-    public struct SpawnUnit
-    {
-        public float initialDelay;
-        public float enemyDelayGap;
-        public int count;
-        public EnemyPoolName poolName;
-    }
-
-    public enum EnemyPoolName
-    {
-        Grunt,
-        Speeder,
-        MiniBoss
     }
 }

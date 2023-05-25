@@ -13,7 +13,7 @@ namespace TDBattler.Runtime
 
         [SerializeField] private PlayerScriptableObject player;
 
-        public List<Tower> SelectedTowers => player.SelectedTowers;
+        public PlayerTowers SelectedTowers => player.SelectedTowers;
     }
 
 }

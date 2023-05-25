@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace TDBattler.Runtime
     // responsible for connecting TowerBattle_UI document to logic
     public class TowerBattle_UI_Adapter : MonoBehaviour
     {
+        public static Action<string> OnEnergyIncrease;
+
         [Header("References")]
         [SerializeField] private TowerBattle_UI document;
         [SerializeField] private TowerSpawner towerSpawner;
@@ -17,14 +20,12 @@ namespace TDBattler.Runtime
         {
             TowerBattleManager.OnManaChange += OnManaChange;
             BattleManager.OnMinionWaveUpdate += SetRoundTimer;
-            TowerSpawner.OnTowerEnergyIncrease += OnTowerEnergyIncrease;
         }
 
         private void OnDisable()
         {
             TowerBattleManager.OnManaChange -= OnManaChange;
             BattleManager.OnMinionWaveUpdate -= SetRoundTimer;
-            TowerSpawner.OnTowerEnergyIncrease -= OnTowerEnergyIncrease;
         }
 
         public void SpawnTower()
@@ -44,10 +45,15 @@ namespace TDBattler.Runtime
 
         public IEnumerable<string> GetTowerNames()
         {
-            return playerManager.SelectedTowers.Select(tower => tower.TowerData.name);
+            return playerManager.SelectedTowers.Towers.Select(tower => tower.TowerData.name);
         }
 
-        #region Events
+        public void IncreaseEnergyLevel(string towerName)
+        {
+            OnEnergyIncrease?.Invoke(towerName);
+        }
+
+        #region Incoming Events
         
         private void OnManaChange(int mana, int towerCost, List<int> energyCosts, bool fieldIsFull)
         {
@@ -63,11 +69,6 @@ namespace TDBattler.Runtime
                 formattedText = $"0{Mathf.FloorToInt(timeInSeconds / 60)}:{(seconds < 10 ? '0' + seconds.ToString() : seconds)}";
             }
             document.SetRoundTimer(formattedText);
-        }
-
-        private void OnTowerEnergyIncrease(int index, int energyLevel)
-        {
-            document.OnTowerEnergyIncrease(index, energyLevel);
         }
 
         #endregion

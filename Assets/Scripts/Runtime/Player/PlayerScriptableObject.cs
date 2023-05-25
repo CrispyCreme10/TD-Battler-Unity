@@ -8,9 +8,9 @@ namespace TDBattler.Runtime
     public class PlayerScriptableObject : SerializedScriptableObject
     {
         [SerializeField] private int criticalStrike = 200;
-        [SerializeField] private List<Tower> selectedTowers;
-        [SerializeField] private List<Tower> availableTowers;
+        [SerializeField] private PlayerTowers selectedTowers;
+        [SerializeField] private PlayerTowers availableTowers;
 
-        public List<Tower> SelectedTowers => selectedTowers;
+        public PlayerTowers SelectedTowers => selectedTowers;
     }
 }

@@ -71,7 +71,6 @@ namespace TDBattler.Runtime
         private void OnEnable()
         {
             EnemySpawner.OnEnemiesChanged += UpdateEnemies;
-            TowerSpawner.OnTowerEnergyIncrease += TowerEnergyIncrease;
 
             anim.SetBool("CanShoot", true);
         }
@@ -79,7 +78,6 @@ namespace TDBattler.Runtime
         private void OnDisable()
         {
             EnemySpawner.OnEnemiesChanged -= UpdateEnemies;
-            TowerSpawner.OnTowerEnergyIncrease += TowerEnergyIncrease;
 
             anim.SetBool("CanShoot", false);
         }
@@ -89,10 +87,11 @@ namespace TDBattler.Runtime
             if (currentCoroutine == null && _currentEnemyTarget != null)
             {
                 currentCoroutine = StartCoroutine(Attack());
+
+                enemyDir = RotateTowardsTarget();
             }
 
             GetCurrentEnemyTarget();
-            enemyDir = RotateTowardsTarget();
         }
 
         private void InitBoxCollider()
@@ -160,7 +159,12 @@ namespace TDBattler.Runtime
                 return;
             }
 
-            _currentEnemyTarget = GetFirstEnemy();
+            if (towerData.UnitTarget == UnitTarget.First)
+            {
+                _currentEnemyTarget = GetFirstEnemy();
+                return;
+            }
+            _currentEnemyTarget = GetRandomEnemy();
         }
 
         private Enemy GetFirstEnemy()
@@ -168,6 +172,11 @@ namespace TDBattler.Runtime
             var orderedEnemies = _enemiesInRange.OrderByDescending(e => e.DistanceTraveled);
             _enemiesDistance = orderedEnemies.Select(e => new EnemyDistance{ Distance = e.DistanceTraveled, Name = e.name}).ToList();
             return orderedEnemies.First();
+        }
+
+        private Enemy GetRandomEnemy()
+        {
+            return _enemiesInRange[(int)Mathf.Round(UnityEngine.Random.value) * (_enemiesInRange.Count - 1)];
         }
 
         private Quaternion? RotateTowardsTarget()
@@ -180,6 +189,7 @@ namespace TDBattler.Runtime
             float angle = Mathf.Atan2(_currentEnemyTarget.transform.position.y - transform.position.y, _currentEnemyTarget.transform.position.x - transform.position.x) * Mathf.Rad2Deg - 90f;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
             rotationPoint.rotation = targetRotation;
+
             return targetRotation;
         }
 
@@ -201,8 +211,9 @@ namespace TDBattler.Runtime
             return 0;
         }
 
-        private void TowerEnergyIncrease(int index, int energyLevel)
+        public void IncreaseTowerEnergy()
         {
+            towerData.IncrementEnergyLevel();
             RefreshStats();
         }
 
@@ -215,186 +226,196 @@ namespace TDBattler.Runtime
         {
             SirenixEditorGUI.EndBox();
         }
-    }
-}
 
-[Serializable]
-public class Stat
-{
-    [SerializeField] private StatType type;
-    [SerializeField] private float value;
-    [SerializeField] private List<StatModifier> modifiers;
-    [SerializeField] private StatLevels statLevels;
+        #region Custom Hooks
 
-    public StatType Type => type;
-
-    public float GetValueModified(int mergeLevel, int energyLevel, int permanentLevel)
-    {
-        int mergeIndex = mergeLevel - 2;
-        int energyIndex = energyLevel - 2;
-        int permanentIndex = permanentLevel - 2;
-
-        float baseValue = value + 
-            statLevels.GetMergeValue(mergeIndex) +
-            statLevels.GetEnergyValue(energyIndex) +
-            statLevels.GetPermanentValue(permanentIndex);
-
-        return modifiers.Aggregate(baseValue, (total, mod) =>
+        public virtual void OnMerge(TowerBattleManager towerBattleManager)
         {
-            float modVal = mod.GetValueAtLevels(mergeIndex, energyIndex, permanentIndex) * (mod.IncreasesValue ? 1 : -1);
-            return total * (1 + modVal);
-        });
-    }
-}
+            // provides optional override to derived classes
+        }
 
-[Serializable]
-public struct StatModifier
-{
-    [SerializeField] private StatModifierType type;
-    [SerializeField] private bool increasesValue;
-    [SerializeField] private StatLevels statModifierLevels;
-
-    public bool IncreasesValue => increasesValue;
-
-    public float GetValueAtLevels(int mergeIndex, int energyIndex, int permanentIndex)
-    {
-        return statModifierLevels.GetMergeValue(mergeIndex) +
-            statModifierLevels.GetEnergyValue(energyIndex) +
-            statModifierLevels.GetPermanentValue(permanentIndex);
-    }
-}
-
-[Serializable]
-public class StatLevels
-{
-    const int MAX_MERGE_LEVEL = 7;
-    const int MAX_ENERGY_LEVEL = 5;
-    const int MAX_PERMANENT_LEVEL = 15;
-
-    [InlineButton("ApplyMergePattern", SdfIconType.Check, "")]
-    [LabelText("Pattern")]
-    [SerializeField]
-    private float mergePatternValue;
-
-    [ListDrawerSettings(OnTitleBarGUI = "DrawMergeButtons")]
-    [RequiredListLength(0, MAX_MERGE_LEVEL - 1)]
-    public List<float> MergeLevels;
-
-    [Space]
-    [InlineButton("ApplyEnergyPattern", SdfIconType.Check, "")]
-    [LabelText("Pattern")]
-    [SerializeField]
-    private float energyPatternValue;
-
-    [ListDrawerSettings(OnTitleBarGUI = "DrawEnergyButtons")]
-    [RequiredListLength(0, MAX_ENERGY_LEVEL - 1)]
-    public List<float> EnergyLevels;
-
-    [Space]
-    [InlineButton("ApplyPermanentPattern", SdfIconType.Check, "")]
-    [LabelText("Pattern")]
-    [SerializeField]
-    private float permanentPatternValue;
-
-    [ListDrawerSettings(OnTitleBarGUI = "DrawPermanentButtons")]
-    [RequiredListLength(0, MAX_PERMANENT_LEVEL - 1)]
-    public List<float> PermanentLevels;
-
-
-    #region Inspector
-
-    private void ApplyMergePattern()
-    {
-        ApplyPattern(mergePatternValue, ref MergeLevels, MAX_MERGE_LEVEL);
+        #endregion
     }
 
-    private void DrawMergeButtons()
-    {
-        DrawButtons(ref MergeLevels, MAX_MERGE_LEVEL);
-    }
 
-    private void ApplyEnergyPattern()
+    [Serializable]
+    public class Stat
     {
-        ApplyPattern(energyPatternValue, ref EnergyLevels, MAX_ENERGY_LEVEL);
-    }
+        [SerializeField] private StatType type;
+        [SerializeField] private float value;
+        [SerializeField] private List<StatModifier> modifiers;
+        [SerializeField] private StatLevels statLevels;
 
-    private void DrawEnergyButtons()
-    {
-        DrawButtons(ref EnergyLevels, MAX_ENERGY_LEVEL);
-    }
+        public StatType Type => type;
 
-    private void ApplyPermanentPattern()
-    {
-        ApplyPattern(permanentPatternValue, ref PermanentLevels, MAX_PERMANENT_LEVEL);
-    }
-
-    private void DrawPermanentButtons()
-    {
-        DrawButtons(ref PermanentLevels, MAX_PERMANENT_LEVEL);
-    }
-
-    private void RefreshList(ref List<float> list, int count)
-    {
-        list = Enumerable.Repeat(0f, count).ToList();
-    }
-
-    private void ApplyPattern(float patternValue, ref List<float> list, int maxItems)
-    {
-        if (patternValue != 0)
+        public float GetValueModified(int mergeLevel, int energyLevel, int permanentLevel)
         {
-            if (list.Count == 0)
+            int mergeIndex = mergeLevel - 2;
+            int energyIndex = energyLevel - 2;
+            int permanentIndex = permanentLevel - 2;
+
+            float baseValue = value + 
+                statLevels.GetMergeValue(mergeIndex) +
+                statLevels.GetEnergyValue(energyIndex) +
+                statLevels.GetPermanentValue(permanentIndex);
+
+            return modifiers.Aggregate(baseValue, (total, mod) =>
+            {
+                float modVal = mod.GetValueAtLevels(mergeIndex, energyIndex, permanentIndex) * (mod.IncreasesValue ? 1 : -1);
+                return total * (1 + modVal);
+            });
+        }
+    }
+
+    [Serializable]
+    public struct StatModifier
+    {
+        [SerializeField] private StatModifierType type;
+        [SerializeField] private bool increasesValue;
+        [SerializeField] private StatLevels statModifierLevels;
+
+        public bool IncreasesValue => increasesValue;
+
+        public float GetValueAtLevels(int mergeIndex, int energyIndex, int permanentIndex)
+        {
+            return statModifierLevels.GetMergeValue(mergeIndex) +
+                statModifierLevels.GetEnergyValue(energyIndex) +
+                statModifierLevels.GetPermanentValue(permanentIndex);
+        }
+    }
+
+    [Serializable]
+    public class StatLevels
+    {
+        const int MAX_MERGE_LEVEL = 7;
+        const int MAX_ENERGY_LEVEL = 5;
+        const int MAX_PERMANENT_LEVEL = 15;
+
+        [InlineButton("ApplyMergePattern", SdfIconType.Check, "")]
+        [LabelText("Pattern")]
+        [SerializeField]
+        private float mergePatternValue;
+
+        [ListDrawerSettings(OnTitleBarGUI = "DrawMergeButtons")]
+        [RequiredListLength(0, MAX_MERGE_LEVEL - 1)]
+        public List<float> MergeLevels;
+
+        [Space]
+        [InlineButton("ApplyEnergyPattern", SdfIconType.Check, "")]
+        [LabelText("Pattern")]
+        [SerializeField]
+        private float energyPatternValue;
+
+        [ListDrawerSettings(OnTitleBarGUI = "DrawEnergyButtons")]
+        [RequiredListLength(0, MAX_ENERGY_LEVEL - 1)]
+        public List<float> EnergyLevels;
+
+        [Space]
+        [InlineButton("ApplyPermanentPattern", SdfIconType.Check, "")]
+        [LabelText("Pattern")]
+        [SerializeField]
+        private float permanentPatternValue;
+
+        [ListDrawerSettings(OnTitleBarGUI = "DrawPermanentButtons")]
+        [RequiredListLength(0, MAX_PERMANENT_LEVEL - 1)]
+        public List<float> PermanentLevels;
+
+
+        #region Inspector
+
+        private void ApplyMergePattern()
+        {
+            ApplyPattern(mergePatternValue, ref MergeLevels, MAX_MERGE_LEVEL);
+        }
+
+        private void DrawMergeButtons()
+        {
+            DrawButtons(ref MergeLevels, MAX_MERGE_LEVEL);
+        }
+
+        private void ApplyEnergyPattern()
+        {
+            ApplyPattern(energyPatternValue, ref EnergyLevels, MAX_ENERGY_LEVEL);
+        }
+
+        private void DrawEnergyButtons()
+        {
+            DrawButtons(ref EnergyLevels, MAX_ENERGY_LEVEL);
+        }
+
+        private void ApplyPermanentPattern()
+        {
+            ApplyPattern(permanentPatternValue, ref PermanentLevels, MAX_PERMANENT_LEVEL);
+        }
+
+        private void DrawPermanentButtons()
+        {
+            DrawButtons(ref PermanentLevels, MAX_PERMANENT_LEVEL);
+        }
+
+        private void RefreshList(ref List<float> list, int count)
+        {
+            list = Enumerable.Repeat(0f, count).ToList();
+        }
+
+        private void ApplyPattern(float patternValue, ref List<float> list, int maxItems)
+        {
+            if (patternValue != 0)
+            {
+                if (list.Count == 0)
+                {
+                    RefreshList(ref list, maxItems - 1);
+                }
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i] = MathF.Round(patternValue * (i + 1), 2);
+                }
+
+                mergePatternValue = 0;
+                energyPatternValue = 0;
+                permanentPatternValue = 0;
+            }
+        }
+
+        private void DrawButtons(ref List<float> list, int maxItems)
+        {
+            if (SirenixEditorGUI.ToolbarButton(EditorIcons.Refresh))
             {
                 RefreshList(ref list, maxItems - 1);
             }
 
-            for (int i = 0; i < list.Count; i++)
+            if (SirenixEditorGUI.ToolbarButton(EditorIcons.X))
             {
-                list[i] = MathF.Round(patternValue * (i + 1), 2);
+                list.Clear();
+            }
+        }
+
+        #endregion
+
+        public float GetMergeValue(int index)
+        {
+            return GetValue(index, ref MergeLevels);
+        }
+
+        public float GetEnergyValue(int index)
+        {
+            return GetValue(index, ref EnergyLevels);
+        }
+
+        public float GetPermanentValue(int index)
+        {
+            return GetValue(index, ref PermanentLevels);
+        }
+
+        public float GetValue(int index, ref List<float> list)
+        {
+            if (index < 0 || index >= list.Count)
+            {
+                return 0;
             }
 
-            mergePatternValue = 0;
-            energyPatternValue = 0;
-            permanentPatternValue = 0;
+            return list[index];
         }
-    }
-
-    private void DrawButtons(ref List<float> list, int maxItems)
-    {
-        if (SirenixEditorGUI.ToolbarButton(EditorIcons.Refresh))
-        {
-            RefreshList(ref list, maxItems - 1);
-        }
-
-        if (SirenixEditorGUI.ToolbarButton(EditorIcons.X))
-        {
-            list.Clear();
-        }
-    }
-
-    #endregion
-
-    public float GetMergeValue(int index)
-    {
-        return GetValue(index, ref MergeLevels);
-    }
-
-    public float GetEnergyValue(int index)
-    {
-        return GetValue(index, ref EnergyLevels);
-    }
-
-    public float GetPermanentValue(int index)
-    {
-        return GetValue(index, ref PermanentLevels);
-    }
-
-    public float GetValue(int index, ref List<float> list)
-    {
-        if (index < 0 || index >= list.Count)
-        {
-            return 0;
-        }
-
-        return list[index];
     }
 }

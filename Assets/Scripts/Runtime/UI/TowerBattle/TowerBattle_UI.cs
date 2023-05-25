@@ -8,8 +8,6 @@ namespace TDBattler.Runtime
 {
     public class TowerBattle_UI : MonoBehaviour
     {
-        public static Action<int> OnEnergyIncrease;
-
         [Header("References")]
         [SerializeField] private TowerBattle_UI_Adapter adapter;
 
@@ -91,67 +89,62 @@ namespace TDBattler.Runtime
             {
                 _energyButton1.text = names[0];
             }
-            else if (names.Count > 1)
+            if (names.Count > 1)
             {
-                _energyButton1.text = names[1];
+                _energyButton2.text = names[1];
             }
-            else if (names.Count > 2)
+            if (names.Count > 2)
             {
-                _energyButton1.text = names[2];
+                _energyButton3.text = names[2];
             }
-            else if (names.Count > 3)
+            if (names.Count > 3)
             {
-                _energyButton1.text = names[3];
+                _energyButton4.text = names[3];
             }
-            else if (names.Count > 4)
+            if (names.Count > 4)
             {
-                _energyButton1.text = names[4];
+                _energyButton5.text = names[4];
             }
         }
 
         private void IncreaseEnergyLevel1()
         {
-            IncreaseEnergyLevel(0);
+            int newLevel = int.Parse(_energyLabel1.text);
+            _energyLabel1.text = (++newLevel).ToString();
+            IncreaseEnergyLevel(_energyButton1.text);
         }
 
         private void IncreaseEnergyLevel2()
         {
-            IncreaseEnergyLevel(1);
+            int newLevel = int.Parse(_energyLabel2.text);
+            _energyLabel2.text = (++newLevel).ToString();
+            IncreaseEnergyLevel(_energyButton2.text);
         }
 
         private void IncreaseEnergyLevel3()
         {
-            IncreaseEnergyLevel(2);
+            int newLevel = int.Parse(_energyLabel3.text);
+            _energyLabel3.text = (++newLevel).ToString();
+            IncreaseEnergyLevel(_energyButton3.text);
         }
 
         private void IncreaseEnergyLevel4()
         {
-            IncreaseEnergyLevel(3);
+            int newLevel = int.Parse(_energyLabel4.text);
+            _energyLabel4.text = (++newLevel).ToString();
+            IncreaseEnergyLevel(_energyButton4.text);
         }
 
         private void IncreaseEnergyLevel5()
         {
-            IncreaseEnergyLevel(4);
+            int newLevel = int.Parse(_energyLabel5.text);
+            _energyLabel5.text = (++newLevel).ToString();
+            IncreaseEnergyLevel(_energyButton5.text);
         }
 
-        private void IncreaseEnergyLevel(int index)
+        private void IncreaseEnergyLevel(string towerName)
         {
-            OnEnergyIncrease?.Invoke(index);
-        }
-
-        public void OnTowerEnergyIncrease(int index, int energyLevel)
-        {
-            if (index == 0) {
-                _energyLabel1.text = energyLevel.ToString();
-            } else if (index == 1) {
-                _energyLabel2.text = energyLevel.ToString();
-            } else if (index == 2) {
-                _energyLabel3.text = energyLevel.ToString();
-            } else if (index == 3) {
-                _energyLabel4.text = energyLevel.ToString();
-            } else if (index == 4) {
-                _energyLabel5.text = energyLevel.ToString();
-            }
+            adapter.IncreaseEnergyLevel(towerName);
         }
     }
 }

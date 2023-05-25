@@ -16,19 +16,19 @@ namespace TDBattler.Runtime
         private Transform _towersContainer;
         private Towerpoint _towerpoint;
         private List<PointData> _pointData;
-        private List<Tower> _playerSelectedTowers => Singleton.Instance.PlayerManager.SelectedTowers;
-        private int RandomTowerIndex => (int)Mathf.Round(Random.value) * (_playerSelectedTowers.Count - 1);
+        private PlayerTowers _playerSelectedTowers => Singleton.Instance.PlayerManager.SelectedTowers;
+        private int RandomTowerIndex => (int)Mathf.Round(Random.value) * (_playerSelectedTowers.Towers.Count - 1);
         private int _spawnTowerCount;
         private List<TowerScriptableObject> _towerData;
 
         private void OnEnable()
         {
-            TowerBattle_UI.OnEnergyIncrease += OnEnergyIncrease;
+            
         }
 
         private void OnDisable()
         {
-            TowerBattle_UI.OnEnergyIncrease -= OnEnergyIncrease;
+            
         }
 
         private void Start()
@@ -39,7 +39,7 @@ namespace TDBattler.Runtime
             _spawnTowerCount = 0;
 
             _towerData = new List<TowerScriptableObject>();
-            foreach (var prefab in _playerSelectedTowers)
+            foreach (var prefab in _playerSelectedTowers.Towers)
             {
                 _towerData.Add(prefab.TowerData);
             }
@@ -61,7 +61,7 @@ namespace TDBattler.Runtime
 
         private void SpawnTower(int towerIndex, int towerPointIndex, int mergeLevel = 1)
         {
-            Tower instance = Instantiate(_playerSelectedTowers[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
+            Tower instance = Instantiate(_playerSelectedTowers.Towers[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
             UpdatePointData(instance, towerPointIndex);
             instance.name += " " + ++_spawnTowerCount;
             if (mergeLevel > 0)
@@ -99,12 +99,6 @@ namespace TDBattler.Runtime
         private void UpdatePointData(Tower tower, int pointIndex)
         {
             _pointData.SingleOrDefault(pd => pd.PointIndex == pointIndex).Tower = tower;
-        }
-
-        private void OnEnergyIncrease(int index)
-        {
-            var energyLevel = _towerData[index].IncrementEnergyLevel();
-            OnTowerEnergyIncrease?.Invoke(index, energyLevel);
         }
 
         public bool IsFieldFull()
