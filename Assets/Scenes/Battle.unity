@@ -243,7 +243,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205756457}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -266,7 +266,7 @@ MonoBehaviour:
   scale: {x: 0.5, y: 0.5, z: 1}
   radius: 0.5
   points:
-  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0.45, z: 0}
   - {x: 1.45, y: -0, z: 0}
   - {x: 2.9, y: -0, z: 0}
   - {x: 4.3500004, y: -0, z: 0}
@@ -2453,7 +2453,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567218306}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4036286, y: 1.8082509, z: 0}
+  m_LocalPosition: {x: 1.4036286, y: 2.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2551,12 +2551,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f366d7cd61d1ec06bee98bb1454b840, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _towerRefs
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.List`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule]], mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _towerDataTracker
+      Entry: 6
+      Data: 
   playerManager: {fileID: 1994204749}
   towerSpawner: {fileID: 174559306}
-  mana: 100
-  towerCost: 10
-  costIncrease: 10
-  energyLevelCosts: 64000000c800000090010000bc020000ffffff7f
+  playerGameData:
+    Mana: 100
+    Towercost: 10
+    CostIncrease: 10
+    EnergyLevelCosts: 64000000c800000090010000bc0200000f270000
+    TowerEnergyLevelCostIndices: 
 --- !u!1 &945149030
 GameObject:
   m_ObjectHideFlags: 0
@@ -3074,7 +3108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848261893}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

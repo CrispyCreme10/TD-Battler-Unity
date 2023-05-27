@@ -7,6 +7,7 @@ namespace TDBattler.Runtime
 {
     public class Damageable : MonoBehaviour
     {
+        public static Action<string, int> OnAfterDamageGlobal;
         public Action AfterDamage;
         public int Damage { get; private set; }
 
@@ -18,6 +19,9 @@ namespace TDBattler.Runtime
         public void PerformedDamage()
         {
             AfterDamage?.Invoke();
+            Projectile projectile = GetComponent<Projectile>();
+            if (projectile == null) return;
+            OnAfterDamageGlobal?.Invoke(projectile.SourceTowerName, Damage);
         }
     }
 }

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e95c7643d55005c4c952fd075e2428da, type: 3}
-  m_Name: Player
+  m_Script: {fileID: 11500000, guid: d40b43bfdaeafed4683908cd8695f759, type: 3}
+  m_Name: Test
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,6 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  criticalStrike: 200
-  selectedTowers: {fileID: 11400000, guid: 86b43bcc582e37641ab10ecf5efcdb9d, type: 2}
-  availableTowers: {fileID: 11400000, guid: bb9a2983df858a64694fbaf8f2c5ac0f, type: 2}
+  towerPrefabs:
+  - {fileID: 8950546561085149994, guid: 8487d3685edec99469e1a9ff696ca8b7, type: 3}
+  - {fileID: 6687063121488355059, guid: 36666be859105c341baa2ca0d086c177, type: 3}
+  - {fileID: 4614329721729808966, guid: 46b4fbc57df69ab41bbc670b5fedc66a, type: 3}
+  - {fileID: 623150240486385644, guid: 04ce85a02c4307f2b8de8abb3c20ca07, type: 3}
+  - {fileID: 9138542685181519784, guid: d690a72ad684d3d4c964a9a764c14849, type: 3}

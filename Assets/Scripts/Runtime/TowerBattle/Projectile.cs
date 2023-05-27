@@ -18,6 +18,9 @@ namespace TDBattler.Runtime
 
         public EnemyDebuff EnemyDebuff { get => _enemyDebuff; set => _enemyDebuff = value; }
 
+        public string SourceTowerName => _sourceTowerName;
+
+        private string _sourceTowerName;
         private Damageable _damageable;
         private EnemyDebuff _enemyDebuff;
 
@@ -38,6 +41,11 @@ namespace TDBattler.Runtime
             Enemy.OnDeath -= SetTarget;
             Enemy.OnEndReached -= SetTarget;
             _damageable.AfterDamage -= Damageable_AfterDamage;
+        }
+
+        public void SetSourceTower(string towerName)
+        {
+            _sourceTowerName = towerName;
         }
 
         public void SetTarget(Enemy _enemy)

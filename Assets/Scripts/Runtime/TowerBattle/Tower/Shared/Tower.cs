@@ -15,43 +15,47 @@ namespace TDBattler.Runtime
     //  Updating Static Stats
     //  Spawning Projectile
     //  Animations
-    public class Tower : SerializedMonoBehaviour
+    public abstract class Tower : SerializedMonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private Transform rotationPoint;
-        [SerializeField] private GameObject projectilePrefab;
-        [SerializeField] private Transform firingPoint;
-        [SerializeField] private TowerScriptableObject towerData;
-        [SerializeField] private GameObject textPrefab;
-        [SerializeField] private Animator anim;
+        [SerializeField] protected Transform rotationPoint;
+        [SerializeField] protected GameObject projectilePrefab;
+        [SerializeField] protected Transform firingPoint;
+        [SerializeField] protected TowerScriptableObject towerData;
+        [SerializeField] protected GameObject textPrefab;
+        [SerializeField] protected Animator anim;
 
         public int MergeLevel => mergeLevel;
+        public int EnergyLevel => energyLevel;
         public TowerScriptableObject TowerData => towerData;
 
-        private GameObject _projectileContainer;
+        protected GameObject _projectileContainer;
 
         // battle props
         [Header("Attributes")]
         [ReadOnly]
         [SerializeField]
-        private int mergeLevel;
+        protected int mergeLevel;
         [ReadOnly]
         [SerializeField]
-        private Dictionary<StatType, float> statMap = new Dictionary<StatType, float>();
+        protected int energyLevel;
         [ReadOnly]
         [SerializeField]
-        private Enemy _currentEnemyTarget;
+        protected Dictionary<StatType, float> statMap = new Dictionary<StatType, float>();
+        [ReadOnly]
+        [SerializeField]
+        protected Enemy _currentEnemyTarget;
         [ReadOnly]
         [SerializeField]
         [ListDrawerSettings(OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
-        private List<EnemyDistance> _enemiesDistance;
-        private List<Enemy> _enemiesInRange;
+        protected List<EnemyDistance> _enemiesDistance;
+        protected List<Enemy> _enemiesInRange;
 
-        Coroutine currentCoroutine;
-        Quaternion? enemyDir;
+        protected Coroutine currentCoroutine;
+        protected Quaternion? enemyDir;
 
         [Serializable]
-        private struct EnemyDistance
+        protected struct EnemyDistance
         {
             public float Distance;
             public string Name;
@@ -117,74 +121,26 @@ namespace TDBattler.Runtime
             InitDebugText();
         }
 
-        private void RefreshStats()
+        public void SetEnergyLevel(int level)
         {
-            foreach (Stat stat in towerData.Stats)
-            {
-                statMap[stat.Type] = stat.GetValueModified(mergeLevel, towerData.EnergyLevel, towerData.PermanentLevel);
-            }
+            energyLevel = level;
+            RefreshStats();
         }
 
         #region General Methods
-
-        protected virtual IEnumerator Attack()
-        {
-            var attackInterval = GetStat(StatType.AttackInterval);
-            yield return new WaitForSeconds(attackInterval);
-
-            anim.speed = 1 / attackInterval;
-
-            GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity, _projectileContainer.transform);
-            Projectile projectileScript = projectileObj.GetComponent<Projectile>();
-            projectileScript.SetTarget(_currentEnemyTarget);
-            projectileScript.SetDamage(GetStat(StatType.Damage));
-            projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;
-            projectileObj.name = $"{name} - {projectileObj.name}";
-
-            if (GenerateEnemyDebuff(out EnemyDebuff enemyDebuff))
-            {
-                projectileScript.EnemyDebuff = enemyDebuff;
-            }
-
-            if (_currentEnemyTarget != null)
-            {
-                _currentEnemyTarget.AddProjectile(projectileScript);
-            }
-
-            currentCoroutine = null;
-        }
-
-        #endregion
-
-        private void GetCurrentEnemyTarget()
-        {
-            if (_enemiesInRange.Count <= 0)
-            {
-                _currentEnemyTarget = null;
-                return;
-            }
-
-            if (towerData.UnitTarget == UnitTarget.First)
-            {
-                _currentEnemyTarget = GetFirstEnemy();
-                return;
-            }
-            _currentEnemyTarget = GetRandomEnemy();
-        }
-
-        private Enemy GetFirstEnemy()
+        protected Enemy GetFirstEnemy()
         {
             var orderedEnemies = _enemiesInRange.OrderByDescending(e => e.DistanceTraveled);
             _enemiesDistance = orderedEnemies.Select(e => new EnemyDistance{ Distance = e.DistanceTraveled, Name = e.name}).ToList();
             return orderedEnemies.First();
         }
 
-        private Enemy GetRandomEnemy()
+        protected Enemy GetRandomEnemy()
         {
             return _enemiesInRange[(int)Mathf.Round(UnityEngine.Random.value) * (_enemiesInRange.Count - 1)];
         }
 
-        private Quaternion? RotateTowardsTarget()
+        protected Quaternion? RotateTowardsTarget()
         {
             if (_currentEnemyTarget == null)
             {
@@ -202,7 +158,8 @@ namespace TDBattler.Runtime
         {
             // just get the enemies that are relevant
             _enemiesInRange = enemies.ToList();
-            anim.SetBool("CanShoot", _enemiesInRange.Count > 0);
+            bool enemiesInRange = _enemiesInRange.Count > 0;
+            anim.SetBool("CanShoot", enemiesInRange);
         }
 
         public float GetStat(StatType stat)
@@ -218,7 +175,7 @@ namespace TDBattler.Runtime
 
         public void IncreaseTowerEnergy()
         {
-            towerData.IncrementEnergyLevel();
+            energyLevel++;
             RefreshStats();
         }
 
@@ -231,8 +188,62 @@ namespace TDBattler.Runtime
         {
             SirenixEditorGUI.EndBox();
         }
+        #endregion
+
+
 
         #region Custom Hooks
+        protected virtual void GetCurrentEnemyTarget()
+        {
+            if (_enemiesInRange.Count <= 0)
+            {
+                _currentEnemyTarget = null;
+                return;
+            }
+
+            if (towerData.UnitTarget == UnitTarget.First)
+            {
+                _currentEnemyTarget = GetFirstEnemy();
+                return;
+            }
+            _currentEnemyTarget = GetRandomEnemy();
+        }
+
+        protected virtual void RefreshStats()
+        {
+            foreach (Stat stat in towerData.Stats)
+            {
+                statMap[stat.Type] = stat.GetValueModified(mergeLevel, energyLevel, towerData.PermanentLevel);
+            }
+        }
+
+        protected virtual IEnumerator Attack()
+        {
+            var attackInterval = GetStat(StatType.AttackInterval);
+            yield return new WaitForSeconds(attackInterval);
+
+            anim.speed = 1 / attackInterval;
+
+            GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity, _projectileContainer.transform);
+            Projectile projectileScript = projectileObj.GetComponent<Projectile>();
+            projectileScript.SetSourceTower(towerData.Name);
+            projectileScript.SetTarget(_currentEnemyTarget);
+            projectileScript.SetDamage(GetStat(StatType.Damage));
+            projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;
+            projectileObj.name = $"{name} - {projectileObj.name}";
+
+            if (GenerateEnemyDebuff(out EnemyDebuff enemyDebuff))
+            {
+                projectileScript.EnemyDebuff = enemyDebuff;
+            }
+
+            if (_currentEnemyTarget != null)
+            {
+                _currentEnemyTarget.AddProjectile(projectileScript);
+            }
+
+            currentCoroutine = null;
+        }
 
         public virtual void OnMerge(TowerBattleManager towerBattleManager)
         {
@@ -258,6 +269,18 @@ namespace TDBattler.Runtime
         [SerializeField] private StatLevels statLevels;
 
         public StatType Type => type;
+
+        public float GetValue(int mergeLevel, int energyLevel, int permanentLevel)
+        {
+            int mergeIndex = mergeLevel - 2;
+            int energyIndex = energyLevel - 2;
+            int permanentIndex = permanentLevel - 2;
+
+            return value + 
+                statLevels.GetMergeValue(mergeIndex) +
+                statLevels.GetEnergyValue(energyIndex) +
+                statLevels.GetPermanentValue(permanentIndex);
+        }
 
         public float GetValueModified(int mergeLevel, int energyLevel, int permanentLevel)
         {

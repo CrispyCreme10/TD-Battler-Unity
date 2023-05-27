@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace TDBattler.Runtime
         private Towerpoint _towerpoint;
         private List<PointData> _pointData;
         private PlayerTowers _playerSelectedTowers => Singleton.Instance.PlayerManager.SelectedTowers;
-        private int RandomTowerIndex => (int)Mathf.Round(Random.Range(0, _playerSelectedTowers.Towers.Count));
+        private int RandomTowerIndex => (int)Mathf.Round(UnityEngine.Random.Range(0, _playerSelectedTowers.Towers.Count));
         private int _spawnTowerCount;
         private List<TowerScriptableObject> _towerData;
 
@@ -41,35 +42,47 @@ namespace TDBattler.Runtime
             _towerData = new List<TowerScriptableObject>();
             foreach (var prefab in _playerSelectedTowers.Towers)
             {
-                _towerData.Add(prefab.TowerData);
+                _towerData.Add(prefab.GetComponent<Tower>().TowerData);
             }
         }
 
-        public void SpawnRandomFirstTower()
+        public GameObject SpawnRandomFirstTower(Func<int, int> GetEnergyLevel)
         {
             int randomTowerPointIndex = GetRandomAvailableTowerPointIndex();
             if (randomTowerPointIndex >= 0)
             {
-                SpawnTower(RandomTowerIndex, randomTowerPointIndex);
+                // determine energyLevel
+                int energyLevel = GetEnergyLevel(randomTowerPointIndex);
+                return SpawnTower(RandomTowerIndex, randomTowerPointIndex, energyLevel);
             }
+
+            return null;
         }
 
-        public void SpawnRandomTowerAtPointOfMergeLevel(int towerPointIndex, int mergeLevel)
+        public GameObject SpawnRandomTowerAtPointOfMergeLevel(int towerPointIndex, int energyLevel, int mergeLevel)
         {
-            SpawnTower(RandomTowerIndex, towerPointIndex, mergeLevel);
+            return SpawnTower(RandomTowerIndex, towerPointIndex, energyLevel, mergeLevel);
         }
 
-        private void SpawnTower(int towerIndex, int towerPointIndex, int mergeLevel = 1)
+        private GameObject SpawnTower(int towerIndex, int towerPointIndex, int energyLevel, int mergeLevel = 1)
         {
-            Tower instance = Instantiate(_playerSelectedTowers.Towers[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
+            GameObject instanceGO = Instantiate(_playerSelectedTowers.Towers[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
+            Tower instance = instanceGO.GetComponent<Tower>();
+            Debug.Log($"Spawn Tower: {instance.name}");
             UpdatePointData(instance, towerPointIndex);
             instance.name += " " + ++_spawnTowerCount;
             if (mergeLevel > 0)
             {
                 instance.SetMergeLevel(mergeLevel);
             }
+            if (energyLevel > 0)
+            {
+                instance.SetEnergyLevel(energyLevel);
+            }
             instance.UpdateEnemies(enemySpawner.Enemies);
             OnTowerSpawn?.Invoke(instance);
+
+            return instanceGO;
         }
 
         public int DespawnTower(Tower tower)
@@ -91,7 +104,7 @@ namespace TDBattler.Runtime
             int availableIndex = 0;
             if (availablePoints.Count > 1)
             {
-                availableIndex = Random.Range(0, availablePoints.Count());
+                availableIndex = UnityEngine.Random.Range(0, availablePoints.Count());
             }
             return availablePoints[availableIndex];
         }

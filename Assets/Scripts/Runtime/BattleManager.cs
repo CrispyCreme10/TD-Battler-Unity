@@ -77,7 +77,7 @@ namespace TDBattler.Runtime
             }
 
             // boss waves
-            if (enemySpawner.Enemies == null)
+            if (enemySpawner?.Enemies == null)
             {
                 Debug.Log("BOSS TIME");
             }

@@ -17,7 +17,6 @@ namespace TDBattler.Runtime
         [TextArea]
         [SerializeField] private string description;
         [SerializeField] private Color debugColor;
-        [SerializeField] private int energyLevel = 1;
         [SerializeField] private int permanentLevel = 1;
         [SerializeField] private TowerFaction towerFaction;
         [SerializeField] private UnitType unitType;
@@ -26,7 +25,6 @@ namespace TDBattler.Runtime
 
         public string Name => name;
         public Color DebugColor => debugColor;
-        public int EnergyLevel => energyLevel;
         public int PermanentLevel => permanentLevel;
         public UnitType UnitType => unitType;
         public UnitTarget UnitTarget => target;
@@ -35,16 +33,6 @@ namespace TDBattler.Runtime
         private Dictionary<StatType, List<StatModifierType>> statModifierMap = new Dictionary<StatType, List<StatModifierType>>(){
             {StatType.AttackInterval, new List<StatModifierType>(){ StatModifierType.AttackSpeedIncrease }}
         };
-
-        private void OnEnable() 
-        {
-            energyLevel = 1;
-        }
-
-        public void IncrementEnergyLevel()
-        {
-            energyLevel++; 
-        }
     }
 
     public enum TowerFaction

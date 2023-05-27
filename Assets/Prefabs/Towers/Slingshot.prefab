@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 2458851450675785686}
   m_Layer: 0
   m_Name: Slingshot
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -312,6 +312,7 @@ MonoBehaviour:
   textPrefab: {fileID: 7387962130193737361, guid: a51ac77331d458a43ab5f6a65231ae8c, type: 3}
   anim: {fileID: 2458851450675785686}
   mergeLevel: 0
+  energyLevel: 0
   _currentEnemyTarget: {fileID: 0}
   _enemiesDistance: []
 --- !u!95 &2458851450675785686

@@ -45,7 +45,7 @@ namespace TDBattler.Runtime
 
         public IEnumerable<string> GetTowerNames()
         {
-            return playerManager.SelectedTowers.Towers.Select(tower => tower.TowerData.name);
+            return playerManager.SelectedTowers.Towers.Select(tower => tower.GetComponent<Tower>().TowerData.name);
         }
 
         public void IncreaseEnergyLevel(string towerName)

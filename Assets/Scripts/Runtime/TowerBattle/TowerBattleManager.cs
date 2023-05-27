@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 
 namespace TDBattler.Runtime
 {
     // responsible for handling the state for an active battle
-    public class TowerBattleManager : MonoBehaviour
+    public class TowerBattleManager : SerializedMonoBehaviour
     {
         public static Action<int, int, List<int>, bool> OnManaChange;
 
@@ -15,43 +17,45 @@ namespace TDBattler.Runtime
         [SerializeField] private TowerSpawner towerSpawner;
 
         [Header("Attributes")]
-        [SerializeField] private int mana = 100;
-        [SerializeField] private int towerCost = 10;
-        [SerializeField] private int costIncrease = 10;
-        [SerializeField] private List<int> energyLevelCosts;
+        [SerializeField] private PlayerGameData playerGameData;
 
-        public int Mana => mana;
-        public int TowerCost => towerCost;
-
-        private int _currentMana;
+        public int Mana => playerGameData.Mana;
+        public int TowerCost => playerGameData.Towercost;
 
         private Collider2D _selectedTowerCollider;
         private Tower _selectedTower => _selectedTowerCollider?.transform.parent?.parent.GetComponent<Tower>();
         private Vector3 _selectedTowerOGPosition;
         private Vector3 _selectedTowerOffset;
-        private List<int> _energyLevelCostsTowerIndex;
-        private IDictionary<string, Tower> _towerNameDict;
+        [ReadOnly]
+        [SerializeField]
+        private Dictionary<string, List<GameObject>> _towerRefs = new Dictionary<string, List<GameObject>>();
+        [ReadOnly]
+        [NonSerialized, OdinSerialize]
+        private TowerDataTracker _towerDataTracker;
 
         private void Awake()
         {
-            _towerNameDict = playerManager.SelectedTowers.Towers.ToDictionary(t => t.name, t => t);
+            playerGameData.TowerEnergyLevelCostIndices = Enumerable.Repeat(0, 5).ToList();
+            _towerDataTracker = new TowerDataTracker(playerManager.SelectedTowers);
         }
 
         private void OnEnable()
         {
             Enemy.OnDeath += OnEnemyDeath;
             TowerBattle_UI_Adapter.OnEnergyIncrease += OnTowerEnergyIncrease;
+            Damageable.OnAfterDamageGlobal += OnAfterDamageableDamage;
         }
 
         private void OnDisable()
         {
             Enemy.OnDeath -= OnEnemyDeath;
+            TowerBattle_UI_Adapter.OnEnergyIncrease -= OnTowerEnergyIncrease;
+            Damageable.OnAfterDamageGlobal -= OnAfterDamageableDamage;
         }
 
         private void Start()
         {
-            _currentMana = mana;
-            _energyLevelCostsTowerIndex = new List<int> { 0, 0, 0, 0, 0 };
+            playerGameData.TowerEnergyLevelCostIndices = new List<int> { 0, 0, 0, 0, 0 };
         }
 
         private void Update()
@@ -115,13 +119,49 @@ namespace TDBattler.Runtime
 
         public void SpawnTower()
         {
-            if (mana >= towerCost)
+            if (playerGameData.Mana >= playerGameData.Towercost)
             {
-                mana -= towerCost;
-                towerCost += costIncrease;
-                towerSpawner.SpawnRandomFirstTower();
+                playerGameData.Mana -= playerGameData.Towercost;
+                playerGameData.Towercost += playerGameData.CostIncrease;
+                GameObject newTowerInstance = towerSpawner.SpawnRandomFirstTower(GetTowerEnergyLevel);
+                AddTowerRef(newTowerInstance);
                 ManaChange();
             }
+        }
+
+        private void AddTowerRef(GameObject obj)
+        {
+            string key = GetTowerkey(obj);
+            if (!_towerRefs.ContainsKey(key))
+            {
+                _towerRefs[key] = new List<GameObject>();
+            }
+            _towerRefs[key].Add(obj);
+        }
+
+        private void RemoveTowerRef(GameObject obj)
+        {
+            string key = GetTowerkey(obj);
+            if (!_towerRefs.ContainsKey(key)) return;
+
+            _towerRefs[key].Remove(obj);
+        }
+
+        private string GetTowerkey(GameObject obj)
+        {
+            Tower tower = obj.GetComponent<Tower>();
+            return tower == null ? "" : tower.TowerData.Name;
+        }
+
+        private int GetTowerEnergyLevel(int selectedTowerIndex)
+        {
+            return playerGameData.GetEnergyLevel(selectedTowerIndex);
+        }
+
+        private int GetTowerEnergyLevel(string towerName)
+        {
+            int index = playerManager.SelectedTowers.TowerIndexOf(towerName);
+            return playerGameData.GetEnergyLevel(index);
         }
 
         private void OnEnemyDeath(Enemy enemy)
@@ -136,38 +176,40 @@ namespace TDBattler.Runtime
 
         private void IncreaseMana(int incrMana)
         {
-            mana += incrMana;
+            playerGameData.Mana += incrMana;
             ManaChange();
         }
 
         private void DecreaseMana(int decrMana)
         {
-            mana -= decrMana;
+            playerGameData.Mana -= decrMana;
             ManaChange();
         }
 
         private void ManaChange()
         {
-            var energyCosts = _energyLevelCostsTowerIndex.Select(i => energyLevelCosts[i]).ToList();
-            OnManaChange?.Invoke(mana, towerCost, energyCosts, towerSpawner.IsFieldFull());
+            var energyCosts = playerGameData.TowerEnergyLevelCostIndices.Select(i => playerGameData.EnergyLevelCosts[i]).ToList();
+            OnManaChange?.Invoke(playerGameData.Mana, playerGameData.Towercost, energyCosts, towerSpawner.IsFieldFull());
         }
 
         private void OnTowerEnergyIncrease(string name)
         {
-            if (_towerNameDict.ContainsKey(name))
-            {
-                // update tower
-                Tower tower = _towerNameDict[name];
-                tower.IncreaseTowerEnergy();
+            Debug.Log($"energy: {name}");
+            if (!_towerRefs.ContainsKey(name)) return;
+            // update towers
+            _towerRefs[name].ForEach(go => {
+                Debug.Log($"Increase Energy: {go.name}");
+                go.GetComponent<Tower>().IncreaseTowerEnergy();
+            });
 
-                // update this & UI
-                int index = playerManager.SelectedTowers.Towers.IndexOf(tower);
-                int decrManaAmt = energyLevelCosts[_energyLevelCostsTowerIndex[index]];
-                _energyLevelCostsTowerIndex[index]++;
-                string debugOut = string.Join(',', _energyLevelCostsTowerIndex);
-                Debug.Log($"{name} {index} {decrManaAmt} {debugOut}");
-                DecreaseMana(decrManaAmt);
-            }
+            // update this & UI
+            int index = playerManager.SelectedTowers.TowerIndexOf(name);
+            if (index == -1) return;
+
+            int decrManaAmt = playerGameData.GetEnergyLevelCost(index);
+            string debugOut = string.Join(',', playerGameData.TowerEnergyLevelCostIndices);
+            Debug.Log($"{name} {index} {decrManaAmt} {debugOut}");
+            DecreaseMana(decrManaAmt);
         }
 
         private bool MergeTowers(Tower otherTower)
@@ -182,8 +224,12 @@ namespace TDBattler.Runtime
 
                 // merge cleanup
                 towerSpawner.DespawnTower(_selectedTower);
+                RemoveTowerRef(_selectedTower.gameObject);
                 var towerPointIndex = towerSpawner.DespawnTower(otherTower);
-                towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, ++selectedMergeLevel);
+                RemoveTowerRef(otherTower.gameObject);
+
+                int energyLevel = GetTowerEnergyLevel(_selectedTower.TowerData.Name);
+                towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, energyLevel, ++selectedMergeLevel);
                 return true;
             }
 
@@ -195,6 +241,59 @@ namespace TDBattler.Runtime
             return _selectedTower.name.Split('(')[0] == otherTower.name.Split('(')[0] && 
                 selectedMergeLevel == otherTowerMergeLevel && 
                 selectedMergeLevel < TowerScriptableObject.MAX_MERGE_LEVEL;
+        }
+
+        private void OnAfterDamageableDamage(string name, int damage)
+        {
+            _towerDataTracker.IncrementTowerDamage(name, damage);
+        }
+    }
+
+    // duties of TBM
+    // track tower gameObject references
+    // track energy levels foreach distinct tower
+    // call tower spawner to spawn towers
+    // handles merging of towers
+    // tracks mana
+    // tracks cost to spawn a random tower & how much to increment the cost by each click
+
+    [Serializable]
+    public class PlayerGameData
+    {
+        public int Mana;
+        public int Towercost;
+        public int CostIncrease;
+        public List<int> EnergyLevelCosts;
+        [ReadOnly]
+        public List<int> TowerEnergyLevelCostIndices;
+
+        public int GetEnergyLevelCost(int towerIndex)
+        {
+            if (towerIndex < 0 || towerIndex >= TowerEnergyLevelCostIndices.Count) return int.MaxValue;
+            return EnergyLevelCosts[TowerEnergyLevelCostIndices[towerIndex]++];
+        }
+
+        public int GetEnergyLevel(int towerIndex)
+        {
+            if (towerIndex < 0 || towerIndex >= TowerEnergyLevelCostIndices.Count) return 1;
+            return TowerEnergyLevelCostIndices[towerIndex] + 1; // energy level is index + 1
+        }
+    }
+
+    [Serializable]
+    public class TowerDataTracker
+    {
+        [OdinSerialize] private Dictionary<string, int> totalTowerDamageDict = new Dictionary<string, int>();
+
+        public TowerDataTracker(PlayerTowers playerTowers)
+        {
+            totalTowerDamageDict = playerTowers.Towers.ToDictionary(towerPrefab => towerPrefab.name, i => 0);
+        }
+
+        public void IncrementTowerDamage(string name, int damage)
+        {
+            if (totalTowerDamageDict == null || !totalTowerDamageDict.ContainsKey(name)) return;
+            totalTowerDamageDict[name] += damage;
         }
     }
 }
