@@ -13,6 +13,10 @@ namespace TDBattler.Runtime
 
         private VisualElement _root;
         private Label _roundTimer;
+        private VisualElement _enemyCountContainer;
+        private IMGUIContainer _heart1Img;
+        private IMGUIContainer _heart2Img;
+        private IMGUIContainer _heart3Img;
         private Label _manaLabel;
         private Button _spawnBtn;
         private Button _energyButton1;
@@ -26,10 +30,21 @@ namespace TDBattler.Runtime
         private Label _energyLabel4;
         private Label _energyLabel5;
 
+        private List<IMGUIContainer> _hearts;
+
+        // sprites
+        Sprite _emptyHeart;
+        Sprite _filledHeart;
+        Sprite _monsterIcon;
+
         private void Start()
         {
             _root = GetComponent<UIDocument>().rootVisualElement;
             _roundTimer = _root.Q<Label>("RoundTimer");
+            _enemyCountContainer = _root.Q<VisualElement>("EnemyCount");
+            _heart1Img = _root.Q<IMGUIContainer>("Heart1");
+            _heart2Img = _root.Q<IMGUIContainer>("Heart2");
+            _heart3Img = _root.Q<IMGUIContainer>("Heart3");
             _manaLabel = _root.Q<Label>("ManaLabel");
             _spawnBtn = _root.Q<Button>("SpawnBtn");
             _energyButton1 = _root.Q<Button>("Tower1Btn");
@@ -42,6 +57,12 @@ namespace TDBattler.Runtime
             _energyLabel3 = _root.Q<Label>("Tower3Label");
             _energyLabel4 = _root.Q<Label>("Tower4Label");
             _energyLabel5 = _root.Q<Label>("Tower5Label");
+
+            _hearts = new List<IMGUIContainer>() { _heart3Img, _heart2Img, _heart1Img };
+
+            _emptyHeart = ResourceManager.GetSprite("hearts", "hearts_0");
+            _filledHeart = ResourceManager.GetSprite("hearts", "hearts_5");
+            _monsterIcon = ResourceManager.GetSprite("monster-icon", "monster-icon_0");
 
             SetManaLabel(adapter.GetMana());
             SetSpawnBtnText(adapter.GetTowerCost());
@@ -65,6 +86,37 @@ namespace TDBattler.Runtime
             _energyButton3.SetEnabled(mana >= energyCosts[2]);
             _energyButton4.SetEnabled(mana >= energyCosts[3]);
             _energyButton5.SetEnabled(mana >= energyCosts[4]);
+        }
+
+        public void OnLivesChange(int totalLives)
+        {
+            for (int i = 0; i < _hearts.Count; i++)
+            {
+                _hearts[i].style.backgroundImage = new StyleBackground(totalLives > i ? _filledHeart : _emptyHeart);
+            }
+        }
+
+        public void OnEnemiesChange(int totalEnemies)
+        {
+            if (totalEnemies > _enemyCountContainer.childCount)
+            {
+                // add
+                _enemyCountContainer.Add(CreateMonsterIcon());
+            }
+            else if (totalEnemies < _enemyCountContainer.childCount)
+            {
+                // remove
+                _enemyCountContainer.RemoveAt(_enemyCountContainer.childCount - 1);
+            }
+        }
+
+        private IMGUIContainer CreateMonsterIcon()
+        {
+            IMGUIContainer newMonsterImg = new IMGUIContainer();
+            newMonsterImg.style.width = new StyleLength(30);
+            newMonsterImg.style.height = new StyleLength(30);
+            newMonsterImg.style.backgroundImage = new StyleBackground(_monsterIcon);
+            return newMonsterImg;
         }
 
         public void SetRoundTimer(string text)

@@ -5,10 +5,15 @@
             <ui:Label text="00:00" display-tooltip-when-elided="true" name="RoundTimer" style="font-size: 40px; margin-right: 0;" />
             <ui:IMGUIContainer name="BossIcon" style="width: 45px; height: 45px; display: none;" />
         </ui:VisualElement>
-        <ui:VisualElement name="MiddleHUD" style="background-color: rgba(0, 0, 0, 0.78); height: 80px; flex-direction: row; align-items: center; justify-content: center;">
-            <ui:IMGUIContainer name="Heart1" class="heart" style="background-image: url(&apos;project://database/Assets/Sprites/hearts.jpg?fileID=218085572&amp;guid=772e3a3e7d3d29940802321687b8616c&amp;type=3#hearts_5&apos;);" />
-            <ui:IMGUIContainer name="Heart2" class="heart" style="background-image: url(&apos;project://database/Assets/Sprites/hearts.jpg?fileID=218085572&amp;guid=772e3a3e7d3d29940802321687b8616c&amp;type=3#hearts_5&apos;);" />
-            <ui:IMGUIContainer name="Heart3" class="heart" style="background-image: url(&apos;project://database/Assets/Sprites/hearts.jpg?fileID=218085572&amp;guid=772e3a3e7d3d29940802321687b8616c&amp;type=3#hearts_5&apos;);" />
+        <ui:VisualElement name="MiddleHUD" style="background-color: rgba(0, 0, 0, 0.78); height: 80px; flex-direction: row; align-items: flex-end; justify-content: center;">
+            <ui:VisualElement name="Player1Strip" style="flex-direction: row; justify-content: space-between; width: 100%;">
+                <ui:VisualElement name="EnemyCount" style="justify-content: center; flex-grow: 0; width: 100%; flex-direction: row;" />
+                <ui:VisualElement name="Hearts" style="flex-direction: row; width: 90px; min-width: 90px; max-width: 90px;">
+                    <ui:IMGUIContainer name="Heart1" class="heart" style="background-image: url(&apos;project://database/Assets/Resources/hearts.jpg?fileID=218085572&amp;guid=772e3a3e7d3d29940802321687b8616c&amp;type=3#hearts_5&apos;);" />
+                    <ui:IMGUIContainer name="Heart2" class="heart" style="background-image: url(&apos;project://database/Assets/Resources/hearts.jpg?fileID=218085572&amp;guid=772e3a3e7d3d29940802321687b8616c&amp;type=3#hearts_5&apos;);" />
+                    <ui:IMGUIContainer name="Heart3" class="heart" style="background-image: url(&apos;project://database/Assets/Resources/hearts.jpg?fileID=218085572&amp;guid=772e3a3e7d3d29940802321687b8616c&amp;type=3#hearts_5&apos;);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="BottomHUD" style="height: 180px; background-color: rgb(91, 91, 91); align-items: center; justify-content: center; flex-direction: column;">
             <ui:VisualElement name="TopDisplay" style="flex-direction: row; top: -20px; height: 75%;">

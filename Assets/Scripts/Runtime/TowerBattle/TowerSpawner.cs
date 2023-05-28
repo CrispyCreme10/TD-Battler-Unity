@@ -12,10 +12,10 @@ namespace TDBattler.Runtime
         public static System.Action<int, int> OnTowerEnergyIncrease;
 
         [Header("References")]
+        [SerializeField] private Towerpoint towerpoint;
         [SerializeField] private EnemySpawner enemySpawner;
 
         private Transform _towersContainer;
-        private Towerpoint _towerpoint;
         private List<PointData> _pointData;
         private PlayerTowers _playerSelectedTowers => Singleton.Instance.PlayerManager.SelectedTowers;
         private int RandomTowerIndex => (int)Mathf.Round(UnityEngine.Random.Range(0, _playerSelectedTowers.Towers.Count));
@@ -34,9 +34,8 @@ namespace TDBattler.Runtime
 
         private void Start()
         {
-            _towerpoint = GetComponentInChildren<Towerpoint>();
             _towersContainer = new GameObject("Towers").transform;
-            _pointData = Enumerable.Range(0, _towerpoint.Points.Length).Select(i => new PointData(i)).ToList();
+            _pointData = Enumerable.Range(0, towerpoint.Points.Length).Select(i => new PointData(i)).ToList();
             _spawnTowerCount = 0;
 
             _towerData = new List<TowerScriptableObject>();
@@ -66,9 +65,8 @@ namespace TDBattler.Runtime
 
         private GameObject SpawnTower(int towerIndex, int towerPointIndex, int energyLevel, int mergeLevel = 1)
         {
-            GameObject instanceGO = Instantiate(_playerSelectedTowers.Towers[towerIndex], _towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
+            GameObject instanceGO = Instantiate(_playerSelectedTowers.Towers[towerIndex], towerpoint.Points[towerPointIndex], Quaternion.identity, _towersContainer);
             Tower instance = instanceGO.GetComponent<Tower>();
-            Debug.Log($"Spawn Tower: {instance.name}");
             UpdatePointData(instance, towerPointIndex);
             instance.name += " " + ++_spawnTowerCount;
             if (mergeLevel > 0)
@@ -116,7 +114,7 @@ namespace TDBattler.Runtime
 
         public bool IsFieldFull()
         {
-            return _spawnTowerCount == _towerpoint.Points.Length;
+            return _spawnTowerCount == towerpoint.Points.Length;
         }
     }
 

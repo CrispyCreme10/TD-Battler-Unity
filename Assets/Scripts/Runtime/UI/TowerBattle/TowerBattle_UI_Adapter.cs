@@ -20,12 +20,14 @@ namespace TDBattler.Runtime
         {
             TowerBattleManager.OnManaChange += OnManaChange;
             BattleManager.OnMinionWaveUpdate += SetRoundTimer;
+            EnemySpawner.OnEnemiesChanged += OnEnemiesChange;
         }
 
         private void OnDisable()
         {
             TowerBattleManager.OnManaChange -= OnManaChange;
             BattleManager.OnMinionWaveUpdate -= SetRoundTimer;
+            EnemySpawner.OnEnemiesChanged -= OnEnemiesChange;
         }
 
         public void SpawnTower()
@@ -54,10 +56,19 @@ namespace TDBattler.Runtime
         }
 
         #region Incoming Events
-        
         private void OnManaChange(int mana, int towerCost, List<int> energyCosts, bool fieldIsFull)
         {
             document.OnManaChange(mana, towerCost, energyCosts, fieldIsFull);
+        }
+        
+        private void OnLivesChange(int totalLives)
+        {
+            document.OnLivesChange(LevelManager.Instance.TotalLives);
+        }
+
+        private void OnEnemiesChange(IEnumerable<Enemy> enemies)
+        {
+            document.OnEnemiesChange(enemies.Count());
         }
 
         private void SetRoundTimer(float startingTime, float timeInSeconds)

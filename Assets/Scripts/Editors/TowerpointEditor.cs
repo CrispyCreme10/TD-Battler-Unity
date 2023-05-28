@@ -22,8 +22,8 @@ namespace TDBattler.Editor
                     EditorGUI.BeginChangeCheck();
 
                     // Create Handles
-                    Vector3 currentWaypointPoint = Towerpoint.CurrentPosition + Towerpoint.Points[i];
-                    Vector3 newWaypointPoint = Handles.FreeMoveHandle(currentWaypointPoint,
+                    Vector3 currentTowerpointPoint = Towerpoint.CurrentPosition + Towerpoint.Points[i];
+                    Vector3 newTowerpointPoint = Handles.FreeMoveHandle(currentTowerpointPoint,
                         Quaternion.identity, _towerpointHandleSize * Towerpoint.Scale.x,
                         new Vector3(0.3f, 0.3f, 0.3f), Handles.SphereHandleCap);
 
@@ -40,7 +40,7 @@ namespace TDBattler.Editor
                     if (EditorGUI.EndChangeCheck())
                     {
                         Undo.RecordObject(target, "Free Move Handle");
-                        Towerpoint.Points[i] = newWaypointPoint - Towerpoint.CurrentPosition;
+                        Towerpoint.Points[i] = newTowerpointPoint - Towerpoint.CurrentPosition;
                     }
                 }
             }
