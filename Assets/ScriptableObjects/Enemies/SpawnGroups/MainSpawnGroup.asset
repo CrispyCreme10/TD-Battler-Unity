@@ -27,5 +27,5 @@ MonoBehaviour:
     enemies:
     - initialDelay: 15
       enemyDelayGap: 0
-      count: 0
+      count: 1
       poolName: 2

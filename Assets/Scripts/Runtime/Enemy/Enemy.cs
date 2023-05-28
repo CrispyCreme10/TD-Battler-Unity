@@ -149,8 +149,13 @@ namespace TDBattler.Runtime
         {
             if (enemyDebuff.EnemyDebuffType == EnemyDebuffType.MovementSpeed)
             {
-                moveSpeed -= moveSpeed * enemyDebuff.ValueToApply;
+                ApplySlowDebuff(enemyDebuff);
             }
+        }
+
+        private void ApplySlowDebuff(EnemyDebuff enemyDebuff)
+        {
+            moveSpeed -= moveSpeed * enemyDebuff.ValueToApply;
         }
     }
 
