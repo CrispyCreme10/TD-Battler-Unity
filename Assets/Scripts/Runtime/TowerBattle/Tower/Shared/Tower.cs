@@ -76,7 +76,9 @@ namespace TDBattler.Runtime
 
         private void OnEnable()
         {
-            OnEnableBase();
+            EnemySpawner.OnEnemiesChanged += UpdateEnemies;
+
+            anim.SetBool("CanShoot", true);
         }
 
         protected void OnEnableBase()
@@ -88,7 +90,9 @@ namespace TDBattler.Runtime
 
         private void OnDisable()
         {
-            OnDisableBase();
+            EnemySpawner.OnEnemiesChanged -= UpdateEnemies;
+
+            anim.SetBool("CanShoot", false);
         }
 
         protected void OnDisableBase()
@@ -107,7 +111,7 @@ namespace TDBattler.Runtime
                 enemyDir = RotateTowardsTarget();
             }
 
-            GetCurrentEnemyTarget();
+            SetCurrentEnemyTarget();
         }
 
         private void InitBoxCollider()
@@ -140,8 +144,14 @@ namespace TDBattler.Runtime
         }
 
         #region General Methods
+        protected bool NoEnemyTarget()
+        {
+            return _enemiesInRange.Count <= 0 || _currentEnemyTarget != null && !_currentEnemyTarget.isActiveAndEnabled;
+        }
+
         protected Enemy GetFirstEnemy()
         {
+            if (_enemiesInRange.Count == 0) return null;
             var orderedEnemies = _enemiesInRange.OrderByDescending(e => e.DistanceTraveled);
             _enemiesDistance = orderedEnemies.Select(e => new EnemyDistance{ Distance = e.DistanceTraveled, Name = e.name}).ToList();
             return orderedEnemies.First();
@@ -149,6 +159,7 @@ namespace TDBattler.Runtime
 
         protected Enemy GetRandomEnemy()
         {
+            if (_enemiesInRange.Count == 0) return null;
             return _enemiesInRange[(int)Mathf.Round(UnityEngine.Random.value) * (_enemiesInRange.Count - 1)];
         }
 
@@ -205,20 +216,7 @@ namespace TDBattler.Runtime
 
 
         #region Custom Hooks
-        protected virtual void GetCurrentEnemyTarget()
-        {
-            if (_enemiesInRange.Count <= 0)
-            {
-                _currentEnemyTarget = null;
-                return;
-            }
-
-            if (_currentEnemyTarget != null && !_currentEnemyTarget.isActiveAndEnabled)
-            {
-                _currentEnemyTarget = null;
-                return;
-            }
-        }
+        protected abstract void SetCurrentEnemyTarget();
 
         protected virtual void RefreshStats()
         {

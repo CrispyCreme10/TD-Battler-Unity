@@ -12,9 +12,13 @@ namespace TDBattler.Runtime
         private float _firstShotDamage;
         private bool _isFirstShot;
 
-        protected override void GetCurrentEnemyTarget()
+        protected override void SetCurrentEnemyTarget()
         {
-            base.GetCurrentEnemyTarget();
+            if (base.NoEnemyTarget())
+            {
+                _currentEnemyTarget = null;
+                return;
+            }
 
             if (_currentEnemyTarget == null)
             {

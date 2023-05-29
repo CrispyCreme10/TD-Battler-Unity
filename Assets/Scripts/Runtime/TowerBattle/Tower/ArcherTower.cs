@@ -6,9 +6,13 @@ namespace TDBattler.Runtime
 {
     public class ArcherTower : Tower
     {
-        protected override void GetCurrentEnemyTarget()
+        protected override void SetCurrentEnemyTarget()
         {
-            base.GetCurrentEnemyTarget();
+            if (base.NoEnemyTarget())
+            {
+                _currentEnemyTarget = null;
+                return;
+            }
 
             _currentEnemyTarget = GetFirstEnemy();
         }

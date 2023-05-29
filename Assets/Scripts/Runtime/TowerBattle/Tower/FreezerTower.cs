@@ -23,9 +23,13 @@ namespace TDBattler.Runtime
             return true;
         }
 
-        protected override void GetCurrentEnemyTarget()
+        protected override void SetCurrentEnemyTarget()
         {
-            base.GetCurrentEnemyTarget();
+            if (base.NoEnemyTarget())
+            {
+                _currentEnemyTarget = null;
+                return;
+            }
 
             _currentEnemyTarget = GetFirstNonMaxSlowedEnemy();
         }

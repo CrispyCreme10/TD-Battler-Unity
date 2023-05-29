@@ -22,5 +22,5 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   criticalStrike: 200
-  selectedTowers: {fileID: 11400000, guid: 86b43bcc582e37641ab10ecf5efcdb9d, type: 2}
+  selectedTowers: {fileID: 11400000, guid: e33f26db343a47d4db5c734c9bff1018, type: 2}
   availableTowers: {fileID: 11400000, guid: bb9a2983df858a64694fbaf8f2c5ac0f, type: 2}
