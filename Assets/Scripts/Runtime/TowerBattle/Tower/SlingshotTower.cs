@@ -6,6 +6,11 @@ namespace TDBattler.Runtime
 {
     public class SlingshotTower : Tower
     {
-        
+        protected override void GetCurrentEnemyTarget()
+        {
+            base.GetCurrentEnemyTarget();
+
+            _currentEnemyTarget = GetRandomEnemy();
+        }
     }
 }

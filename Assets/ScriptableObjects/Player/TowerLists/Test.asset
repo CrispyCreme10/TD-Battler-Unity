@@ -23,7 +23,3 @@ MonoBehaviour:
     SerializationNodes: []
   towerPrefabs:
   - {fileID: 4614329721729808966, guid: 46b4fbc57df69ab41bbc670b5fedc66a, type: 3}
-  - {fileID: 9138542685181519784, guid: d690a72ad684d3d4c964a9a764c14849, type: 3}
-  - {fileID: 623150240486385644, guid: 04ce85a02c4307f2b8de8abb3c20ca07, type: 3}
-  - {fileID: 8950546561085149994, guid: 8487d3685edec99469e1a9ff696ca8b7, type: 3}
-  - {fileID: 6687063121488355059, guid: 36666be859105c341baa2ca0d086c177, type: 3}

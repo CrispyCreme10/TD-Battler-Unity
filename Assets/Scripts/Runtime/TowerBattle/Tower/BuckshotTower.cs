@@ -14,16 +14,7 @@ namespace TDBattler.Runtime
 
         protected override void GetCurrentEnemyTarget()
         {
-            if (_enemiesInRange.Count <= 0)
-            {
-                _currentEnemyTarget = null;
-                return;
-            }
-
-            if (_currentEnemyTarget != null && !_currentEnemyTarget.isActiveAndEnabled)
-            {
-                _currentEnemyTarget = null;
-            }
+            base.GetCurrentEnemyTarget();
 
             if (_currentEnemyTarget == null)
             {

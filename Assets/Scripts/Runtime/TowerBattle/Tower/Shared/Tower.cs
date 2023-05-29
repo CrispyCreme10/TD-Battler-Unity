@@ -32,7 +32,7 @@ namespace TDBattler.Runtime
         protected GameObject _projectileContainer;
 
         // battle props
-        [Header("Attributes")]
+        [Header("Shared Attributes")]
         [ReadOnly]
         [SerializeField]
         protected int mergeLevel;
@@ -41,15 +41,17 @@ namespace TDBattler.Runtime
         protected int energyLevel;
         [ReadOnly]
         [SerializeField]
+        protected Enemy _currentEnemyTarget;
+        [ReadOnly]
+        [SerializeField]
         protected Dictionary<StatType, float> statMap = new Dictionary<StatType, float>();
         [ReadOnly]
         [SerializeField]
-        protected Enemy _currentEnemyTarget;
+        protected List<Enemy> _enemiesInRange;
         [ReadOnly]
         [SerializeField]
         [ListDrawerSettings(OnBeginListElementGUI = "BeginDrawListElement", OnEndListElementGUI = "EndDrawListElement")]
         protected List<EnemyDistance> _enemiesDistance;
-        protected List<Enemy> _enemiesInRange;
 
         protected Coroutine currentCoroutine;
         protected Quaternion? enemyDir;
@@ -74,12 +76,22 @@ namespace TDBattler.Runtime
 
         private void OnEnable()
         {
+            OnEnableBase();
+        }
+
+        protected void OnEnableBase()
+        {
             EnemySpawner.OnEnemiesChanged += UpdateEnemies;
 
             anim.SetBool("CanShoot", true);
         }
 
         private void OnDisable()
+        {
+            OnDisableBase();
+        }
+
+        protected void OnDisableBase()
         {
             EnemySpawner.OnEnemiesChanged -= UpdateEnemies;
 
@@ -201,12 +213,11 @@ namespace TDBattler.Runtime
                 return;
             }
 
-            if (towerData.UnitTarget == UnitTarget.First)
+            if (_currentEnemyTarget != null && !_currentEnemyTarget.isActiveAndEnabled)
             {
-                _currentEnemyTarget = GetFirstEnemy();
+                _currentEnemyTarget = null;
                 return;
             }
-            _currentEnemyTarget = GetRandomEnemy();
         }
 
         protected virtual void RefreshStats()

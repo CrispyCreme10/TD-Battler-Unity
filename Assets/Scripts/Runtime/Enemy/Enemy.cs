@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace TDBattler.Runtime
@@ -11,15 +13,24 @@ namespace TDBattler.Runtime
         public static Action<Enemy> OnDeath;
 
         [Header("Attributes")]
-        [SerializeField] private float moveSpeed = 1f;
+        [SerializeField] private float initMoveSpeed = 1f;
         [SerializeField] private int deathCoinReward = 10;
 
 
         public EnemyHealth EnemyHealth => _enemyHealth;
         public int DeathCoinReward => deathCoinReward;
         public float DistanceTraveled => _distanceTraveled;
+        public float ActiveMoveSpeed => _activeMoveSpeed;
+        public float FreezerSlowPercent => _freezerSlowPercent;
 
-        private float MoveSpeed => moveSpeed;
+        [Header("Tracking")]
+        [ReadOnly]
+        [SerializeField]
+        private float _activeMoveSpeed;
+        [ReadOnly]
+        [SerializeField]
+        private float _freezerSlowPercent;
+
         private Waypoint _waypoint;
         private Vector3 _currentPointPosition;
         private SpriteRenderer _spriteRenderer;
@@ -68,12 +79,13 @@ namespace TDBattler.Runtime
             _lastPointPosition = transform.position;
             _distanceTraveled = 0;
             _timeAlive = 0;
+            _activeMoveSpeed = initMoveSpeed;
             _enemyHealth.SpawnInit();
         }
 
         private void Move()
         {
-            transform.position = Vector3.MoveTowards(transform.position, _currentPointPosition, MoveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _currentPointPosition, _activeMoveSpeed * Time.deltaTime);
         }
 
         private bool CurrentPointPositionReached(float distanceToNextPointPosition)
@@ -144,18 +156,14 @@ namespace TDBattler.Runtime
         {
             _projectilesTargeting.Remove(projectile);
         }
-    
+
         public void ApplyDebuff(EnemyDebuff enemyDebuff)
         {
-            if (enemyDebuff.EnemyDebuffType == EnemyDebuffType.MovementSpeed)
+            if (enemyDebuff.EnemyDebuffType == TowerModType.Freezer)
             {
-                ApplySlowDebuff(enemyDebuff);
+                _freezerSlowPercent += enemyDebuff.ValueToApply;
+                _activeMoveSpeed = initMoveSpeed * (1 - _freezerSlowPercent);
             }
-        }
-
-        private void ApplySlowDebuff(EnemyDebuff enemyDebuff)
-        {
-            moveSpeed -= moveSpeed * enemyDebuff.ValueToApply;
         }
     }
 
@@ -163,21 +171,20 @@ namespace TDBattler.Runtime
     public class EnemyDebuff
     {
         [SerializeField] private float valueToApply;
-        [SerializeField] private EnemyDebuffType enemyDebuffType;
+        [SerializeField] private TowerModType sourceTowerType;
 
         public float ValueToApply => valueToApply;
-        public EnemyDebuffType EnemyDebuffType => enemyDebuffType;
+        public TowerModType EnemyDebuffType => sourceTowerType;
 
-        public EnemyDebuff(float value, EnemyDebuffType type)
+        public EnemyDebuff(float value, TowerModType type)
         {
             valueToApply = value;
-            enemyDebuffType = type;
+            sourceTowerType = type;
         }
     }
 
-    [Serializable]
-    public enum EnemyDebuffType
+    public enum TowerModType
     {
-        MovementSpeed,
+        Freezer
     }
 }

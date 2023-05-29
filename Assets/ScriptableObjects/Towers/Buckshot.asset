@@ -24,7 +24,7 @@ MonoBehaviour:
   name: Buckshot
   description: The first shot at a target deals increased damage. Damage also grows
     with merge rank.
-  debugColor: {r: 0.38823533, g: 0.43137258, b: 0.43529415, a: 1}
+  debugColor: {r: 0.51303846, g: 0.5702689, b: 0.5754717, a: 1}
   permanentLevel: 1
   towerFaction: 0
   unitType: 0
