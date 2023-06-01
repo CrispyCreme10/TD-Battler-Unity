@@ -88,6 +88,7 @@ namespace TDBattler.Runtime
             var pd = _pointData.SingleOrDefault(pd => pd.Tower == tower);
             pd.Tower = null;
             Destroy(tower.gameObject);
+            _spawnTowerCount--;
             return pd.PointIndex;
         }
 
