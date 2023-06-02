@@ -147,6 +147,16 @@ namespace TDBattler.Runtime
             _towerRefs[key].Remove(obj);
         }
 
+        public List<GameObject> GetAllActiveTowerRefs()
+        {
+            List<GameObject> towerRefs = new List<GameObject>();
+            foreach(string key in _towerRefs.Keys)
+            {
+                towerRefs.AddRange(_towerRefs[key].Where(go => go.activeSelf));
+            }
+            return towerRefs;
+        }
+
         private string GetTowerkey(GameObject obj)
         {
             Tower tower = obj.GetComponent<Tower>();

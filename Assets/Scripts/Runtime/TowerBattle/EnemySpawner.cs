@@ -58,22 +58,24 @@ namespace TDBattler.Runtime
 
         private void OnEnable()
         {
-            BattleManager.OnMinionWaveUpdate += WaveTimeUpdate;
+            BattleManager.OnMinionWaveUpdate += MinionWaveTimeUpdate;
+            BattleManager.OnMinionWaveOver += MinionWaveOver;
+            BattleManager.OnBossWaveUpdate += BossWaveTimeUpdate;
             Enemy.OnDeath += DespawnEnemy;
             Enemy.OnEndReached += DespawnEnemy;
         }
 
         private void OnDisable()
         {
-            BattleManager.OnMinionWaveUpdate -= WaveTimeUpdate;
+            BattleManager.OnMinionWaveUpdate -= MinionWaveTimeUpdate;
+            BattleManager.OnMinionWaveOver -= MinionWaveOver;
+            BattleManager.OnBossWaveUpdate -= BossWaveTimeUpdate;
             Enemy.OnDeath -= DespawnEnemy;
             Enemy.OnEndReached -= DespawnEnemy;
         }
 
-        private void WaveTimeUpdate(float waveTimer, float waveTimerRemaining)
+        private void MinionWaveTimeUpdate(float waveTimer, float waveTimerRemaining)
         {
-            // loop spawn groups
-            // foreach create a coroutine that is associated with the group
             foreach (SpawnGroup spawnGroup in enemySpawnGroups.SpawnGroups)
             {
                 if (spawnGroup.coroutine == null)
@@ -81,6 +83,17 @@ namespace TDBattler.Runtime
                     spawnGroup.coroutine = StartCoroutine(SpawnEnemyGroup(spawnGroup));
                 }
             }
+        }
+
+        private void MinionWaveOver()
+        {
+            // add total alive enemies health to the health of the boss to spawn
+            int totalMinionHealth = _enemyRefs.Select(e => e.GetComponent<Enemy>().EnemyHealth.CurrentHealth)?.Sum() ?? 0;
+        }
+
+        private void BossWaveTimeUpdate()
+        {
+
         }
 
         private IEnumerator SpawnEnemyPair(SpawnUnit enemyPair)

@@ -10,6 +10,7 @@ namespace TDBattler.Runtime
     public class BattleManager : MonoBehaviour
     {
         public static Action<float, float> OnMinionWaveUpdate;
+        public static Action OnMinionWaveOver;
         public static Action OnBossWaveUpdate;
         public static Action OnGameOver;
 
@@ -36,7 +37,6 @@ namespace TDBattler.Runtime
 
         private void Awake()
         {
-            ResetMinionWaveTimer();
             battleTimeElapsed = 0;
         }
 
@@ -56,7 +56,7 @@ namespace TDBattler.Runtime
 
             battleTimeElapsed += Time.deltaTime;
 
-            if (_initBattleCoroutine == null) _initBattleCoroutine = StartCoroutine(InitializeBattle());
+            if (_initBattleCoroutine == null) _initBattleCoroutine = StartCoroutine(InitMinionWave());
             if (!_isMinionWaveActive) return;
 
             // minion waves
@@ -66,7 +66,9 @@ namespace TDBattler.Runtime
                 _isMinionWaveActive = false;
                 // setup boss wave vars
                 _isBossWaveActive = true;
-                
+                Debug.Log("BOSS TIME");
+
+                OnMinionWaveOver?.Invoke();
             }
 
             if (_isMinionWaveActive)
@@ -77,10 +79,7 @@ namespace TDBattler.Runtime
             }
 
             // boss waves
-            if (enemySpawner?.Enemies == null)
-            {
-                Debug.Log("BOSS TIME");
-            }
+            if (!_isBossWaveActive) return;
             
             if (_isBossWaveActive)
             {
@@ -88,13 +87,23 @@ namespace TDBattler.Runtime
             }
         }
 
-        private IEnumerator InitializeBattle()
+        private IEnumerator InitMinionWave()
         {
             yield return new WaitForSeconds(debugBattleDelay);
 
             // wait for animations
 
+            ResetMinionWaveTimer();
             _isMinionWaveActive = true;
+        }
+
+        private IEnumerator InitBossWave()
+        {
+            yield return new WaitForSeconds(debugBattleDelay);
+
+            // wait for animations
+
+            _isBossWaveActive = true;
         }
 
         private void ResetMinionWaveTimer()

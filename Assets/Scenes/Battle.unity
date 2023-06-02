@@ -2967,7 +2967,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 1848261895}
-  minionWaveTimer: 120
+  minionWaveTimer: 15
   debugBattleDelay: 3
   battleTimeElapsed: 0
   waveTimeRemaining: 0
