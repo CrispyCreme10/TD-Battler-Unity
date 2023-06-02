@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: EasySpawnGroup
   m_EditorClassIdentifier: 
   spawnGroups:
-  - unitDelayGap: 1
+  - groupDelay: 1
     enemies:
     - initialDelay: 2
-      enemyDelayGap: 0.65
-      count: 5
+      enemyDelayGap: 0.8
+      count: 4
       poolName: 0
     - initialDelay: 0
       enemyDelayGap: 0
       count: 1
       poolName: 1
-  - unitDelayGap: 1
+  - groupDelay: 1
     enemies:
     - initialDelay: 30
       enemyDelayGap: 0
-      count: 0
+      count: 1
       poolName: 2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MainSpawnGroup
   m_EditorClassIdentifier: 
   spawnGroups:
-  - unitDelayGap: 1
+  - groupDelay: 1
     enemies:
     - initialDelay: 1
       enemyDelayGap: 0.65
@@ -23,7 +23,7 @@ MonoBehaviour:
       enemyDelayGap: 0
       count: 1
       poolName: 1
-  - unitDelayGap: 1
+  - groupDelay: 1
     enemies:
     - initialDelay: 15
       enemyDelayGap: 0

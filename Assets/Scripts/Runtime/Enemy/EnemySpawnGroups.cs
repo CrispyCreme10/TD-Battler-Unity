@@ -16,7 +16,7 @@ namespace TDBattler.Runtime
     [Serializable]
     public class SpawnGroup
     {
-        public float unitDelayGap = 1f;
+        public float groupDelay = 1f;
         public List<SpawnUnit> enemies;
         public Coroutine coroutine;
     }

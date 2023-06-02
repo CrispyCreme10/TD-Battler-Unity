@@ -17,6 +17,8 @@ namespace TDBattler.Runtime
         public override bool GenerateEnemyDebuff(out EnemyDebuff enemyDebuff)
         {
             enemyDebuff = null;
+            if (_currentEnemyTarget == null) return false;
+
             if (_currentEnemyTarget.FreezerSlowPercent >= MaxSlowPercent) return false;
             
             enemyDebuff = new EnemyDebuff(GetStat(StatType.SlowTarget), TowerModType.Freezer);

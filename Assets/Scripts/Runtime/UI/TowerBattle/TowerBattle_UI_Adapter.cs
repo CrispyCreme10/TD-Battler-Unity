@@ -21,6 +21,7 @@ namespace TDBattler.Runtime
             TowerBattleManager.OnManaChange += OnManaChange;
             BattleManager.OnMinionWaveUpdate += SetRoundTimer;
             EnemySpawner.OnEnemiesChanged += OnEnemiesChange;
+            LevelManager.OnLivesLost += OnLivesChange;
         }
 
         private void OnDisable()
@@ -28,6 +29,7 @@ namespace TDBattler.Runtime
             TowerBattleManager.OnManaChange -= OnManaChange;
             BattleManager.OnMinionWaveUpdate -= SetRoundTimer;
             EnemySpawner.OnEnemiesChanged -= OnEnemiesChange;
+            LevelManager.OnLivesLost -= OnLivesChange;
         }
 
         public void SpawnTower()
@@ -61,7 +63,7 @@ namespace TDBattler.Runtime
             document.OnManaChange(mana, towerCost, energyCosts, fieldIsFull);
         }
         
-        private void OnLivesChange(int totalLives)
+        private void OnLivesChange()
         {
             document.OnLivesChange(LevelManager.Instance.TotalLives);
         }

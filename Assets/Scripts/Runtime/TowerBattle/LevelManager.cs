@@ -6,6 +6,7 @@ namespace TDBattler.Runtime
     public class LevelManager : MonoBehaviour
     {
         public static Action OnAllLivesLost;
+        public static Action OnLivesLost;
         private static LevelManager _instance;
         
         [SerializeField] private int lives = 3;
@@ -37,6 +38,7 @@ namespace TDBattler.Runtime
         private void ReduceLives(Enemy enemy)
         {
             totalLives--;
+            OnLivesLost?.Invoke();
             if (TotalLives <= 0)
             {
                 totalLives = 0;

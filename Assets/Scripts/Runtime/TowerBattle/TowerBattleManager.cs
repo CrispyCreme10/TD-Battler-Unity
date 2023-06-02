@@ -18,6 +18,12 @@ namespace TDBattler.Runtime
 
         [Header("Attributes")]
         [SerializeField] private PlayerGameData playerGameData;
+        [ReadOnly]
+        [NonSerialized, OdinSerialize]
+        private TowerDataTracker _towerDataTracker;
+        [ReadOnly]
+        [SerializeField]
+        private Dictionary<string, List<GameObject>> _towerRefs = new Dictionary<string, List<GameObject>>();
 
         public int Mana => playerGameData.Mana;
         public int TowerCost => playerGameData.Towercost;
@@ -26,12 +32,6 @@ namespace TDBattler.Runtime
         private Tower _selectedTower => _selectedTowerCollider?.transform.parent?.parent.GetComponent<Tower>();
         private Vector3 _selectedTowerOGPosition;
         private Vector3 _selectedTowerOffset;
-        [ReadOnly]
-        [SerializeField]
-        private Dictionary<string, List<GameObject>> _towerRefs = new Dictionary<string, List<GameObject>>();
-        [ReadOnly]
-        [NonSerialized, OdinSerialize]
-        private TowerDataTracker _towerDataTracker;
 
         private void Awake()
         {
@@ -229,7 +229,8 @@ namespace TDBattler.Runtime
                 RemoveTowerRef(otherTower.gameObject);
 
                 int energyLevel = GetTowerEnergyLevel(_selectedTower.TowerData.Name);
-                towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, energyLevel, ++selectedMergeLevel);
+                GameObject newTower = towerSpawner.SpawnRandomTowerAtPointOfMergeLevel(towerPointIndex, energyLevel, ++selectedMergeLevel);
+                AddTowerRef(newTower);
                 return true;
             }
 

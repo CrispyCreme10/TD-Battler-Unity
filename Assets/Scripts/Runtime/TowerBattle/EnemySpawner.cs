@@ -27,18 +27,13 @@ namespace TDBattler.Runtime
         public IEnumerable<Enemy> Enemies => _enemyRefs.Select(go => go.GetComponent<Enemy>());
 
         private Waypoint _waypoint;
-        private float _spawnTimer;
         [ReadOnly]
         [SerializeField]
         private List<GameObject> _enemyRefs;
         private bool _isInMinionMode;
-        private float _minionTimeRemaining;
         private Vector3 _startingPosition;
-        private int _spawnGroupIndex;
-        private bool _isSpawning;
         private Dictionary<EnemyPoolName, string> enemyPoolNameMap = new Dictionary<EnemyPoolName, string>();
         private Dictionary<EnemyPoolName, GameObject> enemyPrefabMap = new Dictionary<EnemyPoolName, GameObject>();
-        private Coroutine _spawnGroupCoroutine;
         
         private void Awake()
         {
@@ -46,7 +41,6 @@ namespace TDBattler.Runtime
             _enemyRefs = new List<GameObject>();
             _isInMinionMode = true;
             _startingPosition = _waypoint.GetWaypointPosition(0);
-            _spawnGroupIndex = 0;
 
             // map enemy pool name to enemy prefab
             enemyPoolNameMap[EnemyPoolName.Grunt] = GRUNT_POOL_NAME;
@@ -74,16 +68,6 @@ namespace TDBattler.Runtime
             BattleManager.OnMinionWaveUpdate -= WaveTimeUpdate;
             Enemy.OnDeath -= DespawnEnemy;
             Enemy.OnEndReached -= DespawnEnemy;
-        }
-
-        private void Start()
-        {
-             
-        }
-
-        private void Update()
-        {
-
         }
 
         private void WaveTimeUpdate(float waveTimer, float waveTimerRemaining)
@@ -126,13 +110,7 @@ namespace TDBattler.Runtime
                 yield return SpawnEnemyPair(enemyPair);
             }
 
-            _spawnGroupIndex++;
-            if (_spawnGroupIndex == enemySpawnGroups.SpawnGroups.Count)
-            {
-                _spawnGroupIndex = 0;
-            }
-
-            yield return new WaitForSeconds(spawnGroup.unitDelayGap);
+            yield return new WaitForSeconds(spawnGroup.groupDelay);
             spawnGroup.coroutine = null;
         }
 

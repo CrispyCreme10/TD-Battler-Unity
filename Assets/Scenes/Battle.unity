@@ -2561,6 +2561,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: _towerDataTracker
+      Entry: 6
+      Data: 
     - Name: _towerRefs
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[System.Collections.Generic.List`1[[UnityEngine.GameObject,
@@ -2580,9 +2583,6 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 8
-      Data: 
-    - Name: _towerDataTracker
-      Entry: 6
       Data: 
   playerManager: {fileID: 1994204749}
   towerSpawner: {fileID: 174559306}
@@ -2966,7 +2966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0758f3a290fd71b468e4ecbf0f688f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySpawner: {fileID: 0}
+  enemySpawner: {fileID: 1848261895}
   minionWaveTimer: 120
   debugBattleDelay: 3
   battleTimeElapsed: 0
@@ -3101,7 +3101,7 @@ MonoBehaviour:
   gruntPrefab: {fileID: 6891377522185687168, guid: 53734d57775bdc14fa5a1278cc8d3cce, type: 3}
   speederPrefab: {fileID: 3045894692670100557, guid: 32ded2f900e58d2458fad3c72ae38c33, type: 3}
   minibossPrefab: {fileID: 2426159400969343663, guid: af0c67f67a2038048b624431e63f08aa, type: 3}
-  enemySpawnGroups: {fileID: 11400000, guid: 32d17c7edd109474da46c6b5dbfb42a2, type: 2}
+  enemySpawnGroups: {fileID: 11400000, guid: 1ec9ccaf88c53dc4496bdb72956919fc, type: 2}
   _enemyRefs: []
 --- !u!4 &1848261896
 Transform:
