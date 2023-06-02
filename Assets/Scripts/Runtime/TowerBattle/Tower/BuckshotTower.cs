@@ -52,8 +52,8 @@ namespace TDBattler.Runtime
 
             GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity, _projectileContainer.transform);
             Projectile projectileScript = projectileObj.GetComponent<Projectile>();
-            projectileScript.SetSourceTower(towerData.Name);
-            projectileScript.SetTarget(_currentEnemyTarget);
+            projectileScript.SetSourceObjectName(towerData.Name);
+            projectileScript.SetTarget(_currentEnemyTarget.gameObject);
             float damage = _isFirstShot ? _firstShotDamage : GetStat(StatType.Damage);
             projectileScript.SetDamage(damage);
             projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;

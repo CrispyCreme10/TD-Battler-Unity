@@ -21,7 +21,7 @@ namespace TDBattler.Runtime
             AfterDamage?.Invoke();
             Projectile projectile = GetComponent<Projectile>();
             if (projectile == null) return;
-            OnAfterDamageGlobal?.Invoke(projectile.SourceTowerName, Damage);
+            OnAfterDamageGlobal?.Invoke(projectile.SourceObjName, Damage);
         }
     }
 }

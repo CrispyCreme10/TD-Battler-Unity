@@ -14,13 +14,13 @@ namespace TDBattler.Runtime
         [Header("Display")]
         [ReadOnly]
         [SerializeField]
-        private Enemy _enemyTarget;
+        private GameObject _target;
 
         public EnemyDebuff EnemyDebuff { get => _enemyDebuff; set => _enemyDebuff = value; }
 
-        public string SourceTowerName => _sourceTowerName;
+        public string SourceObjName => _sourceObjName;
 
-        private string _sourceTowerName;
+        private string _sourceObjName;
         private Damageable _damageable;
         private EnemyDebuff _enemyDebuff;
 
@@ -31,32 +31,37 @@ namespace TDBattler.Runtime
 
         private void OnEnable()
         {
-            Enemy.OnDeath += SetTarget;
-            Enemy.OnEndReached += SetTarget;
+            Enemy.OnDeath += SetEnemyTarget;
+            Enemy.OnEndReached += SetEnemyTarget;
             _damageable.AfterDamage += Damageable_AfterDamage;
         }
 
         private void OnDisable()
         {
-            Enemy.OnDeath -= SetTarget;
-            Enemy.OnEndReached -= SetTarget;
+            Enemy.OnDeath -= SetEnemyTarget;
+            Enemy.OnEndReached -= SetEnemyTarget;
             _damageable.AfterDamage -= Damageable_AfterDamage;
         }
 
-        public void SetSourceTower(string towerName)
+        public void SetSourceObjectName(string name)
         {
-            _sourceTowerName = towerName;
+            _sourceObjName = name;
         }
 
-        public void SetTarget(Enemy _enemy)
+        private void SetEnemyTarget(Enemy enemy)
         {
-            if (this._enemyTarget == _enemy)
+            SetTarget(enemy.gameObject);
+        }
+
+        public void SetTarget(GameObject target)
+        {
+            if (this._target == target)
             {
-                this._enemyTarget = null;
+                this._target = null;
                 return;
             }
 
-            this._enemyTarget = _enemy;
+            this._target = target;
         }
 
         public void SetDamage(float _damage)
@@ -66,17 +71,17 @@ namespace TDBattler.Runtime
 
         private void FixedUpdate()
         {
-            if (!_enemyTarget || !_enemyTarget.isActiveAndEnabled)
+            if (!_target || !_target.activeSelf)
             {
                 Destroy(gameObject);
                 return;
             }
 
-            Vector3 enemyTargetPos = _enemyTarget.GetTargetPosition();
+            Vector3 targetPos = _target.transform.position;
 
-            Vector2 direction = (enemyTargetPos - transform.position).normalized;
+            Vector2 direction = (targetPos - transform.position).normalized;
 
-            float angle = Mathf.Atan2(enemyTargetPos.y - transform.position.y, enemyTargetPos.x - transform.position.x) * Mathf.Rad2Deg - 90f;
+            float angle = Mathf.Atan2(targetPos.y - transform.position.y, targetPos.x - transform.position.x) * Mathf.Rad2Deg - 90f;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
             transform.rotation = targetRotation;
 
