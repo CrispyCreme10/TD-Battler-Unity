@@ -81,5 +81,10 @@ namespace TDBattler.Runtime
         {
             _container.SetHealthText(currentHealth);
         }
+
+        public void IncreaseCurrentHealth(int additionalHealth)
+        {
+            currentHealth += additionalHealth;
+        }
     }
 }

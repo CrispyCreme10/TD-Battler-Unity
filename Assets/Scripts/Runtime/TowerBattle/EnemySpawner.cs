@@ -14,11 +14,13 @@ namespace TDBattler.Runtime
         const string GRUNT_POOL_NAME = "Grunt";
         const string SPEEDER_POOL_NAME = "Speeder";
         const string MINIBOSS_POOL_NAME = "Miniboss";
+        const string NINJA_POOL_NAME = "Ninja";
 
         [Header("References")]
         [SerializeField] private GameObject gruntPrefab;
         [SerializeField] private GameObject speederPrefab;
         [SerializeField] private GameObject minibossPrefab;
+        [SerializeField] private GameObject ninjaPrefab;
 
 
         [Header("Settings")]
@@ -49,11 +51,14 @@ namespace TDBattler.Runtime
             enemyPrefabMap[EnemyPoolName.Speeder] = speederPrefab;
             enemyPoolNameMap[EnemyPoolName.MiniBoss] = MINIBOSS_POOL_NAME;
             enemyPrefabMap[EnemyPoolName.MiniBoss] = minibossPrefab;
+            enemyPoolNameMap[EnemyPoolName.Ninja] = NINJA_POOL_NAME;
+            enemyPrefabMap[EnemyPoolName.Ninja] = ninjaPrefab;
 
             // Create pools
             ObjectPooler.Instance.CreatePool(GRUNT_POOL_NAME, gruntPrefab, 50, new ObjectPoolOptions(_startingPosition));
             ObjectPooler.Instance.CreatePool(SPEEDER_POOL_NAME, speederPrefab, 20, new ObjectPoolOptions(_startingPosition));
             ObjectPooler.Instance.CreatePool(MINIBOSS_POOL_NAME, minibossPrefab, 10, new ObjectPoolOptions(_startingPosition));
+            ObjectPooler.Instance.CreatePool(NINJA_POOL_NAME, ninjaPrefab, 1, new ObjectPoolOptions(_startingPosition));
         }
 
         private void OnEnable()
@@ -89,6 +94,15 @@ namespace TDBattler.Runtime
         {
             // add total alive enemies health to the health of the boss to spawn
             int totalMinionHealth = _enemyRefs.Select(e => e.GetComponent<Enemy>().EnemyHealth.CurrentHealth)?.Sum() ?? 0;
+
+            RemoveAllEnemyRef();
+
+            // spawn ninja boss
+            GameObject newInstance = ObjectPooler.Instance.GetInstanceFromPool(NINJA_POOL_NAME);
+            Enemy component = newInstance.GetComponent<Enemy>();
+            component.SpawnInit();
+            component.EnemyHealth.IncreaseCurrentHealth(totalMinionHealth);
+            AddEnemyRef(newInstance);
         }
 
         private void BossWaveTimeUpdate()
@@ -156,6 +170,12 @@ namespace TDBattler.Runtime
                 _enemyRefs.Remove(enemy.gameObject);
                 OnEnemiesChanged?.Invoke(_enemyRefs.Select(go => go.GetComponent<Enemy>()));
             }
+        }
+
+        private void RemoveAllEnemyRef()
+        {
+            _enemyRefs.Clear();
+            OnEnemiesChanged?.Invoke(new List<Enemy>());
         }
     }
 }

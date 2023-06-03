@@ -34,6 +34,7 @@ namespace TDBattler.Runtime
     {
         Grunt,
         Speeder,
-        MiniBoss
+        MiniBoss,
+        Ninja
     }
 }

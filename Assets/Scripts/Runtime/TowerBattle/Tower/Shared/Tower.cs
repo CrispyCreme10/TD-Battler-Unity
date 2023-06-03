@@ -31,6 +31,8 @@ namespace TDBattler.Runtime
 
         protected GameObject _projectileContainer;
 
+        protected List<Projectile> _projectilesTargeting = new List<Projectile>();
+
         // battle props
         [Header("Shared Attributes")]
         [ReadOnly]
@@ -144,6 +146,25 @@ namespace TDBattler.Runtime
         }
 
         #region General Methods
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            var projectile = other.gameObject.GetComponent<Projectile>();
+            if (projectile != null && _projectilesTargeting.Contains(projectile))
+            {
+
+            }
+        }
+
+        public void AddProjectile(Projectile projectile)
+        {
+            _projectilesTargeting.Add(projectile);
+        }
+
+        public void RemoveProjectile(Projectile projectile)
+        {
+            _projectilesTargeting.Remove(projectile);
+        }
+
         protected bool NoEnemyTarget()
         {
             return _enemiesInRange.Count <= 0 || _currentEnemyTarget != null && !_currentEnemyTarget.isActiveAndEnabled;
@@ -212,8 +233,6 @@ namespace TDBattler.Runtime
             SirenixEditorGUI.EndBox();
         }
         #endregion
-
-
 
         #region Custom Hooks
         protected abstract void SetCurrentEnemyTarget();

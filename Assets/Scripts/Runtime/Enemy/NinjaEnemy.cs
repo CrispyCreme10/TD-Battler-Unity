@@ -42,8 +42,10 @@ namespace TDBattler.Runtime
             for (int i = 0; i < adjustedShurikenCount; i++)
             {
                 int index = Random.Range(0, availableTargets.Count);
-
+                yield return ShootShuriken(availableTargets[index]);
             }
+
+            _shurikenCoroutine = null;
         }
 
         private IEnumerator ShootShuriken(GameObject targetObj)
@@ -52,6 +54,7 @@ namespace TDBattler.Runtime
             Projectile projectileScript = projectileObj.GetComponent<Projectile>();
             projectileScript.SetSourceObjectName(name);
             projectileScript.SetTarget(targetObj);
+            projectileObj.name = $"{name} - {projectileObj.name}";
             yield return new WaitForSeconds(delayBetweenShurikens);
         }
     }
