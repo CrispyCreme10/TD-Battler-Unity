@@ -3101,6 +3101,7 @@ MonoBehaviour:
   gruntPrefab: {fileID: 6891377522185687168, guid: 53734d57775bdc14fa5a1278cc8d3cce, type: 3}
   speederPrefab: {fileID: 3045894692670100557, guid: 32ded2f900e58d2458fad3c72ae38c33, type: 3}
   minibossPrefab: {fileID: 2426159400969343663, guid: af0c67f67a2038048b624431e63f08aa, type: 3}
+  ninjaPrefab: {fileID: 6690176496517142705, guid: 5be54b517c590aeca8caa5d8d9e84144, type: 3}
   enemySpawnGroups: {fileID: 11400000, guid: 1ec9ccaf88c53dc4496bdb72956919fc, type: 2}
   _enemyRefs: []
 --- !u!4 &1848261896

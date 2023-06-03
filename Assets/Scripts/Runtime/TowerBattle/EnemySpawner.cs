@@ -94,7 +94,7 @@ namespace TDBattler.Runtime
         {
             // add total alive enemies health to the health of the boss to spawn
             int totalMinionHealth = _enemyRefs.Select(e => e.GetComponent<Enemy>().EnemyHealth.CurrentHealth)?.Sum() ?? 0;
-
+            _enemyRefs.ForEach(go => DespawnEnemy(go.GetComponent<Enemy>()));
             RemoveAllEnemyRef();
 
             // spawn ninja boss

@@ -146,15 +146,7 @@ namespace TDBattler.Runtime
         }
 
         #region General Methods
-        private void OnCollisionEnter2D(Collision2D other)
-        {
-            var projectile = other.gameObject.GetComponent<Projectile>();
-            if (projectile != null && _projectilesTargeting.Contains(projectile))
-            {
-
-            }
-        }
-
+        
         public void AddProjectile(Projectile projectile)
         {
             _projectilesTargeting.Add(projectile);
@@ -223,6 +215,13 @@ namespace TDBattler.Runtime
             RefreshStats();
         }
 
+        private IEnumerator ApplyStun(float duration)
+        {
+            gameObject.SetActive(false);
+            yield return new WaitForSeconds(duration);
+            gameObject.SetActive(true);
+        }
+
         private void BeginDrawListElement(int index)
         {
             SirenixEditorGUI.BeginBox(this._enemiesDistance[index].Name);
@@ -235,6 +234,17 @@ namespace TDBattler.Runtime
         #endregion
 
         #region Custom Hooks
+        protected void OnCollisionEnter2D(Collision2D other)
+        {
+            var projectile = other.gameObject.GetComponent<Projectile>();
+            if (projectile != null && _projectilesTargeting.Contains(projectile))
+            {
+                // apply effect
+                StartCoroutine(ApplyStun(3f));
+                RemoveProjectile(projectile);
+            }
+        }
+
         protected abstract void SetCurrentEnemyTarget();
 
         protected virtual void RefreshStats()
@@ -255,7 +265,7 @@ namespace TDBattler.Runtime
             GameObject projectileObj = Instantiate(projectilePrefab, firingPoint.position, enemyDir.HasValue ? enemyDir.Value : Quaternion.identity, _projectileContainer.transform);
             Projectile projectileScript = projectileObj.GetComponent<Projectile>();
             projectileScript.SetSourceObjectName(towerData.Name);
-            projectileScript.SetTarget(_currentEnemyTarget.gameObject);
+            projectileScript.SetTarget(_currentEnemyTarget?.gameObject);
             projectileScript.SetDamage(GetStat(StatType.Damage));
             projectileObj.GetComponent<SpriteRenderer>().color = towerData.DebugColor;
             projectileObj.name = $"{name} - {projectileObj.name}";

@@ -55,6 +55,7 @@ namespace TDBattler.Runtime
             projectileScript.SetSourceObjectName(name);
             projectileScript.SetTarget(targetObj);
             projectileObj.name = $"{name} - {projectileObj.name}";
+            targetObj.GetComponent<Tower>().AddProjectile(projectileScript);
             yield return new WaitForSeconds(delayBetweenShurikens);
         }
     }

@@ -71,7 +71,14 @@ namespace TDBattler.Runtime
 
         public void SpawnInit()
         {
-            currentHealth = healthUpgrades.SpawnHealth;
+            if (healthUpgrades != null) 
+            {
+                currentHealth = healthUpgrades.SpawnHealth;
+            }
+            else
+            {
+                currentHealth = maxHealth;
+            }
             UpdateHealthText();
             _damageTextObjs.ForEach(obj => Destroy(obj));
             _damageTextObjs.Clear();
